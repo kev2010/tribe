@@ -14,6 +14,7 @@
 		2B09A33222F265D000F52209 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B09A33022F265D000F52209 /* LaunchScreen.storyboard */; };
 		2B09A33D22F265D000F52209 /* XploreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B09A33C22F265D000F52209 /* XploreTests.swift */; };
 		2B09A34822F265D000F52209 /* XploreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B09A34722F265D000F52209 /* XploreUITests.swift */; };
+		2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02B22F39668000A51F0 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		2B09A34322F265D000F52209 /* XploreUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XploreUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B09A34722F265D000F52209 /* XploreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XploreUITests.swift; sourceTree = "<group>"; };
 		2B09A34922F265D000F52209 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B11E02B22F39668000A51F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +84,7 @@
 				2B09A33B22F265D000F52209 /* XploreTests */,
 				2B09A34622F265D000F52209 /* XploreUITests */,
 				2B09A32522F265CF00F52209 /* Products */,
+				2B11E02A22F39668000A51F0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,6 +127,14 @@
 				2B09A34922F265D000F52209 /* Info.plist */,
 			);
 			path = XploreUITests;
+			sourceTree = "<group>";
+		};
+		2B11E02A22F39668000A51F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B11E02B22F39668000A51F0 /* CoreLocation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
