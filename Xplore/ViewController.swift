@@ -11,32 +11,32 @@ import Mapbox
 
 class ViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
     
-    //  MapBox custom map - to change map style, go to storyboard -> MapView -> Attributes -> Style URL
-    @IBOutlet var mapView: MGLMapView!
-    
-    let manager = CLLocationManager()
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //  Determine user's current location and save boundaries
-        let location = locations[0]
-        let botleft = CLLocationCoordinate2D(latitude: location.coordinate.latitude - 0.01, longitude: location.coordinate.longitude - 0.01)
-        let topright = CLLocationCoordinate2D(latitude: location.coordinate.latitude + 0.01, longitude: location.coordinate.longitude + 0.01)
-        let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
-        
-        //  Display the user's region onto screen
-        mapView.setVisibleCoordinateBounds(region, animated: false)
-        self.mapView.showsUserLocation = true
-        print(location.speed, location.altitude)
-    }
+    //  Controls the home and map screens
+    @IBOutlet weak var pageView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Configure location manager to user's location
-        manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
+        //  Initialize two screens
+        let homescreen : Home = Home(nibName: "Home", bundle: nil)
+        let mapscreen : InteractiveMap = InteractiveMap(nibName: "InteractiveMap", bundle: nil)
+        
+        //  Adding home screen
+        self.addChild(homescreen)
+        self.pageView.addSubview(homescreen.view)
+        homescreen.didMove(toParent: self)
+        //  Adding map screen
+        self.addChild(mapscreen)
+        self.pageView.addSubview(mapscreen.view)
+        mapscreen.didMove(toParent: self)
+        
+        //  Creating "scrolling" feature for the screens
+        var mapFrame : CGRect = mapscreen.view.frame
+        mapFrame.origin.x = self.view.frame.width
+        mapscreen.view.frame = mapFrame
+        self.pageView.contentSize = CGSize(width: self.view.frame.width*2, height: self.view.frame.height)
+        
+        
 
     }
 

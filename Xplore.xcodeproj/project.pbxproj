@@ -17,6 +17,10 @@
 		2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02B22F39668000A51F0 /* CoreLocation.framework */; };
 		2B11E03522F3C4F7000A51F0 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02F22F3C221000A51F0 /* Mapbox.framework */; };
 		2B11E03622F3C4F7000A51F0 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02F22F3C221000A51F0 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5422F3EFCE00B1C90F /* Home.swift */; };
+		2B1E3E5722F3EFCE00B1C90F /* Home.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5522F3EFCE00B1C90F /* Home.xib */; };
+		2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */; };
+		2B1E3E5B22F3F1CC00B1C90F /* InteractiveMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +71,10 @@
 		2B11E02B22F39668000A51F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2B11E02F22F3C221000A51F0 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		2B11E03322F3C3F8000A51F0 /* Mapbox.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = Mapbox.framework.dSYM; sourceTree = "<group>"; };
+		2B1E3E5422F3EFCE00B1C90F /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		2B1E3E5522F3EFCE00B1C90F /* Home.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Home.xib; sourceTree = "<group>"; };
+		2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveMap.swift; sourceTree = "<group>"; };
+		2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InteractiveMap.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +133,10 @@
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32922F265CF00F52209 /* ViewController.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
+				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
+				2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */,
+				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
+				2B1E3E5522F3EFCE00B1C90F /* Home.xib */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
 				2B09A33322F265D000F52209 /* Info.plist */,
@@ -265,7 +277,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B09A33222F265D000F52209 /* LaunchScreen.storyboard in Resources */,
+				2B1E3E5B22F3F1CC00B1C90F /* InteractiveMap.xib in Resources */,
 				2B09A32F22F265D000F52209 /* Assets.xcassets in Resources */,
+				2B1E3E5722F3EFCE00B1C90F /* Home.xib in Resources */,
 				2B09A32D22F265CF00F52209 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,7 +327,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B09A32A22F265CF00F52209 /* ViewController.swift in Sources */,
+				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
+				2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
