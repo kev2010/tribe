@@ -20,16 +20,20 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1Ijoia2V2MjAxOCIsImEiOiJjanl0ZWI2eTUwMzg1M2RvYmFla3dmNDY5In0.bPAu5xKqAzOrBFSiB8DTfw</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Xplore would like to access your location to display nearby events.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Xplore would like to access your location to display nearby events.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -43,7 +47,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1Ijoia2V2MjAxOCIsImEiOiJjanl0ZWI2eTUwMzg1M2RvYmFla3dmNDY5In0.bPAu5xKqAzOrBFSiB8DTfw</string>
 </dict>
 </plist>

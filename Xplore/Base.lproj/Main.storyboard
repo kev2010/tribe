@@ -19,16 +19,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ti-hS-akB">
-                                <rect key="frame" x="184" y="433" width="46" height="30"/>
+                                <rect key="frame" x="186" y="432" width="42" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Login">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="loginTap:" destination="ThK-hq-tUH" eventType="touchUpInside" id="gtV-c5-Rlo"/>
                                     <action selector="loginTap:" destination="Rb0-dy-jcy" eventType="touchUpInside" id="oCp-mF-6zt"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Xplore" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" background="ic_visibility.png" translatesAutoresizingMaskIntoConstraints="NO" id="e3V-SW-T9d">
+                                <rect key="frame" x="131" y="272" width="152" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.32689359002571028" green="0.07057172502314446" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.32689359000000001" green="0.070571725020000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="38"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.32689359002571028" green="0.07057172502314446" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="bLV-nO-d7A"/>
                     </view>
                     <connections>
@@ -38,7 +50,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhc-MN-zaR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ThK-hq-tUH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="145" y="37"/>
+            <point key="canvasLocation" x="144.92753623188406" y="36.830357142857139"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -66,4 +78,7 @@
             <point key="canvasLocation" x="881.15942028985512" y="36.830357142857139"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic_visibility.png" width="24" height="24"/>
+    </resources>
 </document>
