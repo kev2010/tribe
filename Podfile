@@ -10,6 +10,7 @@ target 'Xplore' do
 
   pod 'Firebase/Analytics'
   pod 'FirebaseUI/Auth'
+  pod 'FirebaseUI/Email'
   
 
   target 'XploreTests' do

@@ -36,9 +36,8 @@ class ViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         mapscreen.view.frame = mapFrame
         self.pageView.contentSize = CGSize(width: self.view.frame.width*2, height: self.view.frame.height)
         
-        
-
     }
+    
 
 }
 
