@@ -15,4 +15,7 @@ MapBox let's us create custom-made maps with neat designs. We will be using this
 
 
 ## Installation
-To install these dependencies, first download CocoaPods (https://cocoapods.org/) by running the sudo code on the website. This should give you everything you need to access the pod files. After pulling the Xplore GitHub code, open the folder and delete `Xplore.xcworkspace`, `Podfile.lock`, and the `Pods` folder. In the terminal, run `pod install` in the directory of the Xplore project. To edit the code, it is **important** that you use `Xplore.xcworkspace` instead of `Xplore.xcodeproj`. If you run into any problems, please message me! 
+To install these dependencies, first download CocoaPods (https://cocoapods.org/) by running the sudo code on the website. This should give you everything you need to access the pod files. In the terminal, change the working directory to the Xplore project and run `pod install`. Now, you should have everything that you need to access the project. To edit the code, it is **important** that you use `Xplore.xcworkspace` instead of `Xplore.xcodeproj`. 
+
+## Troubleshooting
+If the code displays an error like `Could not build Objective-C module 'Firebase'`, try reinstalling the pod files. Open the Xplore folder and delete `Xplore.xcworkspace`, `Podfile.lock`, and the `Pods` folder. In the terminal, run `pod install` in the directory of the Xplore project. If you run into any more problems, please message me and try Google!
