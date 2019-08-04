@@ -186,7 +186,6 @@
 				2BE5B57722F567B000B39563 /* Menu.swift */,
 				2B09A32922F265CF00F52209 /* MainScreen.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
-				F4B258C422F6E51500E12BF4 /* Event.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F4B336ED22F6B2D3006C5D7E /* Home.xib */,
 				2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */,
@@ -241,6 +240,7 @@
 			children = (
 				F4B258C822F6E96C00E12BF4 /* CircularAnnotationView.swift */,
 				F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */,
+				F4B258C422F6E51500E12BF4 /* Event.swift */,
 				F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */,
 				2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */,
 				F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */,

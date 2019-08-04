@@ -19,6 +19,14 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     let manager = CLLocationManager()
     
+    // Bottom tile variables - global
+    var bottomTileShowing = false
+    var bottomTile = UIView()
+    var titleLabel = UILabel()
+    var subtitleLabel = UILabel()
+    var descriptionLabel = UILabel()
+    
+    
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -77,28 +85,27 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
+        
+        loadBottomTile()
     }
     
     
     func addRandomEvents() {
-        let bottom = CLLocationCoordinate2D(latitude: 37.775834, longitude: -122.41641700000001)
-        let top = CLLocationCoordinate2D(latitude: 37.795834, longitude: -122.396417)
-        
+
         let event1_loc = CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941700000001)
         let event2_loc = CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.4101700000001)
 
-        let event_1 = Event(name: "Phi Sig Party", coordinates: event1_loc, numPeople: 40)
-        let event_2 = Event(name: "Kevin's room", coordinates: event2_loc, numPeople: 5)
+        let event_1 = Event(name: "Phi Sig Party", coordinates: event1_loc, numPeople: 40, description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm")
+        let event_2 = Event(name: "Kevin's room", coordinates: event2_loc, numPeople: 5, description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.")
         
         let allEvents = [event_1, event_2]
         
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for event in allEvents {
-            let point = CustomPointAnnotation(coordinate: event.coordinates, title: event.name, subtitle: "\(event.numPeople) people")
+            let point = CustomPointAnnotation(coordinate: event.coordinates, title: event.name, subtitle: "\(event.numPeople) people", description: event.desc)
             point.reuseIdentifier = "customAnnotation\(event.name)"
             point.image = dot(size: 30, num: event.numPeople)
-
             pointAnnotations.append(point)
         }
         
@@ -132,6 +139,39 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         return true
     }
 
+    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+        if let point = annotation as? CustomPointAnnotation {
+            
+            if bottomTileShowing {
+                titleLabel.text = point.title!
+                subtitleLabel.text  = point.subtitle!
+                descriptionLabel.text = point.desc!
+            }
+            else {
+
+                titleLabel.text = point.title!
+                subtitleLabel.text  = point.subtitle!
+                descriptionLabel.text = point.desc!
+                
+                UIView.animate(withDuration: 0.2) {
+                    self.bottomTile.frame.origin = CGPoint(x: 0, y: self.view.frame.height - 250)
+                }
+                
+                bottomTileShowing = true
+            }
+            
+            
+    }
+    }
+    
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        if bottomTileShowing {
+            UIView.animate(withDuration: 0.2) {
+                self.bottomTile.frame.origin = CGPoint(x: 0, y: self.view.frame.height)
+            }
+            bottomTileShowing = false
+        }
+    }
     
     // MARK: - Navigation
     
@@ -166,6 +206,38 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         default:
             return heatmap_smallToBig[7]
         }
+        
+    }
+    
+    func loadBottomTile() {
+        let f = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: 200)
+        bottomTile = UIView(frame: f)
+        bottomTile.backgroundColor = UIColor.brown
+        
+        let f2 = CGRect(x: 10, y: 10, width: f.width, height: 30)
+        titleLabel = UILabel(frame: f2)
+        titleLabel.text = ""
+        titleLabel.textColor =  UIColor.white
+        titleLabel.textAlignment = .center
+        
+        let f3 = CGRect(x: 10, y: 50, width: f.width, height: 30)
+        subtitleLabel = UILabel(frame:f3)
+        subtitleLabel.text  = ""
+        subtitleLabel.textColor =  UIColor.white
+        
+        let f4 = CGRect(x: 10, y: 90, width: f.width, height: 50)
+        descriptionLabel = UILabel(frame:f4)
+        descriptionLabel.text = ""
+        descriptionLabel.textColor =  UIColor.white
+        descriptionLabel.numberOfLines = 5
+        descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
+        
+        
+        bottomTile.addSubview(titleLabel)
+        bottomTile.addSubview(subtitleLabel)
+        bottomTile.addSubview(descriptionLabel)
+        
+        self.mapView.addSubview(bottomTile)
         
     }
     

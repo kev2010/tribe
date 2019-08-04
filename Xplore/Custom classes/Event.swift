@@ -13,10 +13,13 @@ class Event {
     let name : String
     let coordinates : CLLocationCoordinate2D
     let numPeople : Int
+    let desc : String
     
-    init(name:String, coordinates:CLLocationCoordinate2D, numPeople:Int) {
+    init(name:String, coordinates:CLLocationCoordinate2D, numPeople:Int, description:String) {
         self.name = name
         self.coordinates = coordinates
         self.numPeople = numPeople
+        self.desc = description
     }
+    
 }

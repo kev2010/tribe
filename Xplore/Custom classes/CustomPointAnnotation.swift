@@ -14,14 +14,16 @@ class CustomPointAnnotation: NSObject, MGLAnnotation {
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
+    var desc: String?
     
     // Custom properties that we will use to customize the annotation's image.
     var image: UIImage?
     var reuseIdentifier: String?
     
-    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, description: String?) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
+        self.desc = description
     }
 }
