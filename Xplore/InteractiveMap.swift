@@ -12,7 +12,6 @@ import Mapbox
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     //  MapBox custom map - to change map style, go to storyboard -> MapView -> Attributes -> Style URL
     @IBOutlet var mapView: MGLMapView!
-    @IBOutlet weak var backBut: UIButton!
     
     let manager = CLLocationManager()
 
@@ -29,9 +28,10 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         print(location.speed, location.altitude)
     }
     
-//    @objc func goBack(sender: UIButton) {
-//        print("button clicked")
-//    }
+
+    @IBAction func toHome(_ sender: UIButton) {
+        print("go back!!!")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
