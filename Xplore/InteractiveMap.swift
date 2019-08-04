@@ -132,16 +132,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         return true
     }
 
-    /*
+    
     // MARK: - Navigation
-     
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @objc func goBack() {
         self.performSegue(withIdentifier: "toMain", sender: self)
@@ -208,7 +200,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         
         let ovalPath = UIBezierPath(ovalIn: rect.insetBy(dx: strokeWidth, dy: strokeWidth))
-//        UIColor.darkGray.setFill()
         hexStringToUIColor(hex: getHeatMapColor(numPeople: num)).setFill()
         ovalPath.fill()
         

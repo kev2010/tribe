@@ -301,7 +301,7 @@
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="presentation" customClass="SegueFromRight" customModule="Xplore" customModuleProvider="target" id="sPP-gf-TUV"/>
+                                    <action selector="tomap:" destination="ePF-Xm-iRC" eventType="touchUpInside" id="dxp-Bd-BUc"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -340,7 +340,4 @@
             <point key="canvasLocation" x="832" y="37"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="sPP-gf-TUV"/>
-    </inferredMetricsTieBreakers>
 </document>
