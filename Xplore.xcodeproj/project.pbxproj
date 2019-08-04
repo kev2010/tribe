@@ -16,7 +16,6 @@
 		2B09A34822F265D000F52209 /* XploreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B09A34722F265D000F52209 /* XploreUITests.swift */; };
 		2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02B22F39668000A51F0 /* CoreLocation.framework */; };
 		2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5422F3EFCE00B1C90F /* Home.swift */; };
-		2B1E3E5722F3EFCE00B1C90F /* Home.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5522F3EFCE00B1C90F /* Home.xib */; };
 		2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */; };
 		2B1E3E5B22F3F1CC00B1C90F /* InteractiveMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */; };
 		2B7F86FF22F6726B00347911 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7F86FE22F6726B00347911 /* Login.swift */; };
@@ -29,6 +28,7 @@
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
 		E402270DE27343D3205C478B /* Pods_XploreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */; };
+		F4B336EE22F6B2D3006C5D7E /* Home.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4B336ED22F6B2D3006C5D7E /* Home.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +78,6 @@
 		2B09A34922F265D000F52209 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B11E02B22F39668000A51F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2B1E3E5422F3EFCE00B1C90F /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		2B1E3E5522F3EFCE00B1C90F /* Home.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Home.xib; sourceTree = "<group>"; };
 		2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveMap.swift; sourceTree = "<group>"; };
 		2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InteractiveMap.xib; sourceTree = "<group>"; };
 		2B7F86FE22F6726B00347911 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
@@ -94,6 +93,7 @@
 		9A254FBD73FB5DA5BADDBE36 /* Pods-XploreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreUITests.debug.xcconfig"; path = "Target Support Files/Pods-XploreUITests/Pods-XploreUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F8835B12AF5808FA44F0FD /* Pods-XploreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreTests.release.xcconfig"; path = "Target Support Files/Pods-XploreTests/Pods-XploreTests.release.xcconfig"; sourceTree = "<group>"; };
+		F4B336ED22F6B2D3006C5D7E /* Home.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Home.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,8 +171,8 @@
 				2B09A32922F265CF00F52209 /* MainScreen.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
+				F4B336ED22F6B2D3006C5D7E /* Home.xib */,
 				2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */,
-				2B1E3E5522F3EFCE00B1C90F /* Home.xib */,
 				2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
@@ -325,7 +325,7 @@
 				2B8B5B6422F55FE400BDEB23 /* GoogleService-Info.plist in Resources */,
 				2B1E3E5B22F3F1CC00B1C90F /* InteractiveMap.xib in Resources */,
 				2B09A32F22F265D000F52209 /* Assets.xcassets in Resources */,
-				2B1E3E5722F3EFCE00B1C90F /* Home.xib in Resources */,
+				F4B336EE22F6B2D3006C5D7E /* Home.xib in Resources */,
 				2B09A32D22F265CF00F52209 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

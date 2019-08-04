@@ -171,11 +171,13 @@ class SignUp: UIViewController, UITextFieldDelegate {
                         self.dismiss(animated: false, completion: nil)
                     } else {
                         print("Error: \(error!.localizedDescription)")
+                        self.activityView.stopAnimating()
                     }
                 }
                 
             } else {
                 print("Error: \(error!.localizedDescription)")
+                self.activityView.stopAnimating()
             }
         }
         
