@@ -9,7 +9,7 @@
 import UIKit
 import Mapbox
 
-class MainScreen: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
+class MainScreen: UIViewController {
     
     //  Controls the home and map screens
     @IBOutlet weak var pageView: UIScrollView!
@@ -31,9 +31,9 @@ class MainScreen: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegat
         mapscreen.didMove(toParent: self)
         
         //  Creating "scrolling" feature for the screens
-        var mapFrame : CGRect = mapscreen.view.frame
-        mapFrame.origin.x = self.view.frame.width
-        mapscreen.view.frame = mapFrame
+        var homeFrame : CGRect = homescreen.view.frame
+        homeFrame.origin.x = self.view.frame.width
+        homescreen.view.frame = homeFrame
         self.pageView.contentSize = CGSize(width: self.view.frame.width*2, height: self.view.frame.height)
         
     }
