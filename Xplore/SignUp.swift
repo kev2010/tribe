@@ -1,5 +1,5 @@
 //
-//  Login.swift
+//  SignUp.swift
 //  Xplore
 //
 //  Created by Kevin Jiang on 8/3/19.
@@ -10,25 +10,28 @@ import UIKit
 import Foundation
 import Firebase
 
-class Login: UIViewController, UITextFieldDelegate {
+class SignUp: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    var continueButton: RoundedWhiteButton!
-    var activityView: UIActivityIndicatorView!
-
+    
+    var continueButton:RoundedWhiteButton!
+    var activityView:UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Do any additional setup after loading the view.
+        
         continueButton = RoundedWhiteButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        continueButton.setTitleColor(UIColor.black, for:.normal)
+        continueButton.setTitleColor(UIColor.black, for: .normal)
         continueButton.setTitle("Continue", for: .normal)
         continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.bold)
         continueButton.center = CGPoint(x: view.center.x, y: view.frame.height - continueButton.frame.height - 24)
         continueButton.highlightedColor = UIColor(white: 1.0, alpha: 1.0)
         continueButton.defaultColor = UIColor.white
-        continueButton.addTarget(self, action: #selector(handleSignIn), for: .touchUpInside)
-        continueButton.alpha = 0.5
+        continueButton.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+        
         view.addSubview(continueButton)
         setContinueButton(enabled: false)
         
@@ -39,12 +42,15 @@ class Login: UIViewController, UITextFieldDelegate {
         
         view.addSubview(activityView)
         
+        usernameField.delegate = self
         emailField.delegate = self
         passwordField.delegate = self
         
+        usernameField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         emailField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         passwordField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
+    
     
     @IBAction func goBack(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
@@ -52,15 +58,17 @@ class Login: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        emailField.becomeFirstResponder()
-        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
+        usernameField.becomeFirstResponder()
+        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        usernameField.resignFirstResponder()
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
+        
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -69,6 +77,15 @@ class Login: UIViewController, UITextFieldDelegate {
             return .lightContent
         }
     }
+    
+    @IBAction func handleDismissButton(_ sender: Any) {
+        self.dismiss(animated: false, completion: nil)
+    }
+    
+    /**
+     Adjusts the center of the **continueButton** above the keyboard.
+     - Parameter notification: Contains the keyboardFrame info.
+     */
     
     @objc func keyboardWillAppear(notification: NSNotification){
         
@@ -80,30 +97,47 @@ class Login: UIViewController, UITextFieldDelegate {
         activityView.center = continueButton.center
     }
     
+    /**
+     Enables the continue button if the **username**, **email**, and **password** fields are all non-empty.
+     
+     - Parameter target: The targeted **UITextField**.
+     */
+    
     @objc func textFieldChanged(_ target:UITextField) {
+        let username = usernameField.text
         let email = emailField.text
         let password = passwordField.text
-        let formFilled = email != nil && email != "" && password != nil && password != ""
+        let formFilled = username != nil && username != "" && email != nil && email != "" && password != nil && password != ""
         setContinueButton(enabled: formFilled)
     }
+    
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         // Resigns the target textField and assigns the next textField in the form.
         
         switch textField {
+        case usernameField:
+            usernameField.resignFirstResponder()
+            emailField.becomeFirstResponder()
+            break
         case emailField:
             emailField.resignFirstResponder()
             passwordField.becomeFirstResponder()
             break
         case passwordField:
-            handleSignIn()
+            handleSignUp()
             break
         default:
             break
         }
         return true
     }
+    
+    /**
+     Enables or Disables the **continueButton**.
+     */
     
     func setContinueButton(enabled:Bool) {
         if enabled {
@@ -115,7 +149,8 @@ class Login: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc func handleSignIn() {
+    @objc func handleSignUp() {
+        guard let username = usernameField.text else { return }
         guard let email = emailField.text else { return }
         guard let pass = passwordField.text else { return }
         
@@ -123,15 +158,30 @@ class Login: UIViewController, UITextFieldDelegate {
         continueButton.setTitle("", for: .normal)
         activityView.startAnimating()
         
-        Auth.auth().signIn(withEmail: email, password: pass) { user, error in
+        Auth.auth().createUser(withEmail: email, password: pass) { user, error in
             if error == nil && user != nil {
-                self.dismiss(animated: true, completion: nil)
+                print("User created!")
+                
+                let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                changeRequest?.displayName = username
+                
+                changeRequest?.commitChanges { error in
+                    if error == nil {
+                        print("User display name changed!")
+                        self.dismiss(animated: false, completion: nil)
+                    } else {
+                        print("Error: \(error!.localizedDescription)")
+                    }
+                }
+                
             } else {
-                print("Error logging in: \(error!.localizedDescription)")
+                print("Error: \(error!.localizedDescription)")
             }
         }
+        
+        
     }
-    
+
     /*
     // MARK: - Navigation
 

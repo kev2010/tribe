@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainScreen.swift
 //  Xplore
 //
 //  Created by Kevin Jiang on 7/31/19.
@@ -9,7 +9,7 @@
 import UIKit
 import Mapbox
 
-class ViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
+class MainScreen: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
     
     //  Controls the home and map screens
     @IBOutlet weak var pageView: UIScrollView!

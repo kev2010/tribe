@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import Firebase
 
 class Home: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func logoutTap(_ sender: UIButton) {
+        try! Auth.auth().signOut()
+        self.dismiss(animated: true, completion: nil)
     }
 
 
