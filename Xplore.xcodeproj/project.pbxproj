@@ -28,6 +28,8 @@
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
 		E402270DE27343D3205C478B /* Pods_XploreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */; };
+		F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */; };
+		F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */; };
 		F4B336EE22F6B2D3006C5D7E /* Home.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4B336ED22F6B2D3006C5D7E /* Home.xib */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +95,8 @@
 		9A254FBD73FB5DA5BADDBE36 /* Pods-XploreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreUITests.debug.xcconfig"; path = "Target Support Files/Pods-XploreUITests/Pods-XploreUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F8835B12AF5808FA44F0FD /* Pods-XploreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreTests.release.xcconfig"; path = "Target Support Files/Pods-XploreTests/Pods-XploreTests.release.xcconfig"; sourceTree = "<group>"; };
+		F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromLeft.swift; sourceTree = "<group>"; };
+		F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		F4B336ED22F6B2D3006C5D7E /* Home.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Home.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,17 +167,16 @@
 		2B09A32622F265CF00F52209 /* Xplore */ = {
 			isa = PBXGroup;
 			children = (
+				F4B258C322F6E1BB00E12BF4 /* Custom classes */,
+				F4B258C222F6E17800E12BF4 /* Login and Signup */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
 				2BE5B57722F567B000B39563 /* Menu.swift */,
-				2B7F870022F672A800347911 /* SignUp.swift */,
-				2B7F86FE22F6726B00347911 /* Login.swift */,
 				2B09A32922F265CF00F52209 /* MainScreen.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F4B336ED22F6B2D3006C5D7E /* Home.xib */,
 				2B1E3E5922F3F1CC00B1C90F /* InteractiveMap.xib */,
-				2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
 				2B09A33322F265D000F52209 /* Info.plist */,
@@ -209,6 +212,25 @@
 				8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4B258C222F6E17800E12BF4 /* Login and Signup */ = {
+			isa = PBXGroup;
+			children = (
+				2B7F870022F672A800347911 /* SignUp.swift */,
+				2B7F86FE22F6726B00347911 /* Login.swift */,
+			);
+			path = "Login and Signup";
+			sourceTree = "<group>";
+		};
+		F4B258C322F6E1BB00E12BF4 /* Custom classes */ = {
+			isa = PBXGroup;
+			children = (
+				F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */,
+				F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */,
+				2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */,
+			);
+			path = "Custom classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -456,11 +478,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
 				2B09A32A22F265CF00F52209 /* MainScreen.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
 				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
+				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
 				2B7F86FF22F6726B00347911 /* Login.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
 				2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */,
