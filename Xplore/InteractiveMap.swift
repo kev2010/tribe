@@ -22,9 +22,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     // Bottom tile variables - global
     var bottomTileShowing = false
     var bottomTile = UIView()
-    var titleLabel = UILabel()
-    var subtitleLabel = UILabel()
-    var descriptionLabel = UILabel()
+    var bottom_titleLabel = UILabel()
+    var bottom_subtitleLabel = UILabel()
+    var bottom_descriptionLabel = UILabel()
+    
+    //Big tile variablees - global
+    var bigTile = UIView()
+    var big_titleLabel = UILabel()
+    var big_subtitleLabel = UILabel()
+    var big_entranceLabel  = UILabel()
+    var big_descriptionLabel = UILabel()
+    var big_exitButton = UIButton()
     
     
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -46,7 +54,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
 
     @IBAction func toHome(_ sender: UIButton) {
-        print("go back!!!")
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
@@ -74,7 +81,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         //Add map and button to scroll view
         self.view.addSubview(mapView)
-//        self.pageView.addSubview(mapView)
         self.mapView.addSubview(backButton)
         
         addRandomEvents()
@@ -87,6 +93,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         manager.startUpdatingLocation()
         
         loadBottomTile()
+        loadBigTile()
     }
     
     
@@ -143,19 +150,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         if let point = annotation as? CustomPointAnnotation {
             
             if bottomTileShowing {
-                titleLabel.text = point.title!
-                subtitleLabel.text  = point.subtitle!
-                descriptionLabel.text = point.desc!
+                bottom_titleLabel.text = point.title!
+                bottom_subtitleLabel.text  = point.subtitle!
+                bottom_descriptionLabel.text = point.desc!
             }
             else {
 
-                titleLabel.text = point.title!
-                subtitleLabel.text  = point.subtitle!
-                descriptionLabel.text = point.desc!
+                bottom_titleLabel.text = point.title!
+                bottom_subtitleLabel.text  = point.subtitle!
+                bottom_descriptionLabel.text = point.desc!
                 
-                UIView.animate(withDuration: 0.2) {
-                    self.bottomTile.frame.origin = CGPoint(x: 0, y: self.view.frame.height - 250)
-                }
+                showBottomTile(show: true)
                 
                 bottomTileShowing = true
             }
@@ -166,10 +171,10 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         if bottomTileShowing {
-            UIView.animate(withDuration: 0.2) {
-                self.bottomTile.frame.origin = CGPoint(x: 0, y: self.view.frame.height)
-            }
+            showBottomTile(show: false)
             bottomTileShowing = false
+        }  else {
+            showBigTile(show: false)
         }
     }
     
@@ -179,8 +184,43 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
+
+
     
     // MARK: - Helper
+    
+    func showBottomTile(show:Bool, time:Double = 0.2) {
+        
+        if show {
+            UIView.animate(withDuration: time) {
+                self.bottomTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height - 250)
+            }
+            bottomTileShowing = true
+        } else {
+            UIView.animate(withDuration: time) {
+                self.bottomTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height)
+            }
+            bottomTileShowing = false
+        }
+
+    }
+    
+    
+    func showBigTile(show:Bool) {
+        
+        if show {
+            showBottomTile(show: false, time: 0)
+            
+            UIView.animate(withDuration: 0.2) {
+                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height/6)
+            }
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height)
+            }
+        }
+        
+    }
     
     func getHeatMapColor(numPeople: Int) -> String{
         
@@ -210,37 +250,143 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     func loadBottomTile() {
-        let f = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: 200)
+        let f = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width-40, height: 200)
         bottomTile = UIView(frame: f)
-        bottomTile.backgroundColor = UIColor.brown
+        bottomTile.backgroundColor = UIColor.white
+        bottomTile.layer.cornerRadius = 10
+
         
-        let f2 = CGRect(x: 10, y: 10, width: f.width, height: 30)
-        titleLabel = UILabel(frame: f2)
-        titleLabel.text = ""
-        titleLabel.textColor =  UIColor.white
-        titleLabel.textAlignment = .center
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
         
-        let f3 = CGRect(x: 10, y: 50, width: f.width, height: 30)
-        subtitleLabel = UILabel(frame:f3)
-        subtitleLabel.text  = ""
-        subtitleLabel.textColor =  UIColor.white
+        // 2. add the gesture recognizer to a view
+        bottomTile.addGestureRecognizer(tapGesture)
+
         
-        let f4 = CGRect(x: 10, y: 90, width: f.width, height: 50)
-        descriptionLabel = UILabel(frame:f4)
-        descriptionLabel.text = ""
-        descriptionLabel.textColor =  UIColor.white
-        descriptionLabel.numberOfLines = 5
-        descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
+        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 30)
+        bottom_titleLabel = UILabel(frame: f2)
+        bottom_titleLabel.text = ""
+        bottom_titleLabel.textColor =  UIColor.black
+        bottom_titleLabel.textAlignment = .center
         
+        let f3 = CGRect(x: 10, y: 50, width: f.width-10, height: 30)
+        bottom_subtitleLabel = UILabel(frame:f3)
+        bottom_subtitleLabel.text  = ""
+        bottom_subtitleLabel.textColor =  UIColor.black
         
-        bottomTile.addSubview(titleLabel)
-        bottomTile.addSubview(subtitleLabel)
-        bottomTile.addSubview(descriptionLabel)
+        let f4 = CGRect(x: 10, y: 90, width: f.width-10, height: 50)
+        bottom_descriptionLabel = UILabel(frame:f4)
+        bottom_descriptionLabel.text = ""
+        bottom_descriptionLabel.textColor =  UIColor.black
+        bottom_descriptionLabel.numberOfLines = 5
+        bottom_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
+    
+        bottomTile.addSubview(bottom_titleLabel)
+        bottomTile.addSubview(bottom_subtitleLabel)
+        bottomTile.addSubview(bottom_descriptionLabel)
         
         self.mapView.addSubview(bottomTile)
         
+        
     }
     
+
+    func loadBigTile() {
+        let f = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width-40, height: 2*self.view.frame.height/3)
+        bigTile = UIView(frame: f)
+        bigTile.backgroundColor = UIColor.white
+        bigTile.layer.cornerRadius = 10
+
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bigTileTap(sender:)))
+        
+        // 2. add the gesture recognizer to a view
+        bigTile.addGestureRecognizer(tapGesture)
+        
+        
+        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 30)
+        big_titleLabel = UILabel(frame: f2)
+        big_titleLabel.text = ""
+        big_titleLabel.textColor =  UIColor.black
+        big_titleLabel.textAlignment = .center
+        
+        let f2_2 = CGRect(x: bigTile.frame.width-30, y: 15, width: 15, height: 15)
+        big_exitButton = UIButton(frame: f2_2)
+        big_exitButton.setTitle("X", for: UIControl.State.normal)
+        big_exitButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
+        big_exitButton.addTarget(self, action: #selector(dismissBigTile), for: .touchUpInside)
+
+
+        let f3 = CGRect(x: 10, y: 50, width: f.width-10, height: 30)
+        big_subtitleLabel = UILabel(frame:f3)
+        big_subtitleLabel.text  = ""
+        big_subtitleLabel.textColor =  UIColor.black
+        
+        let f4 = CGRect(x: 10, y: 90, width: f.width-10, height: 50)
+        big_descriptionLabel = UILabel(frame:f4)
+        big_descriptionLabel.text = ""
+        big_descriptionLabel.textColor =  UIColor.black
+        big_descriptionLabel.numberOfLines = 5
+        big_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
+        
+        let f4_2 = CGRect(x: 10, y: 150, width: f.width-10, height: 50)
+        big_entranceLabel = UILabel(frame:f4_2)
+        big_entranceLabel.text = ""
+        big_entranceLabel.textColor =  UIColor.black
+        big_entranceLabel.numberOfLines = 3
+
+        let f5 = CGRect(x: 30, y: bigTile.frame.height - 70, width: 50, height: 50)
+        let left_box = UIView(frame: f5)
+        left_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
+        left_box.layer.cornerRadius = 10
+
+        let f6 = CGRect(x: (bigTile.frame.width/2)-25, y: bigTile.frame.height - 70, width: 50, height: 50)
+        let middle_box = UIView(frame: f6)
+        middle_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
+        middle_box.layer.cornerRadius = 10
+        
+        let f7 = CGRect(x: bigTile.frame.width-80, y: bigTile.frame.height - 70, width: 50, height: 50)
+        let right_box = UIView(frame: f7)
+        right_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
+        right_box.layer.cornerRadius = 10
+
+        let w = bigTile.frame.width - 50
+        let f8 = CGRect(x: 25, y: 250, width: w, height: 2*w/3)
+        let image_map = UIImageView(frame: f8)
+        image_map.image = UIImage(named: "map_example.jpg")
+        image_map.layer.cornerRadius = 10
+        
+        bigTile.addSubview(left_box)
+        bigTile.addSubview(middle_box)
+        bigTile.addSubview(right_box)
+        bigTile.addSubview(image_map)
+        
+        bigTile.addSubview(big_titleLabel)
+        bigTile.addSubview(big_exitButton)
+        bigTile.addSubview(big_subtitleLabel)
+        bigTile.addSubview(big_descriptionLabel)
+        bigTile.addSubview(big_entranceLabel)
+        
+        self.mapView.addSubview(bigTile)
+        
+    }
+    
+    @objc func dismissBigTile(sender: UIButton!) {
+        showBigTile(show: false)
+    }
+
+    @objc func bottomTileTap(sender: UITapGestureRecognizer) {
+        
+        big_titleLabel.text = bottom_titleLabel.text
+        big_subtitleLabel.text = bottom_subtitleLabel.text
+        big_descriptionLabel.text = bottom_descriptionLabel.text
+        big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
+        
+       showBigTile(show: true)
+    }
+    
+    @objc func bigTileTap(sender: UITapGestureRecognizer) {
+        
+    }
     
     func hexStringToUIColor (hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

@@ -35,6 +35,7 @@
 		F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258CA22F6EB8A00E12BF4 /* Constants.swift */; };
 		F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */; };
 		F4B258CF22F6F83900E12BF4 /* third_party_vector_style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */; };
+		F4B258D722F884BA00E12BF4 /* map_example.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4B258D622F884BA00E12BF4 /* map_example.jpg */; };
 		F4B336EE22F6B2D3006C5D7E /* Home.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4B336ED22F6B2D3006C5D7E /* Home.xib */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +108,7 @@
 		F4B258CA22F6EB8A00E12BF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = third_party_vector_style.json; sourceTree = "<group>"; };
+		F4B258D622F884BA00E12BF4 /* map_example.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = map_example.jpg; sourceTree = "<group>"; };
 		F4B336ED22F6B2D3006C5D7E /* Home.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Home.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +187,7 @@
 				F4B258CA22F6EB8A00E12BF4 /* Constants.swift */,
 				2BE5B57722F567B000B39563 /* Menu.swift */,
 				2B09A32922F265CF00F52209 /* MainScreen.swift */,
+				F4B258D622F884BA00E12BF4 /* map_example.jpg */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F4B336ED22F6B2D3006C5D7E /* Home.xib */,
@@ -365,6 +368,7 @@
 				2B09A32F22F265D000F52209 /* Assets.xcassets in Resources */,
 				F4B336EE22F6B2D3006C5D7E /* Home.xib in Resources */,
 				2B09A32D22F265CF00F52209 /* Main.storyboard in Resources */,
+				F4B258D722F884BA00E12BF4 /* map_example.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
