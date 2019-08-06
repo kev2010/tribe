@@ -8,6 +8,7 @@
 
 import UIKit
 import Mapbox
+import Firebase
 
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     //  MapBox custom map - to change map style, go to storyboard -> MapView -> Attributes -> Style URL
@@ -20,8 +21,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     let manager = CLLocationManager()
     
     // Bottom tile variables - global
-    var bottomTileShowing = false
-    var bottomTile = UIView()
+    var topTileShowing = false
+    var topTile = UIView()
     var bottom_titleLabel = UILabel()
     var bottom_subtitleLabel = UILabel()
     var bottom_descriptionLabel = UILabel()
@@ -83,8 +84,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         self.view.addSubview(mapView)
         self.mapView.addSubview(backButton)
         
-        addRandomEvents()
+        let allEvents = addRandomEvents()
         
+        addEventsToMap(events: allEvents)
         
         // Configure location manager to user's location
         manager.delegate = self
@@ -94,25 +96,42 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         loadBottomTile()
         loadBigTile()
+        
     }
     
     
-    func addRandomEvents() {
+    func addRandomEvents() ->  [Event]{
 
-        let event1_loc = CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941700000001)
-        let event2_loc = CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.4101700000001)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
+        var start = formatter.date(from: "2019/08/06 21:00")
+        var end = formatter.date(from: "2019/08/06 23:00")
 
-        let event_1 = Event(name: "Phi Sig Party", coordinates: event1_loc, numPeople: 40, description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm")
-        let event_2 = Event(name: "Kevin's room", coordinates: event2_loc, numPeople: 5, description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.")
+        let event_1  = Event(creator_username: "kevin", avatar: nil, title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
+        
+        start = formatter.date(from: "2019/08/08 20:00")
+        end = formatter.date(from: "2019/08/08 23:00")
+        
+        let event_2 = Event(creator_username: "kevin", avatar: nil, title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
         
         let allEvents = [event_1, event_2]
         
+        for event in allEvents {
+            event.saveEvent()
+        }
+        
+        return allEvents
+
+    }
+    
+    func addEventsToMap(events:[Event]) {
+        
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
-        for event in allEvents {
-            let point = CustomPointAnnotation(coordinate: event.coordinates, title: event.name, subtitle: "\(event.numPeople) people", description: event.desc)
-            point.reuseIdentifier = "customAnnotation\(event.name)"
-            point.image = dot(size: 30, num: event.numPeople)
+        for event in events {
+            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description)
+            point.reuseIdentifier = "customAnnotation\(event.title)"
+            point.image = dot(size: 30, num: event.capacity)
             pointAnnotations.append(point)
         }
         
@@ -149,7 +168,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         if let point = annotation as? CustomPointAnnotation {
             
-            if bottomTileShowing {
+            if topTileShowing {
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
@@ -160,9 +179,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
                 
-                showBottomTile(show: true)
+                showTopTile(show: true)
                 
-                bottomTileShowing = true
+                topTileShowing = true
             }
             
             
@@ -170,10 +189,11 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
-        if bottomTileShowing {
-            showBottomTile(show: false)
-            bottomTileShowing = false
+        if topTileShowing {
+            showTopTile(show: false)
+            topTileShowing = false
         }  else {
+            print("here")
             showBigTile(show: false)
         }
     }
@@ -189,18 +209,28 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     // MARK: - Helper
     
-    func showBottomTile(show:Bool, time:Double = 0.2) {
+    func showTopTile(show:Bool, hide:Bool = false) {
         
+//        if hide {
+////            self.bottomTile.alpha = 0.0
+//
+//            UIView.animate(withDuration: 0.2) {
+//                self.topTile.frame.origin = CGPoint(x: 20, y: -130)
+//            }
+//            topTileShowing = false
+//            return
+//        }
         if show {
-            UIView.animate(withDuration: time) {
-                self.bottomTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height - 250)
+            self.topTile.alpha = 1.0
+            UIView.animate(withDuration: 0.2) {
+                self.topTile.frame.origin = CGPoint(x: 20, y: 50)
             }
-            bottomTileShowing = true
+            topTileShowing = true
         } else {
-            UIView.animate(withDuration: time) {
-                self.bottomTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height)
+            UIView.animate(withDuration: 0.2) {
+                self.topTile.frame.origin = CGPoint(x: 20, y: -130)
             }
-            bottomTileShowing = false
+            topTileShowing = false
         }
 
     }
@@ -209,14 +239,14 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func showBigTile(show:Bool) {
         
         if show {
-            showBottomTile(show: false, time: 0)
+            showTopTile(show: false, hide: true)
             
             UIView.animate(withDuration: 0.2) {
                 self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height/6)
             }
         } else {
             UIView.animate(withDuration: 0.2) {
-                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height)
+                self.bigTile.frame.origin = CGPoint(x: 20, y: -self.view.frame.height)
             }
         }
         
@@ -250,48 +280,48 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     func loadBottomTile() {
-        let f = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width-40, height: 200)
-        bottomTile = UIView(frame: f)
-        bottomTile.backgroundColor = UIColor.white
-        bottomTile.layer.cornerRadius = 10
+        let f = CGRect(x: 20, y: -130, width: self.view.frame.width-40, height: 130)
+        topTile = UIView(frame: f)
+        topTile.backgroundColor = UIColor.white
+        topTile.layer.cornerRadius = 10
 
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
         
         // 2. add the gesture recognizer to a view
-        bottomTile.addGestureRecognizer(tapGesture)
+        topTile.addGestureRecognizer(tapGesture)
 
         
-        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 30)
+        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 20)
         bottom_titleLabel = UILabel(frame: f2)
         bottom_titleLabel.text = ""
         bottom_titleLabel.textColor =  UIColor.black
         bottom_titleLabel.textAlignment = .center
         
-        let f3 = CGRect(x: 10, y: 50, width: f.width-10, height: 30)
+        let f3 = CGRect(x: 10, y: 40, width: f.width-10, height: 20)
         bottom_subtitleLabel = UILabel(frame:f3)
         bottom_subtitleLabel.text  = ""
         bottom_subtitleLabel.textColor =  UIColor.black
         
-        let f4 = CGRect(x: 10, y: 90, width: f.width-10, height: 50)
+        let f4 = CGRect(x: 10, y: 80, width: f.width-10, height: 40)
         bottom_descriptionLabel = UILabel(frame:f4)
         bottom_descriptionLabel.text = ""
         bottom_descriptionLabel.textColor =  UIColor.black
         bottom_descriptionLabel.numberOfLines = 5
         bottom_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
     
-        bottomTile.addSubview(bottom_titleLabel)
-        bottomTile.addSubview(bottom_subtitleLabel)
-        bottomTile.addSubview(bottom_descriptionLabel)
+        topTile.addSubview(bottom_titleLabel)
+        topTile.addSubview(bottom_subtitleLabel)
+        topTile.addSubview(bottom_descriptionLabel)
         
-        self.mapView.addSubview(bottomTile)
+        self.mapView.addSubview(topTile)
         
         
     }
     
 
     func loadBigTile() {
-        let f = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width-40, height: 2*self.view.frame.height/3)
+        let f = CGRect(x: 20, y: -(2*self.view.frame.height/3), width: self.view.frame.width-40, height: 2*self.view.frame.height/3)
         bigTile = UIView(frame: f)
         bigTile.backgroundColor = UIColor.white
         bigTile.layer.cornerRadius = 10
@@ -430,5 +460,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         return image
     }
+    
+
 
 }
