@@ -8,11 +8,13 @@
 
 import UIKit
 import Mapbox
+import Firebase
 
 class MainScreen: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addGradientLayer(topColor: UIColor(displayP3Red: 27/255, green: 27/255, blue: 131/255, alpha: 1), bottomColor: UIColor(displayP3Red: 44/255, green: 44/255, blue: 129/255, alpha: 1))
         
     }
     
@@ -28,6 +30,10 @@ class MainScreen: UIViewController {
 
     }
     
+    @IBAction func logoutTap(_ sender: UIButton) {
+        try! Auth.auth().signOut()
+        self.performSegue(withIdentifier: "mainToMenu", sender: self)
+    }
     
 }
 
