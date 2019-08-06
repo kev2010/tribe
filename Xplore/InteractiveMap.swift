@@ -84,11 +84,10 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         self.view.addSubview(mapView)
         self.mapView.addSubview(backButton)
         
-        let allEvents = addRandomEvents()
-        
-        addEventsToMap(events: allEvents)
+        loadAndAddEvents()
         
         // Configure location manager to user's location
+  
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
@@ -100,27 +99,27 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     
-    func addRandomEvents() ->  [Event]{
+    func loadAndAddEvents(){
+        
+        let db = Firestore.firestore()
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm"
-        var start = formatter.date(from: "2019/08/06 21:00")
-        var end = formatter.date(from: "2019/08/06 23:00")
+        var allEvents : [Event] = []
 
-        let event_1  = Event(creator_username: "kevin", avatar: nil, title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
-        
-        start = formatter.date(from: "2019/08/08 20:00")
-        end = formatter.date(from: "2019/08/08 23:00")
-        
-        let event_2 = Event(creator_username: "kevin", avatar: nil, title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
-        
-        let allEvents = [event_1, event_2]
-        
-        for event in allEvents {
-            event.saveEvent()
+        db.collection("events").getDocuments() { (querySnapshot, err) in
+            
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let e = Event(fromDatabaseFile: document)
+                    allEvents.append(e)
+                }
+                
+                self.addEventsToMap(events: allEvents)
+            }
         }
         
-        return allEvents
+        
 
     }
     

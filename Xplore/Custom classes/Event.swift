@@ -12,8 +12,8 @@ import Firebase
 
 class Event {
     
-    let creator_username : String
-    let avatar :  UIImage?
+    let creator_username : DocumentReference
+    let avatar :  String?
     let title  : String
     let description : String
     let startDate : Date
@@ -26,8 +26,10 @@ class Event {
     
     
     
-    init(creator_username:String, avatar:UIImage?, title:String, description:String, startDate:Date, endDate: Date, location: CLLocationCoordinate2D, capacity:Int, visibility:String, tags:[String], attendees:[String]) {
-        self.creator_username = creator_username
+    init(creator_username:String, avatar:String?, title:String, description:String, startDate:Date, endDate: Date, location: CLLocationCoordinate2D, capacity:Int, visibility:String, tags:[String], attendees:[String]) {
+        let db = Firestore.firestore()
+
+        self.creator_username = db.document("users/\(creator_username)")
         self.avatar = avatar
         self.title = title
         self.description = description
@@ -38,6 +40,29 @@ class Event {
         self.visibility = visibility
         self.tags = tags
         self.attendees = attendees
+    }
+    
+    init(fromDatabaseFile file: QueryDocumentSnapshot) {
+        let data = file.data()
+        
+        self.creator_username = data["creator_username"] as! DocumentReference
+        
+        let information = data["information"] as! [String:Any]
+
+        self.avatar = information["avatar"] as? String
+        
+        self.title = information["title"] as! String
+        self.description = information["description"] as! String
+        
+        self.startDate = (information["startDate"] as! Timestamp).dateValue()
+        self.endDate = (information["endDate"] as! Timestamp).dateValue()
+        let loc = information["location"] as! GeoPoint
+        self.location = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        self.capacity = information["capacity"] as! Int
+        self.visibility = information["visibility"] as! String
+        self.tags = information["tags"] as! [String]
+        
+        self.attendees = data["attendees"] as! [String]
     }
     
     
@@ -64,7 +89,7 @@ class Event {
         // Add a new document with a generated ID
         var ref: DocumentReference? = nil
         ref = db.collection("events").addDocument(data: [
-            "creator_username":  db.document("users/\(self.creator_username)"),
+            "creator_username":  self.creator_username,
             "information": generate_information_map(),
             "attendees": self.attendees
         ]) { err in
