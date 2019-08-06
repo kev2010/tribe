@@ -16,12 +16,14 @@ class SignUp: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
+    var docRef: DocumentReference!
     var continueButton:RoundedWhiteButton!
     var activityView:UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        view.addGradientLayer(topColor: UIColor(displayP3Red: 51/255, green: 51/255, blue: 153/255, alpha: 1), bottomColor: UIColor(displayP3Red: 98/255, green: 119/255, blue: 223/255, alpha: 1))
         
         continueButton = RoundedWhiteButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
         continueButton.setTitleColor(UIColor.black, for: .normal)
@@ -58,6 +60,9 @@ class SignUp: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        view.addGradientLayer(topColor: UIColor(displayP3Red: 51/255, green: 51/255, blue: 153/255, alpha: 1), bottomColor: UIColor(displayP3Red: 98/255, green: 119/255, blue: 223/255, alpha: 1))
+        
         usernameField.becomeFirstResponder()
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         
@@ -181,6 +186,20 @@ class SignUp: UIViewController, UITextFieldDelegate {
             }
         }
         
+//        // Add a new document with a generated ID
+//        var ref: DocumentReference? = nil
+//        ref = db.collection("users").addDocument(data: [
+//            "first": "Ada",
+//            "last": "Lovelace",
+//            "born": 1815
+//        ]) { err in
+//            if let err = err {
+//                print("Error adding document: \(err)")
+//            } else {
+//                print("Document added with ID: \(ref!.documentID)")
+//            }
+//        }
+
         
     }
 

@@ -73,9 +73,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
 //        mapView.styleURL = MGLStyle.darkStyleURL
-        let customStyleURL = Bundle.main.url(forResource: "third_party_vector_style", withExtension: "json")!
-        mapView.styleURL = customStyleURL
-        mapView.tintColor = .lightGray
+//        let customStyleURL = Bundle.main.url(forResource: "third_party_vector_style", withExtension: "json")!
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+//        mapView.tintColor = .lightGray
         mapView.delegate = self
         
         
