@@ -43,6 +43,8 @@ class SignUp: UIViewController, UITextFieldDelegate {
         //  Create user on Firebase Authentication
         Auth.auth().createUser(withEmail: email, password: pass) { user, error in
             if error == nil && user != nil {
+                //  Send verification email, not sure if it works
+                Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                 print("User created!")
                 
                 //  Update displayName onto Firebase Authentication (is this necessary?)

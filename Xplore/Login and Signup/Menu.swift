@@ -37,10 +37,18 @@ class Menu: UIViewController, UITextFieldDelegate {
         }
     }
 
+    
     @IBAction func signupTapped(_ sender: UIButton) {
         // Transition to sign up screen
         performSegue(withIdentifier: "toSignUpScreen", sender: self)
     }
+    
+    
+    @IBAction func forgetTapped(_ sender: UIButton) {
+        // Transition to forget password screen
+        performSegue(withIdentifier: "toForgetPassword", sender: self)
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

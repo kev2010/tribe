@@ -24,6 +24,7 @@
 		2B8B5B6422F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6522F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6622F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
+		2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
@@ -93,6 +94,7 @@
 		2B7F870022F672A800347911 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedWhiteButton.swift; sourceTree = "<group>"; };
 		2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword.swift; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		47F66CEE35E658A85D423B5A /* Pods-Xplore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplore.release.xcconfig"; path = "Target Support Files/Pods-Xplore/Pods-Xplore.release.xcconfig"; sourceTree = "<group>"; };
 		5EE5D4470D9A32823E16C27A /* Pods-Xplore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplore.debug.xcconfig"; path = "Target Support Files/Pods-Xplore/Pods-Xplore.debug.xcconfig"; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				2B7F870022F672A800347911 /* SignUp.swift */,
 				2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */,
 				2BE5B57722F567B000B39563 /* Menu.swift */,
+				2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */,
 			);
 			path = "Login and Signup";
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
 				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
+				2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */,
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
 				2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */,
