@@ -33,6 +33,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
     @IBAction func registerTapped(_ sender: LoginButton) {
         //  Make sure all fields aren't empty
         guard let name = nameField.text else { return }
@@ -71,11 +72,9 @@ class SignUp: UIViewController, UITextFieldDelegate {
             } else {
                 print("Error: \(error!.localizedDescription)")
             }
-        
+        }
     }
-
-        
-    }
+    
 
     /*
     // MARK: - Navigation

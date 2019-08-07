@@ -15,11 +15,15 @@ class LoginButton: UIButton {
         self.configureUI()
     }
     
+    
     private func configureUI() {
         //  add gradient to button
-        self.layer.cornerRadius = CGFloat(integerLiteral: 13)  //  Not working?
+        self.layer.cornerRadius = CGFloat(15.0)  //  Not working?
+        self.clipsToBounds = true
         self.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
     }
     
 }
+
+
 
