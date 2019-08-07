@@ -19,7 +19,7 @@ class Menu: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         //  Add a background color gradient
-        view.addGradientLayer(topColor: UIColor(displayP3Red: 51/255, green: 51/255, blue: 153/255, alpha: 1), bottomColor: UIColor(displayP3Red: 98/255, green: 119/255, blue: 223/255, alpha: 1))
+        view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
         
         emailField.delegate = self
         passwordField.delegate = self
