@@ -12,18 +12,19 @@ import Firebase
 
 class  User {
     
-    let username : String
-    let name : String
-    let email : String
-    let DOB : Date
-    let currentLocation : CLLocationCoordinate2D?
-    let currentEvent : String?
-    let isPrivate : Bool?
-    let friends : [String]
-    let blocked : [String]
-    let eventsUserHosted : [String]
-    let eventsUserAttended : [String]
-    let eventsUserBookmarked : [String]
+    var username : String
+    var name : String
+    var email : String
+    var DOB : Date
+    var currentLocation : CLLocationCoordinate2D?
+    var currentEvent : String?
+    var isPrivate : Bool?
+    var friends : [String]
+    var blocked : [String]
+    var eventsUserHosted : [String]
+    var eventsUserAttended : [String]
+    var eventsUserBookmarked : [String]
+    var documentID : String?
     
     init(username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D?, currentEvent:String?, isPrivate:Bool?, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
         self.username = username
@@ -38,6 +39,7 @@ class  User {
         self.eventsUserHosted = eventsUserHosted
         self.eventsUserAttended = eventsUserAttended
         self.eventsUserBookmarked  = eventsUserBookmarked
+        
     }
     
     func generate_userInformation_map(db: Firestore) -> [String:Any] {
@@ -83,6 +85,10 @@ class  User {
             }
         }
 
+    }
+    
+    func updateUser() {
+        saveUser() // lol
     }
     
     

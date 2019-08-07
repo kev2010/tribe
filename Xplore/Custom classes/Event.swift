@@ -12,18 +12,19 @@ import Firebase
 
 class Event {
     
-    let creator_username : DocumentReference
-    let avatar :  String?
-    let title  : String
-    let description : String
-    let startDate : Date
-    let endDate : Date
-    let location : CLLocationCoordinate2D
-    let capacity : Int
-    let visibility : String
-    let tags : [String]
-    let attendees : [String]
+    var creator_username : DocumentReference
+    var avatar :  String?
+    var title  : String
+    var description : String
+    var startDate : Date
+    var endDate : Date
+    var location : CLLocationCoordinate2D
+    var capacity : Int
+    var visibility : String
+    var tags : [String]
+    var attendees : [String]
     
+    var documentID : String?
     
     
     init(creator_username:String, avatar:String?, title:String, description:String, startDate:Date, endDate: Date, location: CLLocationCoordinate2D, capacity:Int, visibility:String, tags:[String], attendees:[String]) {
@@ -40,10 +41,13 @@ class Event {
         self.visibility = visibility
         self.tags = tags
         self.attendees = attendees
+        self.documentID = nil
     }
     
     init(fromDatabaseFile file: QueryDocumentSnapshot) {
         let data = file.data()
+        
+        self.documentID = file.documentID
         
         self.creator_username = data["creator_username"] as! DocumentReference
         
@@ -101,4 +105,31 @@ class Event {
         }
     }
     
+    func updateEvent() {
+    
+    
+    if let id = self.documentID {
+        let db = Firestore.firestore()
+        let data = [
+            "creator_username":  self.creator_username,
+            "information": generate_information_map(),
+            "attendees": self.attendees
+            ] as [String : Any]
+        
+        db.collection("events").document(id).setData(data) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully updated!")
+            }
+        }
+
+        
+        
+        
+    } else {
+    print("Error, no ID saved...")
+    }
+    
+    }
 }

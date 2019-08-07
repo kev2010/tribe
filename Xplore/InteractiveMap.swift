@@ -114,6 +114,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                     let e = Event(fromDatabaseFile: document)
                     allEvents.append(e)
                 }
+
                 
                 self.addEventsToMap(events: allEvents)
             }
