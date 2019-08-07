@@ -122,7 +122,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhc-MN-zaR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ThK-hq-tUH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-843.47826086956525" y="36.830357142857139"/>
+            <point key="canvasLocation" x="-1652" y="37"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="Ied-qP-CHU">
@@ -141,16 +141,16 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cU9-ZH-cY5">
-                                                <rect key="frame" x="35" y="312" width="344" height="459"/>
+                                                <rect key="frame" x="35" y="312" width="344" height="397"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="nameIcon" translatesAutoresizingMaskIntoConstraints="NO" id="VE2-u2-A2L">
-                                                <rect key="frame" x="56" y="348" width="26" height="21"/>
+                                                <rect key="frame" x="56" y="353" width="26" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
-                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1cv-Lh-aaX" userLabel="Email Field">
-                                                <rect key="frame" x="91" y="350" width="308" height="21"/>
+                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1cv-Lh-aaX" userLabel="name Field">
+                                                <rect key="frame" x="91" y="355" width="308" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="name"/>
@@ -161,36 +161,16 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BaK-hh-ODE">
-                                                <rect key="frame" x="50" y="377" width="315" height="3"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </view>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dobIcon" translatesAutoresizingMaskIntoConstraints="NO" id="5Y9-u3-KrE">
-                                                <rect key="frame" x="57" y="414" width="24" height="20"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
-                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of Birth" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yAD-kg-2Xb" userLabel="Email Field">
-                                                <rect key="frame" x="91" y="415" width="308" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </textField>
-                                            <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zlg-tc-5ti">
-                                                <rect key="frame" x="50" y="444" width="315" height="3"/>
+                                                <rect key="frame" x="50" y="382" width="315" height="3"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="emailIcon" translatesAutoresizingMaskIntoConstraints="NO" id="1MI-wo-yTY">
-                                                <rect key="frame" x="56" y="479" width="26" height="21"/>
+                                                <rect key="frame" x="56" y="413" width="26" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                             <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z4F-8H-BOA" userLabel="Email Field">
-                                                <rect key="frame" x="91" y="480" width="308" height="21"/>
+                                                <rect key="frame" x="91" y="414" width="308" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
@@ -201,16 +181,16 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l2D-gw-Fkl">
-                                                <rect key="frame" x="50" y="509" width="315" height="3"/>
+                                                <rect key="frame" x="50" y="443" width="315" height="3"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="userIcon" translatesAutoresizingMaskIntoConstraints="NO" id="5RK-Hl-uZe">
-                                                <rect key="frame" x="57" y="568" width="24" height="20"/>
+                                                <rect key="frame" x="57" y="502" width="24" height="20"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
-                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uPx-7V-r4p" userLabel="Email Field">
-                                                <rect key="frame" x="91" y="568" width="308" height="21"/>
+                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uPx-7V-r4p" userLabel="user Field">
+                                                <rect key="frame" x="91" y="502" width="308" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="username"/>
@@ -221,16 +201,16 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ah-QZ-uqa">
-                                                <rect key="frame" x="50" y="597" width="315" height="3"/>
+                                                <rect key="frame" x="50" y="531" width="315" height="3"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="passwordIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ybA-QU-9IY">
-                                                <rect key="frame" x="45" y="623" width="49" height="28"/>
+                                                <rect key="frame" x="45" y="557" width="49" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
-                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6oz-Rh-RH9" userLabel="Email Field">
-                                                <rect key="frame" x="91" y="627" width="308" height="21"/>
+                                            <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6oz-Rh-RH9" userLabel="password Field">
+                                                <rect key="frame" x="91" y="561" width="308" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" secureTextEntry="YES" textContentType="password"/>
@@ -241,12 +221,12 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZp-dC-COg">
-                                                <rect key="frame" x="50" y="656" width="315" height="3"/>
+                                                <rect key="frame" x="50" y="590" width="315" height="3"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5i-ld-Gl9" customClass="LoginButton" customModule="Xplore" customModuleProvider="target">
-                                                <rect key="frame" x="49" y="696" width="315" height="48"/>
+                                                <rect key="frame" x="49" y="627" width="315" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
                                                 <state key="normal" title="Register">
@@ -273,7 +253,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="JQE-kO-v2D">
-                                                <rect key="frame" x="104" y="229" width="204" height="94"/>
+                                                <rect key="frame" x="104" y="226" width="204" height="94"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                         </subviews>
@@ -295,7 +275,6 @@
                         <viewLayoutGuide key="safeArea" id="FlO-Me-cF4"/>
                     </view>
                     <connections>
-                        <outlet property="dobField" destination="yAD-kg-2Xb" id="pGJ-TA-sRN"/>
                         <outlet property="emailField" destination="Z4F-8H-BOA" id="g68-Uf-asV"/>
                         <outlet property="nameField" destination="1cv-Lh-aaX" id="5Xt-rF-sYr"/>
                         <outlet property="passwordField" destination="6oz-Rh-RH9" id="dpr-jk-3wU"/>
@@ -304,7 +283,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BZm-XW-lJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="31.884057971014496" y="36.830357142857139"/>
+            <point key="canvasLocation" x="-733.33333333333337" y="36.830357142857139"/>
         </scene>
         <!--Main Screen-->
         <scene sceneID="bJD-3h-WLb">
@@ -394,7 +373,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="dobIcon" width="128" height="128"/>
         <image name="emailIcon" width="512" height="512"/>
         <image name="nameIcon" width="512" height="512"/>
         <image name="passwordIcon" width="512" height="512"/>

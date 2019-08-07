@@ -20,9 +20,6 @@ class Menu: UIViewController, UITextFieldDelegate {
         
         //  Add a background color gradient
         view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
-        
-        emailField.delegate = self
-        passwordField.delegate = self
     }
     
     @IBAction func loginTapped(_ sender: LoginButton) {
@@ -44,26 +41,6 @@ class Menu: UIViewController, UITextFieldDelegate {
         // Transition to sign up screen
         performSegue(withIdentifier: "toSignUpScreen", sender: self)
     }
-    
-    
-//    @IBAction func loginTap(_ sender: UIButton) {
-//        performSegue(withIdentifier: "toLoginScreen", sender: self)
-//        let authUI = FUIAuth.defaultAuthUI()
-//
-//        guard authUI != nil else {
-//            return
-//        }
-//
-//        authUI?.delegate = self
-//        authUI?.providers = [FUIEmailAuth()]
-//
-//        let authViewController = authUI!.authViewController()
-//
-//        present(authViewController, animated: true, completion: nil)
-//    }
-    
-
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
