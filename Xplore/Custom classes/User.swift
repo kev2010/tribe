@@ -10,7 +10,7 @@ import Foundation
 import Mapbox
 import Firebase
 
-class  User {
+class User {
     
     var username : String
     var name : String
@@ -18,7 +18,7 @@ class  User {
     var DOB : Date
     var currentLocation : CLLocationCoordinate2D?
     var currentEvent : String?
-    var isPrivate : Bool?
+    var isPrivate : Bool
     var friends : [String]
     var blocked : [String]
     var eventsUserHosted : [String]
@@ -26,7 +26,10 @@ class  User {
     var eventsUserBookmarked : [String]
     var documentID : String?
     
-    init(username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D?, currentEvent:String?, isPrivate:Bool?, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
+    
+
+    
+    init(username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D?, currentEvent:String?, isPrivate:Bool, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
         self.username = username
         self.name = name
         self.email = email
@@ -87,10 +90,93 @@ class  User {
 
     }
     
-    func updateUser() {
-        saveUser() // lol
+    func updateUser(dictToUpdate dict : [String:Any]) {
+        
+        var data : [String:Any] = [:]
+        
+        for datapoint in dict {
+            
+            
+            switch datapoint.key {
+                
+            case "name":
+                data["user_information.name"] = dict[datapoint.key] as! String
+                self.name = dict[datapoint.key] as! String
+                
+            case "email":
+                data["user_information.email"] = dict[datapoint.key] as! String
+                
+            case "dob":
+                data["user_information.dob"] = Timestamp(date: dict[datapoint.key] as! Date)
+                
+            case "current_location":
+                if let loc = dict[datapoint.key] as? CLLocationCoordinate2D {
+                    data["user_information.current_location"] = GeoPoint(latitude: loc.latitude, longitude: loc.longitude)
+                } else {
+                    data["user_information.current_location"] = nil
+                }
+                
+            case "current_event":
+                if let event = dict[datapoint.key] as? String {
+                data["user_information.current_event"] = event
+                } else {
+                    data["user_information.current_event"] = nil
+                }
+                
+            case "is_private":
+                data["user_information.is_private"] = dict[datapoint.key] as! Bool
+                
+            case "friends":
+                data["social.friends"] = dict[datapoint.key] as! [String]
+                
+                
+            case "blocked":
+                data["social.blocked"] = dict[datapoint.key] as! [String]
+
+            case "events_user_hosted":
+                data["events.events_user_hosted"] = dict[datapoint.key] as! [String]
+                
+                
+            case "events_used_attended":
+                data["events.events_used_attended"] = dict[datapoint.key] as! [String]
+                
+                
+            case "events_user_bookmarked":
+                data["events.events_user_bookmarked"] = dict[datapoint.key] as! [String]
+                
+            default:
+                print("ERROR, unknown key")
+                assert(false)
+                
+                
+                
+            }
+        }
+        
+        let db = Firestore.firestore()
+
+        db.collection("users").document(self.username).updateData(data) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
     }
     
     
+    func updateField(key:String, value:Any) {
+        let db = Firestore.firestore()
+        
+        db.collection("users").document(self.username).updateData([
+            key: value
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
     
 }
