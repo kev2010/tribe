@@ -14,18 +14,29 @@ class Menu: UIViewController, UITextFieldDelegate {
     //  Keep track of the user's email and password input
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var invalidLogin: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //  Add a background color gradient
-        view.addGradientLayer(topColor: UIColor(displayP3Red: 51/255, green: 51/255, blue: 153/255, alpha: 1), bottomColor: UIColor(displayP3Red: 98/255, green: 119/255, blue: 223/255, alpha: 1))
+        //  Initially hide error login text
+        self.invalidLogin.alpha = 0
         
-        emailField.delegate = self
-        passwordField.delegate = self
+        //  Add a background color gradient
+        view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
     }
     
     @IBAction func loginTapped(_ sender: LoginButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
         //  Check if both inputs are empty
         guard let email = emailField.text else { return }
         guard let pass = passwordField.text else { return }
@@ -35,34 +46,43 @@ class Menu: UIViewController, UITextFieldDelegate {
             if error == nil && user != nil {
                 self.performSegue(withIdentifier: "toMain", sender: self)
             } else {
+                self.invalidLogin.alpha = 0.8
                 print("Error logging in: \(error!.localizedDescription)")
             }
         }
     }
 
+    
     @IBAction func signupTapped(_ sender: UIButton) {
         // Transition to sign up screen
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        self.invalidLogin.alpha = 0
         performSegue(withIdentifier: "toSignUpScreen", sender: self)
     }
     
     
-//    @IBAction func loginTap(_ sender: UIButton) {
-//        performSegue(withIdentifier: "toLoginScreen", sender: self)
-//        let authUI = FUIAuth.defaultAuthUI()
-//
-//        guard authUI != nil else {
-//            return
-//        }
-//
-//        authUI?.delegate = self
-//        authUI?.providers = [FUIEmailAuth()]
-//
-//        let authViewController = authUI!.authViewController()
-//
-//        present(authViewController, animated: true, completion: nil)
-//    }
-    
-
+    @IBAction func forgetTapped(_ sender: UIButton) {
+        // Transition to forget password screen
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        self.invalidLogin.alpha = 0
+        performSegue(withIdentifier: "toForgetPassword", sender: self)
+    }
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,18 +105,18 @@ class Menu: UIViewController, UITextFieldDelegate {
 
 }
 
-extension Menu: FUIAuthDelegate {
-    
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-        if error != nil {
-            return
-        }
-        
-        // do stuff with uid in the future
-        
-        performSegue(withIdentifier: "toHome", sender: self)
-    }
-}
+//extension Menu: FUIAuthDelegate {
+//
+//    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+//        if error != nil {
+//            return
+//        }
+//
+//        // do stuff with uid in the future
+//
+//        performSegue(withIdentifier: "toHome", sender: self)
+//    }
+//}
 
 
 extension UIView {
