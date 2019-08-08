@@ -36,6 +36,11 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var big_exitButton = UIButton()
     
     
+    @IBOutlet var menu_button: UIButton!
+    @IBOutlet var newEvent_button: UIButton!
+    @IBOutlet var friends_button: UIButton!
+    @IBOutlet var filters_button: UIButton!
+    
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -44,9 +49,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let botleft = CLLocationCoordinate2D(latitude: location.coordinate.latitude - 0.01, longitude: location.coordinate.longitude - 0.01)
         let topright = CLLocationCoordinate2D(latitude: location.coordinate.latitude + 0.01, longitude: location.coordinate.longitude + 0.01)
         let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
-        print(botleft)
-        print(topright)
-        print("*(")
+
         //  Display the user's region onto screen
         mapView.setVisibleCoordinateBounds(region, animated: false)
         mapView.showsUserLocation = true
@@ -84,6 +87,14 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         self.view.addSubview(mapView)
         self.mapView.addSubview(backButton)
         
+        self.view.bringSubviewToFront(menu_button)
+        self.view.bringSubviewToFront(newEvent_button)
+        self.view.bringSubviewToFront(friends_button)
+        self.view.bringSubviewToFront(filters_button)
+        
+        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
+        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
+
         loadAndAddEvents()
         
         // Configure location manager to user's location
@@ -114,6 +125,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                     let e = Event(fromDatabaseFile: document)
                     allEvents.append(e)
                 }
+
                 
                 self.addEventsToMap(events: allEvents)
             }
@@ -201,6 +213,13 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     @objc func goBack() {
         self.performSegue(withIdentifier: "toMain", sender: self)
+        print("to main")
+    }
+    
+    
+    @objc func goFriends() {
+        self.performSegue(withIdentifier: "toFriends", sender: self)
+        print("to frineds")
     }
     
 

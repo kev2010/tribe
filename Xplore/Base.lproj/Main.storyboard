@@ -483,26 +483,35 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRG-gy-iMA">
-                                <rect key="frame" x="352" y="62" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6X-nB-H8Z">
+                                <rect key="frame" x="20" y="59" width="65" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
-                                <state key="normal" title="&gt;">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
+                                <state key="normal" title="Button" image="settings.jpg"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEL-Tr-nV7">
+                                <rect key="frame" x="40" y="756" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="menu.jpg"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGM-6I-Hdl">
+                                <rect key="frame" x="175" y="756" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="map.jpg"/>
                                 <connections>
-                                    <action selector="tomap:" destination="ePF-Xm-iRC" eventType="touchUpInside" id="dxp-Bd-BUc"/>
+                                    <action selector="tomap:" destination="ePF-Xm-iRC" eventType="touchUpInside" id="Phq-Ah-Vqf"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" customClass="SegueFromRight" customModule="Xplore" customModuleProvider="target" id="bXC-Li-Ngc"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="_ _ _" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2h-01-3M9">
-                                <rect key="frame" x="135" y="533" width="10" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mjj-CF-LFb">
+                                <rect key="frame" x="306" y="756" width="65" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <state key="normal" title="Button" image="friends.jpg"/>
+                                <connections>
+                                    <segue destination="aoT-M0-ruF" kind="presentation" customClass="SegueFromRight" customModule="Xplore" customModuleProvider="target" id="mVu-Eg-ksc"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GUG-Yk-weS">
-                                <rect key="frame" x="175" y="694" width="48" height="30"/>
+                                <rect key="frame" x="183" y="692" width="48" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Logout"/>
                                 <connections>
@@ -519,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yyv-gw-MKk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1617.3913043478262" y="36.830357142857139"/>
+            <point key="canvasLocation" x="1579.7101449275362" y="762.72321428571422"/>
         </scene>
         <!--Interactive Map-->
         <scene sceneID="tne-QT-ifu">
@@ -529,23 +538,88 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fSU-49-bn7">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5F-3y-kWw">
+                                <rect key="frame" x="42" y="760" width="65" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </scrollView>
+                                <state key="normal" title="Button" image="menu.jpg"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4o-wz-O3t">
+                                <rect key="frame" x="177" y="760" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="new_event.jpg"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5e-PE-ajL">
+                                <rect key="frame" x="308" y="760" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="friends.jpg"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nmp-jI-GaT">
+                                <rect key="frame" x="308" y="69" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="filter.jpg"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="3Jr-Tr-jMh"/>
                     </view>
                     <navigationItem key="navigationItem" id="Gsv-nj-jwt"/>
                     <connections>
-                        <outlet property="pageView" destination="fSU-49-bn7" id="qTy-PV-62N"/>
+                        <outlet property="filters_button" destination="Nmp-jI-GaT" id="ZyO-x9-Xxb"/>
+                        <outlet property="friends_button" destination="v5e-PE-ajL" id="qBA-GL-Uca"/>
+                        <outlet property="menu_button" destination="S5F-3y-kWw" id="nPM-GE-ebf"/>
+                        <outlet property="newEvent_button" destination="d4o-wz-O3t" id="ZdC-PN-Anh"/>
                         <segue destination="ePF-Xm-iRC" kind="presentation" identifier="toMain" customClass="SegueFromLeft" customModule="Xplore" customModuleProvider="target" id="te4-gA-yCq"/>
+                        <segue destination="aoT-M0-ruF" kind="presentation" identifier="toFriends" customClass="SegueFromRight" customModule="Xplore" customModuleProvider="target" id="NOw-eY-bSt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="832" y="37"/>
+            <point key="canvasLocation" x="2419" y="37"/>
+        </scene>
+        <!--Friends View Controller-->
+        <scene sceneID="NZg-wk-H6B">
+            <objects>
+                <viewController id="aoT-M0-ruF" customClass="FriendsViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lt8-b5-eX5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FRIENDS SCREEN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C4c-Nl-H5D">
+                                <rect key="frame" x="49" y="342" width="316" height="82"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wrC-zD-a1F">
+                                <rect key="frame" x="42" y="755" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="menu.jpg"/>
+                                <connections>
+                                    <segue destination="ePF-Xm-iRC" kind="presentation" customClass="SegueFromLeft" customModule="Xplore" customModuleProvider="target" id="Qvp-hy-3Tu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gd0-Ph-AJ2">
+                                <rect key="frame" x="177" y="755" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="map.jpg"/>
+                                <connections>
+                                    <action selector="tomap:" destination="aoT-M0-ruF" eventType="touchUpInside" id="3LW-Hl-277"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nHZ-X7-rz1">
+                                <rect key="frame" x="308" y="755" width="65" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="friends.jpg"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="290-dX-zx4"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qHb-QL-9Us" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2757" y="721"/>
         </scene>
     </scenes>
     <resources>
@@ -555,5 +629,17 @@
         <image name="passwordIcon2" width="759" height="980"/>
         <image name="profileIcon" width="512" height="512"/>
         <image name="userIcon" width="512" height="512"/>
+        <image name="filter.jpg" width="252" height="251"/>
+        <image name="friends.jpg" width="251" height="253"/>
+        <image name="map.jpg" width="253" height="254"/>
+        <image name="menu.jpg" width="391" height="388"/>
+        <image name="new_event.jpg" width="253" height="254"/>
+        <image name="passwordIcon" width="512" height="512"/>
+        <image name="settings.jpg" width="253" height="253"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="mVu-Eg-ksc"/>
+        <segue reference="bXC-Li-Ngc"/>
+        <segue reference="Qvp-hy-3Tu"/>
+    </inferredMetricsTieBreakers>
 </document>
