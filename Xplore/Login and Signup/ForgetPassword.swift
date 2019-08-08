@@ -26,11 +26,30 @@ class ForgetPassword: UIViewController {
     }
     
     @IBAction func goBack(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
         self.invalidEmail.alpha = 0
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func sendTapped(_ sender: LoginButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
         //  Send a password reset email
         guard let email = emailField.text else { return }
         

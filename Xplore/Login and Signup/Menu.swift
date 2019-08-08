@@ -27,6 +27,16 @@ class Menu: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func loginTapped(_ sender: LoginButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
         //  Check if both inputs are empty
         guard let email = emailField.text else { return }
         guard let pass = passwordField.text else { return }
@@ -45,6 +55,15 @@ class Menu: UIViewController, UITextFieldDelegate {
     
     @IBAction func signupTapped(_ sender: UIButton) {
         // Transition to sign up screen
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
         self.invalidLogin.alpha = 0
         performSegue(withIdentifier: "toSignUpScreen", sender: self)
     }
@@ -52,6 +71,15 @@ class Menu: UIViewController, UITextFieldDelegate {
     
     @IBAction func forgetTapped(_ sender: UIButton) {
         // Transition to forget password screen
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
         self.invalidLogin.alpha = 0
         performSegue(withIdentifier: "toForgetPassword", sender: self)
     }

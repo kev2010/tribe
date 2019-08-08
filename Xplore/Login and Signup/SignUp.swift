@@ -44,6 +44,16 @@ class SignUp: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func goBack(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
         self.missingFields.alpha = 0
         self.emailTaken.alpha = 0
         self.usernameInvalid.alpha = 0
@@ -55,6 +65,17 @@ class SignUp: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func registerTapped(_ sender: LoginButton) {
+        //  Add button animation
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
         //  Make sure all fields aren't nil
         guard let name = nameField.text else { return }
         guard let email = emailField.text else { return }

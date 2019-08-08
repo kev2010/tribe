@@ -15,7 +15,6 @@ class LoginButton: UIButton {
         self.configureUI()
     }
     
-    
     private func configureUI() {
         //  add gradient to button
         self.layer.cornerRadius = CGFloat(15.0)  //  Not working?
