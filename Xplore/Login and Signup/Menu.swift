@@ -14,9 +14,13 @@ class Menu: UIViewController, UITextFieldDelegate {
     //  Keep track of the user's email and password input
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var invalidLogin: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //  Initially hide error login text
+        self.invalidLogin.alpha = 0
         
         //  Add a background color gradient
         view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
@@ -32,6 +36,7 @@ class Menu: UIViewController, UITextFieldDelegate {
             if error == nil && user != nil {
                 self.performSegue(withIdentifier: "toMain", sender: self)
             } else {
+                self.invalidLogin.alpha = 0.8
                 print("Error logging in: \(error!.localizedDescription)")
             }
         }
@@ -40,12 +45,14 @@ class Menu: UIViewController, UITextFieldDelegate {
     
     @IBAction func signupTapped(_ sender: UIButton) {
         // Transition to sign up screen
+        self.invalidLogin.alpha = 0
         performSegue(withIdentifier: "toSignUpScreen", sender: self)
     }
     
     
     @IBAction func forgetTapped(_ sender: UIButton) {
         // Transition to forget password screen
+        self.invalidLogin.alpha = 0
         performSegue(withIdentifier: "toForgetPassword", sender: self)
     }
     
@@ -70,18 +77,18 @@ class Menu: UIViewController, UITextFieldDelegate {
 
 }
 
-extension Menu: FUIAuthDelegate {
-    
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-        if error != nil {
-            return
-        }
-        
-        // do stuff with uid in the future
-        
-        performSegue(withIdentifier: "toHome", sender: self)
-    }
-}
+//extension Menu: FUIAuthDelegate {
+//
+//    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+//        if error != nil {
+//            return
+//        }
+//
+//        // do stuff with uid in the future
+//
+//        performSegue(withIdentifier: "toHome", sender: self)
+//    }
+//}
 
 
 extension UIView {

@@ -12,9 +12,12 @@ import Firebase
 class ForgetPassword: UIViewController {
     
     @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var invalidEmail: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //  Initially hide invalid email text
+        self.invalidEmail.alpha = 0
         
         //  Add a background color gradient
         view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
@@ -23,14 +26,22 @@ class ForgetPassword: UIViewController {
     }
     
     @IBAction func goBack(_ sender: UIButton) {
+        self.invalidEmail.alpha = 0
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func sendTapped(_ sender: LoginButton) {
         //  Send a password reset email
         guard let email = emailField.text else { return }
-        Auth.auth().sendPasswordReset(withEmail: email)
-        self.dismiss(animated: true, completion: nil)
+        
+        if email == "" || !email.contains("@") {
+            self.invalidEmail.alpha = 0.8
+        } else {
+            self.invalidEmail.alpha = 0
+            
+            Auth.auth().sendPasswordReset(withEmail: email)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     
