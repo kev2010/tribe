@@ -11,12 +11,6 @@ import Mapbox
 import Firebase
 
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
-    //  MapBox custom map - to change map style, go to storyboard -> MapView -> Attributes -> Style URL
-//    @IBOutlet var mapView: MGLMapView!
-    
-    
-    
-    @IBOutlet var pageView: UIScrollView!
     
     let manager = CLLocationManager()
     
@@ -35,70 +29,45 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var big_descriptionLabel = UILabel()
     var big_exitButton = UIButton()
     
-    
-    @IBOutlet var menu_button: UIButton!
-    @IBOutlet var newEvent_button: UIButton!
-    @IBOutlet var friends_button: UIButton!
-    @IBOutlet var filters_button: UIButton!
-    
+    var leftMenuView = UIView()
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //  Determine user's current location and save boundaries
-        let location = locations[0]
-        let botleft = CLLocationCoordinate2D(latitude: location.coordinate.latitude - 0.01, longitude: location.coordinate.longitude - 0.01)
-        let topright = CLLocationCoordinate2D(latitude: location.coordinate.latitude + 0.01, longitude: location.coordinate.longitude + 0.01)
-        let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
-
-        //  Display the user's region onto screen
-        mapView.setVisibleCoordinateBounds(region, animated: false)
-        mapView.showsUserLocation = true
-        print(location.speed, location.altitude)
+    var rightFriendsView = UIView()
+    
+    var bottomMenu_main = UIButton()
+    var bottomMenu_map = UIButton()
+    var bottomMenu_friends = UIButton()
+    
+    enum screen {
+        case Main
+        case Map
+        case Friends
     }
     
-
+    var currentScreen = screen.Map
+    
     @IBAction func toHome(_ sender: UIButton) {
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Create back  button
-        let f = CGRect(x: 10, y: 40, width: 50, height: 50)
-        let backButton = UIButton(frame: f)
-        backButton.setTitle("<", for: UIControl.State.normal)
-        backButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
-        backButton.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
-        backButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
-        
-        //Load map view
-        mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-//        mapView.styleURL = MGLStyle.darkStyleURL
-//        let customStyleURL = Bundle.main.url(forResource: "third_party_vector_style", withExtension: "json")!
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
-//        mapView.tintColor = .lightGray
-        mapView.delegate = self
         
         
-        //Add map and button to scroll view
-        self.view.addSubview(mapView)
-        self.mapView.addSubview(backButton)
         
-        self.view.bringSubviewToFront(menu_button)
-        self.view.bringSubviewToFront(newEvent_button)
-        self.view.bringSubviewToFront(friends_button)
-        self.view.bringSubviewToFront(filters_button)
+        //
+        //        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
+        //        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         
-        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
-        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
-
+        self.createThreeViewUI()
+        
         loadAndAddEvents()
         
         // Configure location manager to user's location
-  
+        
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
@@ -113,9 +82,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func loadAndAddEvents(){
         
         let db = Firestore.firestore()
-
+        
         var allEvents : [Event] = []
-
+        
         db.collection("events").getDocuments() { (querySnapshot, err) in
             
             if let err = err {
@@ -125,14 +94,14 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                     let e = Event(fromDatabaseFile: document)
                     allEvents.append(e)
                 }
-
+                
                 
                 self.addEventsToMap(events: allEvents)
             }
         }
         
         
-
+        
     }
     
     func addEventsToMap(events:[Event]) {
@@ -149,9 +118,161 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         mapView.addAnnotations(pointAnnotations)
     }
     
-
+    // MARK: - Create UI
     
-
+    func createThreeViewUI() {
+        self.createLeftMenu()
+        self.createMiddleMap()
+        self.createRightFriends()
+        
+        
+    }
+    
+    func createLeftMenu() {
+        let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        leftMenuView = UIView(frame: f)
+        leftMenuView.backgroundColor = UIColor.red
+        
+        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
+        let randomLabel = UILabel(frame: f2)
+        randomLabel.text = "Main Menu"
+        randomLabel.textAlignment = .center
+        
+        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
+        let logout_button = UIButton(frame: f3)
+        logout_button.setTitle("Logout", for: UIControl.State.normal)
+        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
+        
+        let f4 = CGRect(x: 50, y: 100, width: 100, height: 50)
+        let settings_button = UIButton(frame: f4)
+        settings_button.setTitle("Settings", for: UIControl.State.normal)
+        settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
+        
+        leftMenuView.addSubview(logout_button)
+        leftMenuView.addSubview(settings_button)
+        leftMenuView.addSubview(randomLabel)
+        self.view.addSubview(leftMenuView)
+        
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
+        leftMenuView.addGestureRecognizer(gestureRecognizer)
+        
+        
+    }
+    
+    func createMiddleMap() {
+        //Load map view
+        mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+        mapView.delegate = self
+        
+        //Add map and button to scroll view
+        self.view.addSubview(mapView)
+        
+        let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 50)
+        bottomMenu_main = UIButton(frame: f2)
+        bottomMenu_main.setTitle("main", for: UIControl.State.normal)
+        bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
+        
+        let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 50)
+        bottomMenu_map = UIButton(frame: f3)
+        bottomMenu_map.setTitle("+", for: UIControl.State.normal)
+        bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
+        bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
+        
+        let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 85, height: 50)
+        bottomMenu_friends = UIButton(frame: f4)
+        bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
+        bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
+        
+        self.view.addSubview(bottomMenu_main)
+        self.view.addSubview(bottomMenu_map)
+        self.view.addSubview(bottomMenu_friends)
+        
+        self.view.bringSubviewToFront(bottomMenu_main)
+        self.view.bringSubviewToFront(bottomMenu_map)
+        self.view.bringSubviewToFront(bottomMenu_friends)
+        
+        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 100, height: 50)
+        let filter_button = UIButton(frame: f5)
+        filter_button.setTitle("Filter", for: UIControl.State.normal)
+        filter_button.addTarget(self, action: #selector(self.goFilter), for: UIControl.Event.touchDown)
+        
+        mapView.addSubview(filter_button)
+        
+        
+        
+    }
+    
+    func createRightFriends() {
+        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        rightFriendsView = UIView(frame: f)
+        rightFriendsView.backgroundColor = UIColor.blue
+        
+        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
+        let randomLabel = UILabel(frame: f2)
+        randomLabel.text = "lol you have no friends"
+        randomLabel.textAlignment = .center
+        
+        rightFriendsView.addSubview(randomLabel)
+        self.view.addSubview(rightFriendsView)
+        
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
+        rightFriendsView.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
+        print("yay left")
+        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+            
+            
+            let translation = gestureRecognizer.translation(in: self.view)
+            // note: 'view' is optional and need to be unwrapped
+            
+            if translation.x < 0 {
+                gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
+                mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
+                gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
+        }
+            
+        else if gestureRecognizer.state == .ended {
+            print(mapView.center.x, self.view.frame.width)
+            if mapView.center.x > self.view.frame.width {
+                goMain()
+            }
+            else {
+                goMap()
+            }
+        }
+    }
+    
+    @objc func handlePanRight(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+            
+            
+            let translation = gestureRecognizer.translation(in: self.view)
+            // note: 'view' is optional and need to be unwrapped
+            
+            if translation.x > 0 {
+                gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
+                mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
+                gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
+        }
+            
+        else if gestureRecognizer.state == .ended {
+            print(mapView.center.x, self.view.frame.width)
+            if mapView.center.x > 0 {
+                goMap()
+            }
+            else {
+                goFriends()
+            }
+        }
+    }
+    
     // MARK: - MGLMapViewDelegate methods
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
@@ -175,7 +296,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
     }
-
+    
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         if let point = annotation as? CustomPointAnnotation {
             
@@ -185,7 +306,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 bottom_descriptionLabel.text = point.desc!
             }
             else {
-
+                
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
@@ -194,9 +315,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 
                 topTileShowing = true
             }
-            
-            
-    }
+        }
     }
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
@@ -209,35 +328,130 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         }
     }
     
-    // MARK: - Navigation
-    
-    @objc func goBack() {
-        self.performSegue(withIdentifier: "toMain", sender: self)
-        print("to main")
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //  Determine user's current location and save boundaries
+        let location = locations[0]
+        let botleft = CLLocationCoordinate2D(latitude: location.coordinate.latitude - 0.01, longitude: location.coordinate.longitude - 0.01)
+        let topright = CLLocationCoordinate2D(latitude: location.coordinate.latitude + 0.01, longitude: location.coordinate.longitude + 0.01)
+        let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
+        
+        //  Display the user's region onto screen
+        mapView.setVisibleCoordinateBounds(region, animated: false)
+        mapView.showsUserLocation = true
+        print(location.speed, location.altitude)
     }
     
+    // MARK: - Navigation
+
+    @objc func goMain() {
+        
+        currentScreen = .Main
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
+            self.leftMenuView.frame.origin = CGPoint(x: 0, y: 0)
+            self.mapView.frame.origin = CGPoint(x: self.view.frame.width, y: 0)
+            self.rightFriendsView.frame.origin = CGPoint(x: 2*self.view.frame.width, y: 0)
+        }) { (true) in
+            
+            self.view.bringSubviewToFront(self.bottomMenu_main)
+            self.view.bringSubviewToFront(self.bottomMenu_map)
+            self.view.bringSubviewToFront(self.bottomMenu_friends)
+            
+            self.bottomMenu_main.setTitle("MAIN", for: UIControl.State.normal)
+            self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
+            
+            self.bottomMenu_main.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
+            self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            
+            
+            
+            
+        }
+    }
+    
+    @objc func goMap() {
+        
+        if currentScreen == .Map {
+            self.performSegue(withIdentifier: "mapToAddEvent", sender: self)
+        }
+        
+        currentScreen = .Map
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
+            self.leftMenuView.frame.origin = CGPoint(x: -self.view.frame.width, y: 0)
+            self.mapView.frame.origin = CGPoint(x: 0, y: 0)
+            self.rightFriendsView.frame.origin = CGPoint(x: self.view.frame.width, y: 0)
+        }) { (true) in
+            
+            self.view.bringSubviewToFront(self.bottomMenu_main)
+            self.view.bringSubviewToFront(self.bottomMenu_map)
+            self.view.bringSubviewToFront(self.bottomMenu_friends)
+            
+            self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
+            self.bottomMenu_map.setTitle("+", for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
+            
+            
+            self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            self.bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            
+        }
+        
+    }
     
     @objc func goFriends() {
-        self.performSegue(withIdentifier: "toFriends", sender: self)
-        print("to frineds")
+        currentScreen = .Friends
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
+            self.leftMenuView.frame.origin = CGPoint(x: -2*self.view.frame.width, y: 0)
+            self.mapView.frame.origin = CGPoint(x: -self.view.frame.width, y: 0)
+            self.rightFriendsView.frame.origin = CGPoint(x: 0, y: 0)
+        }) { (true) in
+            
+            self.view.bringSubviewToFront(self.bottomMenu_main)
+            self.view.bringSubviewToFront(self.bottomMenu_map)
+            self.view.bringSubviewToFront(self.bottomMenu_friends)
+            
+            self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
+            self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitle("FRIENDS", for: UIControl.State.normal)
+            
+            self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            self.bottomMenu_friends.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
+        }
+        
+        
     }
     
-
-
+    @objc func goFilter() {
+        self.performSegue(withIdentifier: "mapToFilter", sender: self)
+    }
+    
+    @objc func goSettings() {
+        self.performSegue(withIdentifier: "mapToSettings", sender: self)
+    }
+    
+    @objc func logout() {
+        try! Auth.auth().signOut()
+        self.performSegue(withIdentifier: "mainToLogin", sender: self)
+    }
     
     // MARK: - Helper
     
     func showTopTile(show:Bool, hide:Bool = false) {
         
-//        if hide {
-////            self.bottomTile.alpha = 0.0
-//
-//            UIView.animate(withDuration: 0.2) {
-//                self.topTile.frame.origin = CGPoint(x: 20, y: -130)
-//            }
-//            topTileShowing = false
-//            return
-//        }
+        //        if hide {
+        ////            self.bottomTile.alpha = 0.0
+        //
+        //            UIView.animate(withDuration: 0.2) {
+        //                self.topTile.frame.origin = CGPoint(x: 20, y: -130)
+        //            }
+        //            topTileShowing = false
+        //            return
+        //        }
         if show {
             self.topTile.alpha = 1.0
             UIView.animate(withDuration: 0.2) {
@@ -250,7 +464,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             }
             topTileShowing = false
         }
-
+        
     }
     
     
@@ -302,13 +516,13 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         topTile = UIView(frame: f)
         topTile.backgroundColor = UIColor.white
         topTile.layer.cornerRadius = 10
-
+        
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
         
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
-
+        
         
         let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 20)
         bottom_titleLabel = UILabel(frame: f2)
@@ -327,7 +541,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         bottom_descriptionLabel.textColor =  UIColor.black
         bottom_descriptionLabel.numberOfLines = 5
         bottom_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
-    
+        
         topTile.addSubview(bottom_titleLabel)
         topTile.addSubview(bottom_subtitleLabel)
         topTile.addSubview(bottom_descriptionLabel)
@@ -337,13 +551,13 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
     }
     
-
+    
     func loadBigTile() {
         let f = CGRect(x: 20, y: -(2*self.view.frame.height/3), width: self.view.frame.width-40, height: 2*self.view.frame.height/3)
         bigTile = UIView(frame: f)
         bigTile.backgroundColor = UIColor.white
         bigTile.layer.cornerRadius = 10
-
+        
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bigTileTap(sender:)))
         
@@ -362,8 +576,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         big_exitButton.setTitle("X", for: UIControl.State.normal)
         big_exitButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         big_exitButton.addTarget(self, action: #selector(dismissBigTile), for: .touchUpInside)
-
-
+        
+        
         let f3 = CGRect(x: 10, y: 50, width: f.width-10, height: 30)
         big_subtitleLabel = UILabel(frame:f3)
         big_subtitleLabel.text  = ""
@@ -381,12 +595,12 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         big_entranceLabel.text = ""
         big_entranceLabel.textColor =  UIColor.black
         big_entranceLabel.numberOfLines = 3
-
+        
         let f5 = CGRect(x: 30, y: bigTile.frame.height - 70, width: 50, height: 50)
         let left_box = UIView(frame: f5)
         left_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
         left_box.layer.cornerRadius = 10
-
+        
         let f6 = CGRect(x: (bigTile.frame.width/2)-25, y: bigTile.frame.height - 70, width: 50, height: 50)
         let middle_box = UIView(frame: f6)
         middle_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
@@ -396,7 +610,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let right_box = UIView(frame: f7)
         right_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
         right_box.layer.cornerRadius = 10
-
+        
         let w = bigTile.frame.width - 50
         let f8 = CGRect(x: 25, y: 250, width: w, height: 2*w/3)
         let image_map = UIImageView(frame: f8)
@@ -421,7 +635,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     @objc func dismissBigTile(sender: UIButton!) {
         showBigTile(show: false)
     }
-
+    
     @objc func bottomTileTap(sender: UITapGestureRecognizer) {
         
         big_titleLabel.text = bottom_titleLabel.text
@@ -429,7 +643,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         big_descriptionLabel.text = bottom_descriptionLabel.text
         big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
         
-       showBigTile(show: true)
+        showBigTile(show: true)
     }
     
     @objc func bigTileTap(sender: UITapGestureRecognizer) {
@@ -480,5 +694,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
 
-
+    
+    
+    
+    
 }
