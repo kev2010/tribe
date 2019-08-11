@@ -28,9 +28,6 @@ class User {
     var infoDictionary : [String:Any]
     
     
-    
-    
-    
     init(username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:String, isPrivate:Bool, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
         self.username = username
         self.name = name
@@ -154,7 +151,7 @@ class User {
     func saveUser() {
         let db = Firestore.firestore()
         
-        // Add a new document with a generated ID
+        // Add a new document with username as Document ID
         db.collection("users").document(self.username).setData([
             "user_information":  generate_userInformation_map(db: db),
             "social": generate_social_map(),
@@ -166,7 +163,6 @@ class User {
                 print("Document added with ID: \(self.username)")
             }
         }
-        
     }
     
     func updateUser() {

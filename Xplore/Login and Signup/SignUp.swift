@@ -136,48 +136,42 @@ class SignUp: UIViewController, UITextFieldDelegate {
             //  Create user on Firebase Authentication
             Auth.auth().createUser(withEmail: email, password: pass) { user, error in
                 if error == nil && user != nil {
-                    //  Send verification email, not sure if it works
+                    //  Send verification email
                     Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                     print("User created!")
                     
+                    //  Update displayName on Firebase Authentication
+                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                    changeRequest?.displayName = username
+                    
                     // Upload default profile image to Firebase Storage
                     let profile = UIImage(named: "profileIcon")
-                    self.uploadProfileImage(profile){ url in
-                        
-                        //  Update displayName onto Firebase Authentication (is this necessary?)
-                        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-                        changeRequest?.displayName = username
-                        changeRequest?.photoURL = url
-                        
-                        changeRequest?.commitChanges { error in
-                            if error == nil {
-                                print("User display name changed!")
-                                self.dismiss(animated: false, completion: nil)
-                            } else {
-                                print("Error: \(error!.localizedDescription)")
+                    self.uploadProfileImage(profile!){ url in
+                        if url != nil {
+                            //  Update photoURL onto Firebase Authentication
+                            changeRequest?.photoURL = url
+                            changeRequest?.commitChanges { error in
+                                if error == nil {
+                                    print("User display name and photoURL changed!")
+                                } else {
+                                    print("Error: \(error!.localizedDescription)")
+                                }
                             }
+                        } else {
+                            // Error unable to upload profile image
+                            print("Something went wrong when uploading default profile image")
                         }
-                        
                     }
                     
-                    
-            
-                    
-                    //  Store new user and default information into UID document
-                    //                User(username: <#T##String#>, name: <#T##String#>, email: <#T##String#>, DOB: <#T##Date#>, currentLocation: <#T##CLLocationCoordinate2D?#>, currentEvent: <#T##String?#>, isPrivate: <#T##Bool?#>, friends: <#T##[String]#>, blocked: <#T##[String]#>, eventsUserHosted: <#T##[String]#>, eventsUserAttended: <#T##[String]#>, eventsUserBookmarked: <#T##[String]#>
-                    
-                    let new_user = User(username: username, name: name, email: email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
+                    //  Create user on Firestore Database
+                    let new_user = User(username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
                     new_user.saveUser()
                     
-//                    let uid = String(Auth.auth().currentUser!.uid)
-//                    let userinfo = ["status": "green", "current_event": "", "email": email, "location": nil, "name": name, "private": false, "rating": 5, "username": username] as [String : Any?]
-//                    let socialinfo = ["friends": [], "blocked": []] as [String : Any?]
-//                    let eventsinfo = ["attended": [], "bookmarked": [], "hosted": [], "interested": [], "tags": [:]] as [String : Any]
-//
-//                    self.db.collection("users").document(uid).setData(["user_information": userinfo, "social": socialinfo, "events": eventsinfo])
-//                    self.db.collection("usernames").document(username).setData(["exists": true])
+                    //  Transition to Map Screen
+                    self.dismiss(animated: true, completion: nil)
                     
                 } else {
+                    //  If there is an error with creating user with given email, then display email taken error
                     self.emailTaken.alpha = 0.8
                 }
             }
@@ -185,32 +179,28 @@ class SignUp: UIViewController, UITextFieldDelegate {
     }
     
     func uploadProfileImage(_ image:UIImage, completion: @escaping ((_ url:URL?)->())) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let storageRef = Storage.storage().reference().child("user/\(uid)")
-        
+        //  Retrive username and image info
+        guard let username = Auth.auth().currentUser?.displayName else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
-        
-        
+        //  Create Firebase Storage reference and metaData for image
+        let storageRef = Storage.storage().reference().child("users_profilepic/\(username)")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         
+        //  Store image/meta data into Firebase Storage
         storageRef.putData(imageData, metadata: metaData) { metaData, error in
             if error == nil, metaData != nil {
-                if let url = metaData.down
-                
-                
-                if let url = metaData?.downloadURL() {
-                    completion(url)
-                } else {
-                    completion(nil)
+                storageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else { return }
+                    completion(downloadURL)
                 }
-                // success!
             } else {
                 // failed
                 completion(nil)
             }
         }
     }
+        
 
     /*
     // MARK: - Navigation
