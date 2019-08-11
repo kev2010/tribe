@@ -105,20 +105,6 @@ class Menu: UIViewController, UITextFieldDelegate {
 
 }
 
-//extension Menu: FUIAuthDelegate {
-//
-//    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-//        if error != nil {
-//            return
-//        }
-//
-//        // do stuff with uid in the future
-//
-//        performSegue(withIdentifier: "toHome", sender: self)
-//    }
-//}
-
-
 extension UIView {
     
     /**

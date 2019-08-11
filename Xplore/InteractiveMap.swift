@@ -37,6 +37,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var bottomMenu_map = UIButton()
     var bottomMenu_friends = UIButton()
     
+    var imagePicker = UIImagePickerController()
+    var profile = UIImageView()
+    
     enum screen {
         case Main
         case Map
@@ -131,26 +134,62 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func createLeftMenu() {
         let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         leftMenuView = UIView(frame: f)
-        leftMenuView.backgroundColor = UIColor.red
-        
-        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-        let randomLabel = UILabel(frame: f2)
-        randomLabel.text = "Main Menu"
-        randomLabel.textAlignment = .center
+        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
         let logout_button = UIButton(frame: f3)
         logout_button.setTitle("Logout", for: UIControl.State.normal)
         logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
         
-        let f4 = CGRect(x: 50, y: 100, width: 100, height: 50)
-        let settings_button = UIButton(frame: f4)
-        settings_button.setTitle("Settings", for: UIControl.State.normal)
+//        let f4 = CGRect(x: 50, y: 100, width: 100, height: 50)
+//        let settings_button = UIButton(frame: f4)
+//        settings_button.setTitle("Settings", for: UIControl.State.normal)
+//        settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
+        
+        //  Create the top background
+        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+        let topbackground = CAShapeLayer()
+        topbackground.path = topcircle.cgPath
+        topbackground.fillColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1).cgColor
+        
+        //  Add settings button
+        let settings_button = UIButton(type: UIButton.ButtonType.custom)
+        settings_button.frame = CGRect(x: 19, y: 45, width: 36, height: 36)
+        settings_button.setImage(UIImage(named: "settings"), for: .normal)
         settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
         
+        //  Add "Bookmarked Events" title
+        let bookmarklabel = UILabel(frame: CGRect(x: 140.5, y: 343, width: 158, height: 22))
+        let bookmarkpic = UIImageView(frame: CGRect(x: 115.5, y: 343, width: 22, height: 22))
+        bookmarklabel.text = "Bookmarked Events"
+        bookmarklabel.textAlignment = .center
+        bookmarklabel.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        bookmarklabel.font = UIFont(name: "TrebuchetMS", size: 18)
+        bookmarkpic.image = UIImage(named: "bookmark")
+        
+        //  Add default profile picture and ability to change it
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(changeImage))
+        profile.isUserInteractionEnabled = true
+        profile.addGestureRecognizer(imageTap)
+        profile.frame = CGRect(x: 133, y: 82, width: 148, height: 148)
+        profile.layer.cornerRadius = profile.bounds.height/2
+        profile.image = UIImage(named: "profileIcon")
+        profile.clipsToBounds = true
+        //  Image picker to change profile picture
+        imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        
+        //(334, 812)
+        //(414, 896)
+        //  Add all the subviews to the left menu
+        leftMenuView.layer.addSublayer(topbackground)
         leftMenuView.addSubview(logout_button)
+        leftMenuView.addSubview(bookmarklabel)
+        leftMenuView.addSubview(bookmarkpic)
         leftMenuView.addSubview(settings_button)
-        leftMenuView.addSubview(randomLabel)
+        leftMenuView.addSubview(profile)
         self.view.addSubview(leftMenuView)
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
@@ -426,6 +465,11 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
     }
     
+    @objc func changeImage(_ sender: Any) {
+        // Open Image Picker
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
     @objc func goFilter() {
         self.performSegue(withIdentifier: "mapToFilter", sender: self)
     }
@@ -692,10 +736,20 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         return image
     }
-    
 
-    
-    
-    
-    
+}
+
+//  extensions to help with changing profile picture
+extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.profile.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
 }

@@ -18,6 +18,9 @@ PODS:
   - Firebase/Firestore (6.5.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 1.4.2)
+  - Firebase/Storage (6.5.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.4.0)
   - FirebaseAnalytics (6.0.4):
     - FirebaseCore (~> 6.1)
     - FirebaseInstanceID (~> 4.2)
@@ -56,6 +59,10 @@ PODS:
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
+  - FirebaseStorage (3.4.0):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseUI/Auth (8.0.4):
     - Firebase/Auth (~> 6.0)
     - GoogleUtilities/UserDefaults
@@ -115,6 +122,7 @@ DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Core
   - Firebase/Firestore
+  - Firebase/Storage
   - FirebaseUI/Auth
   - FirebaseUI/Email
   - Mapbox-iOS-SDK (~> 5.2)
@@ -129,6 +137,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseFirestore
     - FirebaseInstanceID
+    - FirebaseStorage
     - FirebaseUI
     - GoogleAppMeasurement
     - GoogleUtilities
@@ -149,6 +158,7 @@ SPEC CHECKSUMS:
   FirebaseCore: aecf02fb2274ec361b9bebeac112f5daa18273bd
   FirebaseFirestore: 41a035642eb017fc7206318985501626993840bd
   FirebaseInstanceID: 662b8108a09fe9ed01aafdedba100fde8536b0f6
+  FirebaseStorage: 618dd8fd886b30adf6e5d1915b1f5c18cb5c3944
   FirebaseUI: d92c980c1c7e553df3c5e7b0725baeb13f80f6d2
   GoogleAppMeasurement: 183bd916af7f80deb67c01888368f1108d641832
   GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
@@ -160,6 +170,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
 
-PODFILE CHECKSUM: 4025c7bd737ff55895ec351666c9e42d9bfa2722
+PODFILE CHECKSUM: c884ecd6aaa8d038df45974d04c8fd6313a6a05e
 
 COCOAPODS: 1.7.5

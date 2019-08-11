@@ -98,6 +98,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
             self.usernameShort.alpha = 0.8
             valid = false
         } else {
+            print("over here")
             self.usernameShort.alpha = 0
             
             let characterSet:CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789_.-")
@@ -106,12 +107,16 @@ class SignUp: UIViewController, UITextFieldDelegate {
                 valid = false
             } else {
                 self.usernameInvalid.alpha = 0
+                print("omgomg")
                 
-                let docRef = db.collection("usernames").document(username)
+                let docRef = db.collection("users").document(username)
+                print(username)
                 docRef.getDocument { (document, error) in
                     if let document = document, document.exists {
+                        print("ahhhhhhhhhh")
                         self.usernameTaken.alpha = 0.8
                         valid = false
+                        print("wtf", valid)
                     }
                 }
             }
@@ -125,6 +130,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
             self.shortPassword.alpha = 0
         }
         
+        print(valid)
         // If all requirements are good, create the user
         if valid {
             //  Create user on Firebase Authentication
@@ -134,29 +140,42 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                     print("User created!")
                     
-                    //  Update displayName onto Firebase Authentication (is this necessary?)
-                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-                    changeRequest?.displayName = username
-                    
-                    changeRequest?.commitChanges { error in
-                        if error == nil {
-                            print("User display name changed!")
-                            self.dismiss(animated: false, completion: nil)
-                        } else {
-                            print("Error: \(error!.localizedDescription)")
+                    // Upload default profile image to Firebase Storage
+                    let profile = UIImage(named: "profileIcon")
+                    self.uploadProfileImage(profile){ url in
+                        
+                        //  Update displayName onto Firebase Authentication (is this necessary?)
+                        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                        changeRequest?.displayName = username
+                        changeRequest?.photoURL = url
+                        
+                        changeRequest?.commitChanges { error in
+                            if error == nil {
+                                print("User display name changed!")
+                                self.dismiss(animated: false, completion: nil)
+                            } else {
+                                print("Error: \(error!.localizedDescription)")
+                            }
                         }
+                        
                     }
+                    
+                    
+            
                     
                     //  Store new user and default information into UID document
                     //                User(username: <#T##String#>, name: <#T##String#>, email: <#T##String#>, DOB: <#T##Date#>, currentLocation: <#T##CLLocationCoordinate2D?#>, currentEvent: <#T##String?#>, isPrivate: <#T##Bool?#>, friends: <#T##[String]#>, blocked: <#T##[String]#>, eventsUserHosted: <#T##[String]#>, eventsUserAttended: <#T##[String]#>, eventsUserBookmarked: <#T##[String]#>
                     
-                    let uid = String(Auth.auth().currentUser!.uid)
-                    let userinfo = ["status": "green", "current_event": "", "email": email, "location": nil, "name": name, "private": false, "rating": 5, "username": username] as [String : Any?]
-                    let socialinfo = ["friends": [], "blocked": []] as [String : Any?]
-                    let eventsinfo = ["attended": [], "bookmarked": [], "hosted": [], "interested": [], "tags": [:]] as [String : Any]
+                    let new_user = User(username: username, name: name, email: email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
+                    new_user.saveUser()
                     
-                    self.db.collection("users").document(uid).setData(["user_information": userinfo, "social": socialinfo, "events": eventsinfo])
-                    self.db.collection("usernames").document(username).setData(["exists": true])
+//                    let uid = String(Auth.auth().currentUser!.uid)
+//                    let userinfo = ["status": "green", "current_event": "", "email": email, "location": nil, "name": name, "private": false, "rating": 5, "username": username] as [String : Any?]
+//                    let socialinfo = ["friends": [], "blocked": []] as [String : Any?]
+//                    let eventsinfo = ["attended": [], "bookmarked": [], "hosted": [], "interested": [], "tags": [:]] as [String : Any]
+//
+//                    self.db.collection("users").document(uid).setData(["user_information": userinfo, "social": socialinfo, "events": eventsinfo])
+//                    self.db.collection("usernames").document(username).setData(["exists": true])
                     
                 } else {
                     self.emailTaken.alpha = 0.8
@@ -165,6 +184,33 @@ class SignUp: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func uploadProfileImage(_ image:UIImage, completion: @escaping ((_ url:URL?)->())) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let storageRef = Storage.storage().reference().child("user/\(uid)")
+        
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        
+        
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpg"
+        
+        storageRef.putData(imageData, metadata: metaData) { metaData, error in
+            if error == nil, metaData != nil {
+                if let url = metaData.down
+                
+                
+                if let url = metaData?.downloadURL() {
+                    completion(url)
+                } else {
+                    completion(nil)
+                }
+                // success!
+            } else {
+                // failed
+                completion(nil)
+            }
+        }
+    }
 
     /*
     // MARK: - Navigation
