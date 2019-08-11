@@ -167,15 +167,24 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         bookmarklabel.font = UIFont(name: "TrebuchetMS", size: 18)
         bookmarkpic.image = UIImage(named: "bookmark")
         
-        //  Add default profile picture and ability to change it
+        //  Retrieve profile picture from Firebase Storage
+        let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
+        ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+            if let error = error {
+                print("Error in retrieving image: \(error.localizedDescription)")
+            } else {
+                let image = UIImage(data: data!)
+                self.profile.image = image
+            }
+        }
+        //  Add specifics to picture
+        profile.frame = CGRect(x: 133, y: 82, width: 148, height: 148)
+        profile.layer.cornerRadius = profile.bounds.height/2
+        profile.clipsToBounds = true
+        //  Add ability to change profile pic
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(changeImage))
         profile.isUserInteractionEnabled = true
         profile.addGestureRecognizer(imageTap)
-        profile.frame = CGRect(x: 133, y: 82, width: 148, height: 148)
-        profile.layer.cornerRadius = profile.bounds.height/2
-        profile.image = UIImage(named: "profileIcon")
-        profile.clipsToBounds = true
-        //  Image picker to change profile picture
         imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.sourceType = .photoLibrary
@@ -749,7 +758,51 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.profile.image = pickedImage
+            
+            // For future: this code snippet is almost a copy of SignUp, better way to structure?
+            let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+            self.uploadProfileImage(pickedImage){ url in
+                if url != nil {
+                    //  Update photoURL onto Firebase Authentication
+                    changeRequest?.photoURL = url
+                    changeRequest?.commitChanges { error in
+                        if error == nil {
+                            print("User photoURL changed!")
+                        } else {
+                            print("Error: \(error!.localizedDescription)")
+                        }
+                    }
+                } else {
+                    // Error unable to upload profile image
+                    print("Something went wrong when updating profile image")
+                }
+            }
+            
         }
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    // For future: this code snippet is a copy of SignUp, better way to structure?
+    func uploadProfileImage(_ image:UIImage, completion: @escaping ((_ url:URL?)->())) {
+        //  Retrive username and image info
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        //  Create Firebase Storage reference and metaData for image
+        let storageRef = Storage.storage().reference().child("users_profilepic/\(uid)")
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpg"
+        
+        //  Store image/meta data into Firebase Storage
+        storageRef.putData(imageData, metadata: metaData) { metaData, error in
+            if error == nil, metaData != nil {
+                storageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else { return }
+                    completion(downloadURL)
+                }
+            } else {
+                // failed
+                completion(nil)
+            }
+        }
     }
 }

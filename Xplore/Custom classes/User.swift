@@ -12,6 +12,7 @@ import Firebase
 
 class User {
     
+    var uid : String
     var username : String
     var name : String
     var email : String
@@ -28,7 +29,8 @@ class User {
     var infoDictionary : [String:Any]
     
     
-    init(username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:String, isPrivate:Bool, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
+    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:String, isPrivate:Bool, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
+        self.uid = uid
         self.username = username
         self.name = name
         self.email = email
@@ -43,6 +45,8 @@ class User {
         self.eventsUserBookmarked  = eventsUserBookmarked
         
         self.infoDictionary = [
+            "uid" : uid,
+            "username" : username,
             "name" : name,
             "email": email,
             "dob": DOB,
@@ -73,6 +77,7 @@ class User {
         let social = data["social"] as! [String:Any]
         let events = data["evemts"] as! [String:Any]
         
+        self.uid = user_info["uid"] as! String
         self.username = user_info["username"] as! String
         self.name = user_info["name"] as! String
         self.email = user_info["email"] as! String
@@ -90,6 +95,8 @@ class User {
         self.eventsUserBookmarked = events["events_user_bookmarked"] as! [String]
         
         self.infoDictionary = [
+            "uid" : user_info["uid"] as! String,
+            "username" : user_info["username"] as! String,
             "name" : user_info["name"] as! String,
             "email": user_info["email"] as! String,
             "dob": (user_info["dob"] as! Timestamp).dateValue(),
@@ -107,6 +114,8 @@ class User {
     
     func dictionary() -> [String:Any]{
         return [
+            "uid" : self.uid,
+            "username" : self.username,
             "name" : self.name,
             "email": self.email,
             "dob": self.DOB,
@@ -123,7 +132,8 @@ class User {
     
     func generate_userInformation_map(db: Firestore) -> [String:Any] {
         return [
-            "username": self.username,
+            "uid" : self.uid,
+            "username" : self.username,
             "name" : self.name,
             "email" : self.email,
             "dob" : Timestamp(date: self.DOB),
@@ -174,6 +184,16 @@ class User {
             
             
             switch key {
+            
+            case "uid":
+                if self.infoDictionary[key] as! String != self.uid {
+                    data["user_information.uid"] = self.uid
+                }
+                
+            case "username":
+                if self.infoDictionary[key] as! String != self.username {
+                    data["user_information.username"] = self.username
+                }
                 
             case "name":
                 if self.infoDictionary[key] as! String != self.name {

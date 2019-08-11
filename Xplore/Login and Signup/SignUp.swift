@@ -140,15 +140,15 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                     print("User created!")
                     
-                    //  Update displayName on Firebase Authentication
+                    //  Update displayName and photoURL Firebase Authentication
                     let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-                    changeRequest?.displayName = username
                     
                     // Upload default profile image to Firebase Storage
                     let profile = UIImage(named: "profileIcon")
                     self.uploadProfileImage(profile!){ url in
                         if url != nil {
                             //  Update photoURL onto Firebase Authentication
+                            changeRequest?.displayName = username
                             changeRequest?.photoURL = url
                             changeRequest?.commitChanges { error in
                                 if error == nil {
@@ -164,7 +164,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     }
                     
                     //  Create user on Firestore Database
-                    let new_user = User(username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
+                    let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
                     new_user.saveUser()
                     
                     //  Transition to Map Screen
@@ -179,14 +179,14 @@ class SignUp: UIViewController, UITextFieldDelegate {
     }
     
     func uploadProfileImage(_ image:UIImage, completion: @escaping ((_ url:URL?)->())) {
-        //  Retrive username and image info
-        guard let username = Auth.auth().currentUser?.displayName else { return }
+        //  Retrieve username and image info
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
         //  Create Firebase Storage reference and metaData for image
-        let storageRef = Storage.storage().reference().child("users_profilepic/\(username)")
+        let storageRef = Storage.storage().reference().child("users_profilepic/\(uid)")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
-        
+
         //  Store image/meta data into Firebase Storage
         storageRef.putData(imageData, metadata: metaData) { metaData, error in
             if error == nil, metaData != nil {
