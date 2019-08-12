@@ -154,10 +154,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
         
         //  Create the top background
-        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
-        let topbackground = CAShapeLayer()
-        topbackground.path = topcircle.cgPath
-        topbackground.fillColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1).cgColor
+        let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
+        topbackground.layer.cornerRadius = topbackground.bounds.height/2
+        topbackground.clipsToBounds = true
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
+        
+//        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+//        let topbackground = CAShapeLayer()
+//        topbackground.path = topcircle.cgPath
+//        topbackground.fillColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1).cgColor
         
         //  Add settings button
         let settings_button = UIButton(type: UIButton.ButtonType.custom)
@@ -207,21 +214,22 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
         namelabel.text = "Mohamed Mohamed"  // Change
         namelabel.textAlignment = .center
-        namelabel.textColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        namelabel.textColor = UIColor.white
         namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
         
         //  Add Username under Name
         let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
         usernamelabel.text = Auth.auth().currentUser?.displayName
         usernamelabel.textAlignment = .center
-        usernamelabel.textColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        usernamelabel.textColor = UIColor.white
         usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
         
         
         //(334, 812)
         //(414, 896)
         //  Add all the subviews to the left menu
-        leftMenuView.layer.addSublayer(topbackground)
+//        leftMenuView.layer.addSublayer(topbackground)
+        leftMenuView.addSubview(topbackground)
         leftMenuView.addSubview(settings_button)
         leftMenuView.addSubview(profile)
         leftMenuView.layer.addSublayer(status)
@@ -241,7 +249,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func createMiddleMap() {
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
         mapView.delegate = self
         
         //Add map and button to scroll view

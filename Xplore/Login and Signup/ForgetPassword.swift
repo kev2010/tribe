@@ -21,14 +21,14 @@ class ForgetPassword: UIViewController {
         self.invalidEmail.alpha = 0
         
         //  Add a background color gradient
-        let color1 = UIColor(red: 83/255, green: 134/255, blue: 228/255, alpha: 1)
-        let color2 = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         //        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         view.addGradientLayer(topColor: color1, bottomColor: color2)
         // Do any additional setup after loading the view.
         
-        passwordlock.setImageColor(color: UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1))
+        passwordlock.setImageColor(color: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1))
     }
     
     @IBAction func goBack(_ sender: UIButton) {
