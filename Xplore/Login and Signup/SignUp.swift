@@ -13,6 +13,8 @@ import Firebase
 
 class SignUp: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var profileIcon: UIImageView!
+    
     //  Outlets for each of the user's inputs into register screen
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
@@ -40,7 +42,13 @@ class SignUp: UIViewController, UITextFieldDelegate {
         self.shortPassword.alpha = 0
         
         //  Add Background gradient
-        view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
+        let color1 = UIColor(red: 83/255, green: 134/255, blue: 228/255, alpha: 1)
+        let color2 = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        //        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        
+        view.addGradientLayer(topColor: color1, bottomColor: color2)
+        
+        profileIcon.setImageColor(color: UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1))
     }
     
     @IBAction func goBack(_ sender: UIButton) {
@@ -117,6 +125,8 @@ class SignUp: UIViewController, UITextFieldDelegate {
                         self.usernameTaken.alpha = 0.8
                         valid = false
                         print("wtf", valid)
+                    } else {
+                        self.usernameTaken.alpha = 0
                     }
                 }
             }

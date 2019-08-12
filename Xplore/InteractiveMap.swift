@@ -13,15 +13,16 @@ import Firebase
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
+    let db = Firestore.firestore()
     
-    // Bottom tile variables - global
+    //  Bottom tile variables - global
     var topTileShowing = false
     var topTile = UIView()
     var bottom_titleLabel = UILabel()
     var bottom_subtitleLabel = UILabel()
     var bottom_descriptionLabel = UILabel()
     
-    //Big tile variablees - global
+    //  Big tile variablees - global
     var bigTile = UIView()
     var big_titleLabel = UILabel()
     var big_subtitleLabel = UILabel()
@@ -65,6 +66,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
         //        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         
+        //  Load in all user data
+//        let username = (Auth.auth().currentUser?.displayName)!
+//        let docRef = db.collection("users").document(username)
+//
+//        docRef.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//
+//
+//            }
+//        }
+        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -79,12 +91,12 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         loadBottomTile()
         loadBigTile()
         
+        
+        
     }
     
     
     func loadAndAddEvents(){
-        
-        let db = Firestore.firestore()
         
         var allEvents : [Event] = []
         
@@ -141,11 +153,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         logout_button.setTitle("Logout", for: UIControl.State.normal)
         logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
         
-//        let f4 = CGRect(x: 50, y: 100, width: 100, height: 50)
-//        let settings_button = UIButton(frame: f4)
-//        settings_button.setTitle("Settings", for: UIControl.State.normal)
-//        settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
-        
         //  Create the top background
         let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
         let topbackground = CAShapeLayer()
@@ -159,12 +166,12 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
         
         //  Add "Bookmarked Events" title
-        let bookmarklabel = UILabel(frame: CGRect(x: 140.5, y: 343, width: 158, height: 22))
-        let bookmarkpic = UIImageView(frame: CGRect(x: 115.5, y: 343, width: 22, height: 22))
+        let bookmarklabel = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
+        let bookmarkpic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
         bookmarklabel.text = "Bookmarked Events"
         bookmarklabel.textAlignment = .center
         bookmarklabel.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
-        bookmarklabel.font = UIFont(name: "TrebuchetMS", size: 18)
+        bookmarklabel.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
         bookmarkpic.image = UIImage(named: "bookmark")
         
         //  Retrieve profile picture from Firebase Storage
@@ -190,15 +197,39 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
         
+        //  Add status - Need to add to database?
+        let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+        let status = CAShapeLayer()
+        status.path = statuspath.cgPath
+        status.fillColor = UIColor.green.cgColor
+        
+        //  Add Name under profile picture
+        let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
+        namelabel.text = "Mohamed Mohamed"  // Change
+        namelabel.textAlignment = .center
+        namelabel.textColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        
+        //  Add Username under Name
+        let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
+        usernamelabel.text = Auth.auth().currentUser?.displayName
+        usernamelabel.textAlignment = .center
+        usernamelabel.textColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
+        
+        
         //(334, 812)
         //(414, 896)
         //  Add all the subviews to the left menu
         leftMenuView.layer.addSublayer(topbackground)
-        leftMenuView.addSubview(logout_button)
-        leftMenuView.addSubview(bookmarklabel)
-        leftMenuView.addSubview(bookmarkpic)
         leftMenuView.addSubview(settings_button)
         leftMenuView.addSubview(profile)
+        leftMenuView.layer.addSublayer(status)
+        leftMenuView.addSubview(namelabel)
+        leftMenuView.addSubview(usernamelabel)
+        leftMenuView.addSubview(bookmarklabel)
+        leftMenuView.addSubview(bookmarkpic)
+        leftMenuView.addSubview(logout_button)
         self.view.addSubview(leftMenuView)
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
@@ -408,7 +439,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("MAIN", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -440,8 +471,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("+", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-            
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -465,7 +495,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("FRIENDS", for: UIControl.State.normal)
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
