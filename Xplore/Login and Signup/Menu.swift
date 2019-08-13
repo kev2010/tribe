@@ -59,7 +59,6 @@ class Menu: UIViewController, UITextFieldDelegate {
     }
     
     
-    
     @IBAction func loginTapped(_ sender: LoginButton) {
         UIButton.animate(withDuration: 0.3,
                          animations: {

@@ -40,6 +40,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     var imagePicker = UIImagePickerController()
     var profile = UIImageView()
+//    var username =
     
     enum screen {
         case Main
@@ -183,6 +184,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
+        print("ack", Auth.auth().currentUser!.uid)
         ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
             if let error = error {
                 print("Error in retrieving image: \(error.localizedDescription)")
@@ -211,15 +213,25 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         status.fillColor = UIColor.green.cgColor
         
         //  Add Name under profile picture
+        let username = Auth.auth().currentUser?.displayName
+        let docRef = db.collection("users").document(username!)
+        
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
-        namelabel.text = "Mohamed Mohamed"  // Change
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
+            } else {
+                print("Document does not exist")
+            }
+        }
         namelabel.textAlignment = .center
         namelabel.textColor = UIColor.white
         namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
         
         //  Add Username under Name
         let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
-        usernamelabel.text = Auth.auth().currentUser?.displayName
+        usernamelabel.text = Auth.auth().currentUser!.displayName
         usernamelabel.textAlignment = .center
         usernamelabel.textColor = UIColor.white
         usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
