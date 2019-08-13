@@ -48,7 +48,34 @@ class SignUp: UIViewController, UITextFieldDelegate {
         
         view.addGradientLayer(topColor: color1, bottomColor: color2)
         
+        //  Dismiss keyboard when user taps outside
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        nameField.delegate = self
+        emailField.delegate = self
+        usernameField.delegate = self
+        passwordField.delegate = self
+        
         profileIcon.setImageColor(color: UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1))
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == nameField {
+            emailField.becomeFirstResponder()
+        } else if textField == emailField {
+            usernameField.becomeFirstResponder()
+        } else if textField == usernameField {
+            passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            passwordField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     @IBAction func goBack(_ sender: UIButton) {

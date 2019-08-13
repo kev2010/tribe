@@ -34,7 +34,31 @@ class Menu: UIViewController, UITextFieldDelegate {
 //        view.addGradientLayer(topColor: color1, bottomColor: color2)
         view.addGradientLayer(topColor: color1, bottomColor: color2)
         // UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        
+        //  Adding keyboard functionality
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        emailField.delegate = self
+        passwordField.delegate = self
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == emailField {
+            self.passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            self.passwordField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    //  Repeated multiple times in the code, there should be a better way to structure this
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    
+    
     
     @IBAction func loginTapped(_ sender: LoginButton) {
         UIButton.animate(withDuration: 0.3,

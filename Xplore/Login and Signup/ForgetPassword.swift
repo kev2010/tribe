@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ForgetPassword: UIViewController {
+class ForgetPassword: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var invalidEmail: UILabel!
@@ -28,7 +28,24 @@ class ForgetPassword: UIViewController {
         view.addGradientLayer(topColor: color1, bottomColor: color2)
         // Do any additional setup after loading the view.
         
+        //  Adding keyboard functionality
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        emailField.delegate = self
+        
         passwordlock.setImageColor(color: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1))
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            emailField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     @IBAction func goBack(_ sender: UIButton) {
