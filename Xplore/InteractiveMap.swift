@@ -13,15 +13,16 @@ import Firebase
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
+    let db = Firestore.firestore()
     
-    // Bottom tile variables - global
+    //  Bottom tile variables - global
     var topTileShowing = false
     var topTile = UIView()
     var bottom_titleLabel = UILabel()
     var bottom_subtitleLabel = UILabel()
     var bottom_descriptionLabel = UILabel()
     
-    //Big tile variablees - global
+    //  Big tile variablees - global
     var bigTile = UIView()
     var big_titleLabel = UILabel()
     var big_subtitleLabel = UILabel()
@@ -36,6 +37,10 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var bottomMenu_main = UIButton()
     var bottomMenu_map = UIButton()
     var bottomMenu_friends = UIButton()
+    
+    var imagePicker = UIImagePickerController()
+    var profile = UIImageView()
+//    var username =
     
     enum screen {
         case Main
@@ -62,6 +67,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
         //        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         
+        //  Load in all user data
+//        let username = (Auth.auth().currentUser?.displayName)!
+//        let docRef = db.collection("users").document(username)
+//
+//        docRef.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//
+//
+//            }
+//        }
+        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -76,12 +92,12 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         loadBottomTile()
         loadBigTile()
         
+        
+        
     }
     
     
     func loadAndAddEvents(){
-        
-        let db = Firestore.firestore()
         
         var allEvents : [Event] = []
         
@@ -131,26 +147,109 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func createLeftMenu() {
         let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         leftMenuView = UIView(frame: f)
-        leftMenuView.backgroundColor = UIColor.red
-        
-        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-        let randomLabel = UILabel(frame: f2)
-        randomLabel.text = "Main Menu"
-        randomLabel.textAlignment = .center
+        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
         let logout_button = UIButton(frame: f3)
         logout_button.setTitle("Logout", for: UIControl.State.normal)
         logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
         
-        let f4 = CGRect(x: 50, y: 100, width: 100, height: 50)
-        let settings_button = UIButton(frame: f4)
-        settings_button.setTitle("Settings", for: UIControl.State.normal)
+        //  Create the top background
+        let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
+        topbackground.layer.cornerRadius = topbackground.bounds.height/2
+        topbackground.clipsToBounds = true
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
+        
+//        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+//        let topbackground = CAShapeLayer()
+//        topbackground.path = topcircle.cgPath
+//        topbackground.fillColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1).cgColor
+        
+        //  Add settings button
+        let settings_button = UIButton(type: UIButton.ButtonType.custom)
+        settings_button.frame = CGRect(x: 19, y: 45, width: 36, height: 36)
+        settings_button.setImage(UIImage(named: "settings"), for: .normal)
         settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
         
-        leftMenuView.addSubview(logout_button)
+        //  Add "Bookmarked Events" title
+        let bookmarklabel = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
+        let bookmarkpic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+        bookmarklabel.text = "Bookmarked Events"
+        bookmarklabel.textAlignment = .center
+        bookmarklabel.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        bookmarklabel.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
+        bookmarkpic.image = UIImage(named: "bookmark")
+        
+        //  Retrieve profile picture from Firebase Storage
+        let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
+        print("ack", Auth.auth().currentUser!.uid)
+        ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+            if let error = error {
+                print("Error in retrieving image: \(error.localizedDescription)")
+            } else {
+                let image = UIImage(data: data!)
+                self.profile.image = image
+            }
+        }
+        //  Add specifics to picture
+        profile.frame = CGRect(x: 133, y: 82, width: 148, height: 148)
+        profile.layer.cornerRadius = profile.bounds.height/2
+        profile.clipsToBounds = true
+        //  Add ability to change profile pic
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(changeImage))
+        profile.isUserInteractionEnabled = true
+        profile.addGestureRecognizer(imageTap)
+        imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        
+        //  Add status - Need to add to database?
+        let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+        let status = CAShapeLayer()
+        status.path = statuspath.cgPath
+        status.fillColor = UIColor.green.cgColor
+        
+        //  Add Name under profile picture
+        let username = Auth.auth().currentUser?.displayName
+        let docRef = db.collection("users").document(username!)
+        
+        let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
+            } else {
+                print("Document does not exist")
+            }
+        }
+        namelabel.textAlignment = .center
+        namelabel.textColor = UIColor.white
+        namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        
+        //  Add Username under Name
+        let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
+        usernamelabel.text = Auth.auth().currentUser!.displayName
+        usernamelabel.textAlignment = .center
+        usernamelabel.textColor = UIColor.white
+        usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
+        
+        
+        //(334, 812)
+        //(414, 896)
+        //  Add all the subviews to the left menu
+//        leftMenuView.layer.addSublayer(topbackground)
+        leftMenuView.addSubview(topbackground)
         leftMenuView.addSubview(settings_button)
-        leftMenuView.addSubview(randomLabel)
+        leftMenuView.addSubview(profile)
+        leftMenuView.layer.addSublayer(status)
+        leftMenuView.addSubview(namelabel)
+        leftMenuView.addSubview(usernamelabel)
+        leftMenuView.addSubview(bookmarklabel)
+        leftMenuView.addSubview(bookmarkpic)
+        leftMenuView.addSubview(logout_button)
         self.view.addSubview(leftMenuView)
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
@@ -162,7 +261,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     func createMiddleMap() {
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
         mapView.delegate = self
         
         //Add map and button to scroll view
@@ -360,7 +460,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("MAIN", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -392,8 +492,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("+", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-            
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -417,13 +516,18 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
             self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
             self.bottomMenu_friends.setTitle("FRIENDS", for: UIControl.State.normal)
-            
+
             self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.bottomMenu_friends.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
         }
         
         
+    }
+    
+    @objc func changeImage(_ sender: Any) {
+        // Open Image Picker
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
     @objc func goFilter() {
@@ -692,10 +796,64 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         return image
     }
-    
 
+}
+
+//  extensions to help with changing profile picture
+extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.profile.image = pickedImage
+            
+            // For future: this code snippet is almost a copy of SignUp, better way to structure?
+            let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+            self.uploadProfileImage(pickedImage){ url in
+                if url != nil {
+                    //  Update photoURL onto Firebase Authentication
+                    changeRequest?.photoURL = url
+                    changeRequest?.commitChanges { error in
+                        if error == nil {
+                            print("User photoURL changed!")
+                        } else {
+                            print("Error: \(error!.localizedDescription)")
+                        }
+                    }
+                } else {
+                    // Error unable to upload profile image
+                    print("Something went wrong when updating profile image")
+                }
+            }
+            
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
     
-    
-    
-    
+    // For future: this code snippet is a copy of SignUp, better way to structure?
+    func uploadProfileImage(_ image:UIImage, completion: @escaping ((_ url:URL?)->())) {
+        //  Retrive username and image info
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        //  Create Firebase Storage reference and metaData for image
+        let storageRef = Storage.storage().reference().child("users_profilepic/\(uid)")
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpg"
+        
+        //  Store image/meta data into Firebase Storage
+        storageRef.putData(imageData, metadata: metaData) { metaData, error in
+            if error == nil, metaData != nil {
+                storageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else { return }
+                    completion(downloadURL)
+                }
+            } else {
+                // failed
+                completion(nil)
+            }
+        }
+    }
 }

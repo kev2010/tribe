@@ -23,8 +23,41 @@ class Menu: UIViewController, UITextFieldDelegate {
         self.invalidLogin.alpha = 0
         
         //  Add a background color gradient
-        view.addGradientLayer(topColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 179/255, alpha: 1), bottomColor: UIColor(displayP3Red: 0/255, green: 255/255, blue: 255/255, alpha: 1))
+//        let color1 = UIColor(red: 83/255, green: 134/255, blue: 228/255, alpha: 1)
+//        let color2 = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+//        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+//        let color2 = UIColor(red: 0/255, green: 255/255, blue: 255/255, alpha: 1)
+//        let color1 = UIColor(red: 0/255, green: 255/255, blue: 179/255, alpha: 1)
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//
+//        view.addGradientLayer(topColor: color1, bottomColor: color2)
+        view.addGradientLayer(topColor: color1, bottomColor: color2)
+        // UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        
+        //  Adding keyboard functionality
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        emailField.delegate = self
+        passwordField.delegate = self
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == emailField {
+            self.passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            self.passwordField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    //  Repeated multiple times in the code, there should be a better way to structure this
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    
     
     @IBAction func loginTapped(_ sender: LoginButton) {
         UIButton.animate(withDuration: 0.3,
@@ -105,20 +138,6 @@ class Menu: UIViewController, UITextFieldDelegate {
 
 }
 
-//extension Menu: FUIAuthDelegate {
-//
-//    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-//        if error != nil {
-//            return
-//        }
-//
-//        // do stuff with uid in the future
-//
-//        performSegue(withIdentifier: "toHome", sender: self)
-//    }
-//}
-
-
 extension UIView {
     
     /**
@@ -127,7 +146,7 @@ extension UIView {
      - Parameter bottomColor: The bottom **UIColor**.
      */
     
-    func addGradientLayer(topColor:UIColor, bottomColor:UIColor) {
+    func addGradientLayer(topColor:UIColor, bottomColor:UIColor, start:CGPoint = CGPoint(x: 1, y: 0), end:CGPoint = CGPoint(x: 0, y: 1)) {
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
         gradient.colors = [
@@ -135,9 +154,11 @@ extension UIView {
             bottomColor.cgColor
         ]
         gradient.locations = [0.0, 1.0]
-        gradient.startPoint = CGPoint(x: 1, y: 0)
-        gradient.endPoint = CGPoint(x: 0, y: 1)
+        gradient.startPoint = start
+        gradient.endPoint = end
         self.layer.insertSublayer(gradient, at: 0)
     }
+    
+    
 }
 

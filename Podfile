@@ -13,6 +13,7 @@ target 'Xplore' do
   pod 'FirebaseUI/Email'
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
   
 
   target 'XploreTests' do
