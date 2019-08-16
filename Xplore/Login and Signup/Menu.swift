@@ -8,6 +8,8 @@
 
 import UIKit
 import FirebaseUI
+import Firebase
+
 
 class Menu: UIViewController, UITextFieldDelegate {
     
@@ -15,6 +17,9 @@ class Menu: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var invalidLogin: UILabel!
+    
+    let db = Firestore.firestore()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +38,7 @@ class Menu: UIViewController, UITextFieldDelegate {
 //
 //        view.addGradientLayer(topColor: color1, bottomColor: color2)
         view.addGradientLayer(topColor: color1, bottomColor: color2)
+        
         // UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         
         //  Adding keyboard functionality
@@ -77,7 +83,24 @@ class Menu: UIViewController, UITextFieldDelegate {
         //  Attempt to sign in with Firebase
         Auth.auth().signIn(withEmail: email, password: pass) { user, error in
             if error == nil && user != nil {
-                self.performSegue(withIdentifier: "toMain", sender: self)
+                
+                let username = user!.user.displayName!
+                let docRef = self.db.collection("users").document(username)
+                
+                docRef.getDocument { (document, error) in
+                    if let d = document {
+                        
+                        currentUser = User(DocumentSnapshot: d)
+                        self.performSegue(withIdentifier: "toMain", sender: self)
+                    } else {
+                    
+                    self.invalidLogin.alpha = 0.8
+                    print("Error logging in")
+                    assert(1==2)
+                    }
+                }
+                
+                
             } else {
                 self.invalidLogin.alpha = 0.8
                 print("Error logging in: \(error!.localizedDescription)")
@@ -122,9 +145,21 @@ class Menu: UIViewController, UITextFieldDelegate {
         super.viewDidAppear(animated)
         
         //  Check if user is already signed in
-        if Auth.auth().currentUser != nil {
-            self.performSegue(withIdentifier: "toMain", sender: self)
+        if let user = Auth.auth().currentUser {
+            
+            let username = user.displayName!
+            let docRef = self.db.collection("users").document(username)
+            
+            docRef.getDocument { (document, error) in
+                if let d = document {
+                    currentUser = User(DocumentSnapshot: d)
+                    self.performSegue(withIdentifier: "toMain", sender: self)
+                    
+                }
+            
         }
+    }
+        
     }
     /*
     // MARK: - Navigation

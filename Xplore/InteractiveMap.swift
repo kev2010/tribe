@@ -19,7 +19,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
 
-    var currentUser : User?
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -66,16 +65,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         super.viewDidLoad()
 
         
-        //  Load in all user data
-        let username = (Auth.auth().currentUser?.displayName)!
-        let docRef = db.collection("users").document(username)
-
-        docRef.getDocument { (document, error) in
-            if let d = document {
-                self.currentUser = User(fromDatabaseFile: d)
-            }
-        }
-        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -106,7 +95,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    let e = Event(fromDatabaseFile: document)
+                    let e = Event(QueryDocumentSpapshot: document)
                     allEvents.append(e)
                 }
                 
@@ -212,8 +201,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         status.fillColor = UIColor.green.cgColor
         
         //  Add Name under profile picture
-        let username = Auth.auth().currentUser?.displayName
-        let docRef = db.collection("users").document(username!)
+        let username = currentUser!.username
+        let docRef = db.collection("users").document(username)
         
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
         docRef.getDocument { (document, error) in

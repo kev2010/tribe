@@ -62,7 +62,7 @@ class Event {
         ]
     }
     
-    init(fromDatabaseFile file: QueryDocumentSnapshot) {
+    init(QueryDocumentSpapshot file: QueryDocumentSnapshot) {
         /**
          USAGE: Use this initialiser to load in a file (QueryDocumentSnapshot) that is retrieved from the cloud.
          Once initialised this way, self.saveEvent() should not be used,
@@ -70,6 +70,48 @@ class Event {
          **/
         
         let data = file.data()
+        
+        self.documentID = file.documentID
+        
+        self.creator_username = data["creator_username"] as! DocumentReference
+        
+        let information = data["information"] as! [String:Any]
+        
+        self.title = information["title"] as! String
+        self.description = information["description"] as! String
+        
+        self.startDate = (information["startDate"] as! Timestamp).dateValue()
+        self.endDate = (information["endDate"] as! Timestamp).dateValue()
+        let loc = information["location"] as! GeoPoint
+        self.location = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        self.capacity = information["capacity"] as! Int
+        self.visibility = information["visibility"] as! String
+        self.tags = information["tags"] as! [String]
+        
+        self.attendees = data["attendees"] as! [String]
+        
+        self.infoDictionary = [
+            "creator_username" : self.creator_username,
+            "title": self.title,
+            "description": self.description,
+            "startDate" : Timestamp(date: self.startDate),
+            "endDate"  : Timestamp(date: self.endDate),
+            "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "capacity" : self.capacity,
+            "visibility" : self.visibility,
+            "tags" : self.tags,
+            "attendees" : self.attendees
+        ]
+    }
+    
+    init(DocumentSnapshot file: DocumentSnapshot) {
+        /**
+         USAGE: Use this initialiser to load in a file (QueryDocumentSnapshot) that is retrieved from the cloud.
+         Once initialised this way, self.saveEvent() should not be used,
+         and instead, self.updateEvent() should be called whenever necessary
+         **/
+        
+        let data = file.data()!
         
         self.documentID = file.documentID
         

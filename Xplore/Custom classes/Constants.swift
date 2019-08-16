@@ -11,6 +11,7 @@ import UIKit
 
 let heatmap_smallToBig = ["#EBF0FF", "#BAD2EB", "#8DBEDA", "#5A9ECC", "#347EB9", "#1D5AA6", "#0A3281"]
 
+var currentUser : User?
 
 extension CATransition {
     
