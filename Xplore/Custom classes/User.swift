@@ -18,18 +18,18 @@ class User {
     var email : String
     var DOB : Date
     var currentLocation : CLLocationCoordinate2D // (0,0) if location unavailable
-    var currentEvent : String // "" if no event
+    var currentEvent : DocumentReference // "" if no event
     var isPrivate : Bool
-    var friends : [String]
-    var blocked : [String]
-    var eventsUserHosted : [String]
-    var eventsUserAttended : [String]
-    var eventsUserBookmarked : [String]
+    var friends : [DocumentReference]
+    var blocked : [DocumentReference]
+    var eventsUserHosted : [DocumentReference]
+    var eventsUserAttended : [DocumentReference]
+    var eventsUserBookmarked : [DocumentReference]
     var documentID : String?
     var infoDictionary : [String:Any]
     
     
-    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:String, isPrivate:Bool, friends:[String], blocked:[String], eventsUserHosted:[String], eventsUserAttended:[String], eventsUserBookmarked:[String]) {
+    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:DocumentReference, isPrivate:Bool, friends:[DocumentReference], blocked:[DocumentReference], eventsUserHosted:[DocumentReference], eventsUserAttended:[DocumentReference], eventsUserBookmarked:[DocumentReference]) {
         self.uid = uid
         self.username = username
         self.name = name
@@ -84,15 +84,15 @@ class User {
         self.DOB = (user_info["dob"] as! Timestamp).dateValue()
         let loc = user_info["current_location"] as! GeoPoint
         self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
-        self.currentEvent = user_info["current_event"] as! String
+        self.currentEvent = user_info["current_event"] as! DocumentReference
         self.isPrivate = user_info["is_private"] as! Bool
         
-        self.friends = social["friends"] as! [String]
-        self.blocked = social["blocked"] as! [String]
+        self.friends = social["friends"] as! [DocumentReference]
+        self.blocked = social["blocked"] as! [DocumentReference]
         
-        self.eventsUserHosted = events["events_user_hosted"] as! [String]
-        self.eventsUserAttended = events["events_user_attended"] as! [String]
-        self.eventsUserBookmarked = events["events_user_bookmarked"] as! [String]
+        self.eventsUserHosted = events["events_user_hosted"] as! [DocumentReference]
+        self.eventsUserAttended = events["events_user_attended"] as! [DocumentReference]
+        self.eventsUserBookmarked = events["events_user_bookmarked"] as! [DocumentReference]
         
         self.infoDictionary = [
             "uid" : user_info["uid"] as! String,
@@ -101,13 +101,13 @@ class User {
             "email": user_info["email"] as! String,
             "dob": (user_info["dob"] as! Timestamp).dateValue(),
             "current_location" : CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
-            "current_event" : user_info["current_event"] as! String,
+            "current_event" : user_info["current_event"] as! DocumentReference,
             "is_private" : user_info["is_private"] as! Bool,
-            "friends" :  social["friends"] as! [String],
-            "blocked" : social["blocked"] as! [String],
-            "events_user_hosted" : events["events_user_hosted"] as! [String],
-            "events_user_attended" : events["events_user_attended"] as! [String],
-            "events_user_bookmarked" : events["events_user_bookmarked"] as! [String]
+            "friends" :  social["friends"] as! [DocumentReference],
+            "blocked" : social["blocked"] as! [DocumentReference],
+            "events_user_hosted" : events["events_user_hosted"] as! [DocumentReference],
+            "events_user_attended" : events["events_user_attended"] as! [DocumentReference],
+            "events_user_bookmarked" : events["events_user_bookmarked"] as! [DocumentReference]
             ] as [String:Any]
         
     }
@@ -138,7 +138,8 @@ class User {
             "email" : self.email,
             "dob" : Timestamp(date: self.DOB),
             "current_location" : GeoPoint(latitude: self.currentLocation.latitude, longitude: self.currentLocation.longitude),
-            "current_event" : (self.currentEvent != "" ? db.document("events/\(self.currentEvent)") : "") ,
+            "current_event" : self.currentEvent,
+//            "current_event" : (self.currentEvent != "" ? db.document("events/\(self.currentEvent)") : "") ,
             "is_private" : self.isPrivate
         ]
     }
@@ -217,7 +218,7 @@ class User {
                 
                 
             case "current_event":
-                if self.infoDictionary[key] as! String != self.currentEvent {
+                if self.infoDictionary[key] as! DocumentReference != self.currentEvent {
                     data["user_information.current_event"] = self.currentEvent
                 }
                 
@@ -228,27 +229,27 @@ class User {
                 }
                 
             case "friends":
-                if self.infoDictionary[key] as! [String] != self.friends {
+                if self.infoDictionary[key] as! [DocumentReference] != self.friends {
                     data["social.friends"] = self.friends
                 }
                 
             case "blocked":
-                if self.infoDictionary[key] as! [String] != self.blocked {
+                if self.infoDictionary[key] as! [DocumentReference] != self.blocked {
                     data["social.blocked"] = self.blocked
                 }
                 
             case "events_user_hosted":
-                if self.infoDictionary[key] as! [String] != self.eventsUserHosted {
+                if self.infoDictionary[key] as! [DocumentReference] != self.eventsUserHosted {
                     data["events.events_user_hosted"] = self.eventsUserHosted
                 }
                 
             case "events_used_attended":
-                if self.infoDictionary[key] as! [String] != self.eventsUserAttended {
+                if self.infoDictionary[key] as! [DocumentReference] != self.eventsUserAttended {
                     data["events.events_used_attended"] = eventsUserAttended
                 }
                 
             case "events_user_bookmarked":
-                if self.infoDictionary[key] as! [String] != self.eventsUserBookmarked {
+                if self.infoDictionary[key] as! [DocumentReference] != self.eventsUserBookmarked {
                     data["events.events_user_bookmarked"] = self.eventsUserBookmarked
                 }
                 

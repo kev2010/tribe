@@ -9,6 +9,7 @@
 import UIKit
 import Mapbox
 import Firebase
+import FirebaseStorage
 
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     
@@ -40,7 +41,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     var imagePicker = UIImagePickerController()
     var profile = UIImageView()
-//    var username =
+    
+    var userdata = User(fromDatabaseFile: <#T##QueryDocumentSnapshot#>) // don't think I did this correctly
     
     enum screen {
         case Main
@@ -58,6 +60,20 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //  Grab all user data
+        let username = Auth.auth().currentUser?.displayName
+        db.collection("users").whereField("user_information", arrayContains: username!)
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        self.userdata = User(fromDatabaseFile: document)
+                    }
+                }
+            }
+        
         
         // Create back  button
         
@@ -145,10 +161,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     func createLeftMenu() {
-        let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        leftMenuView = UIView(frame: f)
-        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
+        //  Logout Button - move to settings in future
         let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
         let logout_button = UIButton(frame: f3)
         logout_button.setTitle("Logout", for: UIControl.State.normal)
@@ -161,6 +175,11 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
+        
+        //  Create the bottom background
+        let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        leftMenuView = UIView(frame: f)
+        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
 //        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
 //        let topbackground = CAShapeLayer()
@@ -213,18 +232,18 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         status.fillColor = UIColor.green.cgColor
         
         //  Add Name under profile picture
-        let username = Auth.auth().currentUser?.displayName
-        let docRef = db.collection("users").document(username!)
+//        let username = Auth.auth().currentUser?.displayName
         
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
-            } else {
-                print("Document does not exist")
-            }
-        }
+        namelabel.text = userdata.username
+//        db.collection("users").document(username!).getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+//                namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
         namelabel.textAlignment = .center
         namelabel.textColor = UIColor.white
         namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
@@ -235,6 +254,78 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         usernamelabel.textAlignment = .center
         usernamelabel.textColor = UIColor.white
         usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
+        
+        
+        //  Add event tiles
+        
+        //  Create a vertical scrollview
+        
+        //  Retrieve all of user's bookmarked events
+        var bookmarks : [(time_left: Date, event: UIButton)] = []
+        for eventRef in userdata.eventsUserBookmarked {
+            let eventtile = UIButton()
+            eventtile.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+            var buttonText : NSString = ""
+            
+            db.collection("events").document(eventRef.documentID).getDocument { (document, error) in
+                if let document = document, document.exists {
+                    //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+//                    namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
+                    let title = (document.data()!["information"] as! [String:Any])["title"] as! NSString
+                    let creator = (document.data()!["attendees"] as! [String:Any])["creator_username"]
+                    buttonText = (document.data()!["information"] as! [String:Any])["title"] as! NSString + "\n" + documen
+                } else {
+                    print("Document does not exist")
+                }
+            }
+            
+            //applying the line break mode
+            eventtile.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping;
+            
+//            let buttonText: NSString = "hello\nthere"
+            
+            //getting the range to separate the button title strings
+            let newlineRange: NSRange = buttonText.range(of: "\n")
+            
+            //getting both substrings
+            var substring1: NSString = ""
+            var substring2: NSString = ""
+            
+            if(newlineRange.location != NSNotFound) {
+                substring1 = buttonText.substring(to: newlineRange.location) as NSString
+                substring2 = buttonText.substring(from: newlineRange.location) as NSString
+            }
+            
+            //assigning diffrent fonts to both substrings
+            let font:UIFont? = UIFont(name: "Arial", size: 17.0)
+            let attrString = NSMutableAttributedString(
+                string: substring1 as String,
+                attributes: (NSDictionary(
+                    object: font!,
+                    forKey: NSAttributedString.Key.font as NSCopying) as [NSObject : AnyObject] as [NSObject : AnyObject] as! [NSAttributedString.Key : Any]))
+            
+            let font1:UIFont? = UIFont(name: "Arial", size: 11.0)
+            let attrString1 = NSMutableAttributedString(
+                string: substring2 as String,
+                attributes: (NSDictionary(
+                    object: font1!,
+                    forKey: NSAttributedString.Key.font as NSCopying) as [NSObject : AnyObject] as [NSObject : AnyObject] as! [NSAttributedString.Key : Any]))
+            
+            //appending both attributed strings
+            attrString.append(attrString1)
+            
+            //assigning the resultant attributed strings to the button
+            eventtile.setAttributedTitle(attrString, for: .normal)
+            
+            
+//            bookmarks.append(())
+        }
+        
+        
+        //  Sort by start date? - Might want to customize sorting in the future
+        
+        
+        
         
         
         //(334, 812)
@@ -306,9 +397,12 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     func createRightFriends() {
+        //  Add Background gradient
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UIView(frame: f)
-        rightFriendsView.backgroundColor = UIColor.blue
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
         
         let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
         let randomLabel = UILabel(frame: f2)
@@ -798,6 +892,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
 
 }
+
+
 
 //  extensions to help with changing profile picture
 extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
