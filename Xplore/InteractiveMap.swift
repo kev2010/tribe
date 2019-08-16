@@ -19,7 +19,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
 
-    var currentUser : User?
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -65,22 +64,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //  Grab all user data
-        let username = Auth.auth().currentUser?.displayName
-        db.collection("users").whereField("user_information", arrayContains: username!)
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        self.userdata = User(fromDatabaseFile: document)
-                        self.currentUser = self.userdata
-                    }
-                }
-            }
 
-        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -111,7 +95,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    let e = Event(fromDatabaseFile: document)
+                    let e = Event(QueryDocumentSpapshot: document)
                     allEvents.append(e)
                 }
                 
@@ -220,7 +204,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         status.fillColor = UIColor.green.cgColor
         
         //  Add Name under profile picture
-//        let username = Auth.auth().currentUser?.displayName
+
+        let username = currentUser!.username
+        let docRef = db.collection("users").document(username)
         
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
         namelabel.text = userdata.username

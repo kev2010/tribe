@@ -205,6 +205,11 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:"", isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
                     new_user.saveUser()
                     
+                    currentUser = new_user
+                    
+                    
+
+                    
                     //  Transition to Map Screen
                     self.dismiss(animated: true, completion: nil)
                     

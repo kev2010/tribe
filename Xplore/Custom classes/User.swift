@@ -62,7 +62,7 @@ class User {
         
     }
     
-    init(fromDatabaseFile file: QueryDocumentSnapshot) {
+    init(QueryDocumentSnapshot file: QueryDocumentSnapshot) {
         /**
          USAGE: Use this initialiser to load in a file (QueryDocumentSnapshot) that is retrieved from the cloud.
          Once initialised this way, self.saveEvent() should not be used,
@@ -108,6 +108,52 @@ class User {
             "events_user_hosted" : events["events_user_hosted"] as! [DocumentReference],
             "events_user_attended" : events["events_user_attended"] as! [DocumentReference],
             "events_user_bookmarked" : events["events_user_bookmarked"] as! [DocumentReference]
+            ] as [String:Any]
+        
+    }
+    
+    init(DocumentSnapshot file: DocumentSnapshot) {
+        //assumes the file exists
+        
+        let data = file.data()!
+        
+        self.documentID = file.documentID
+        
+        let user_info = data["user_information"] as! [String:Any]
+        let social = data["social"] as! [String:Any]
+        let events = data["evemts"] as! [String:Any]
+        
+        self.uid = user_info["uid"] as! String
+        self.username = user_info["username"] as! String
+        self.name = user_info["name"] as! String
+        self.email = user_info["email"] as! String
+        self.DOB = (user_info["dob"] as! Timestamp).dateValue()
+        let loc = user_info["current_location"] as! GeoPoint
+        self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        self.currentEvent = user_info["current_event"] as! String
+        self.isPrivate = user_info["is_private"] as! Bool
+        
+        self.friends = social["friends"] as! [String]
+        self.blocked = social["blocked"] as! [String]
+        
+        self.eventsUserHosted = events["events_user_hosted"] as! [String]
+        self.eventsUserAttended = events["events_user_attended"] as! [String]
+        self.eventsUserBookmarked = events["events_user_bookmarked"] as! [String]
+        
+        self.infoDictionary = [
+            "uid" : user_info["uid"] as! String,
+            "username" : user_info["username"] as! String,
+            "name" : user_info["name"] as! String,
+            "email": user_info["email"] as! String,
+            "dob": (user_info["dob"] as! Timestamp).dateValue(),
+            "current_location" : CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
+            "current_event" : user_info["current_event"] as! String,
+            "is_private" : user_info["is_private"] as! Bool,
+            "friends" :  social["friends"] as! [String],
+            "blocked" : social["blocked"] as! [String],
+            "events_user_hosted" : events["events_user_hosted"] as! [String],
+            "events_user_attended" : events["events_user_attended"] as! [String],
+            "events_user_bookmarked" : events["events_user_bookmarked"] as! [String]
             ] as [String:Any]
         
     }
