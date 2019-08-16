@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import Mapbox
 import Firebase
+import FirebaseStorage
 
 class SignUp: UIViewController, UITextFieldDelegate {
     

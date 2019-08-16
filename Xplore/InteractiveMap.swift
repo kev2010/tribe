@@ -9,11 +9,17 @@
 import UIKit
 import Mapbox
 import Firebase
+import FirebaseStorage
 
 class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     let db = Firestore.firestore()
+    
+    var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
+    var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
+
+    var currentUser : User?
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -58,25 +64,17 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Create back  button
-        
-        
-        
-        //
-        //        menu_button.addTarget(self, action: #selector(self.goBack), for: UIControl.Event.touchDown)
-        //        friends_button.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
+
         
         //  Load in all user data
-//        let username = (Auth.auth().currentUser?.displayName)!
-//        let docRef = db.collection("users").document(username)
-//
-//        docRef.getDocument { (document, error) in
-//            if let document = document, document.exists {
-//
-//
-//            }
-//        }
+        let username = (Auth.auth().currentUser?.displayName)!
+        let docRef = db.collection("users").document(username)
+
+        docRef.getDocument { (document, error) in
+            if let d = document {
+                self.currentUser = User(fromDatabaseFile: d)
+            }
+        }
         
         self.createThreeViewUI()
         
@@ -92,6 +90,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         loadBottomTile()
         loadBigTile()
         
+        let timer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
         
         
     }
@@ -438,7 +437,23 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //  Display the user's region onto screen
         mapView.setVisibleCoordinateBounds(region, animated: false)
         mapView.showsUserLocation = true
-        print(location.speed, location.altitude)
+        
+        currentLocation = location.coordinate
+    }
+    
+    @objc func saveUserLocation() {
+        
+        if !(currentLocation.latitude == previousLocation.latitude && currentLocation.longitude == previousLocation.longitude){
+            
+            previousLocation = currentLocation
+            
+            if currentUser != nil {
+                
+            currentUser!.currentLocation = currentLocation
+            currentUser!.updateUser()
+                
+            }
+        }
     }
     
     // MARK: - Navigation
