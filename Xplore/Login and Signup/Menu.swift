@@ -24,6 +24,7 @@ class Menu: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //  Initially hide error login text
         self.invalidLogin.alpha = 0
         
@@ -145,8 +146,11 @@ class Menu: UIViewController, UITextFieldDelegate {
         super.viewDidAppear(animated)
         
         //  Check if user is already signed in
-        if let user = Auth.auth().currentUser {
-            
+        if Auth.auth().currentUser != nil{
+            let user = Auth.auth().currentUser!
+            if user.displayName == nil {
+                return
+            }
             let username = user.displayName!
             let docRef = self.db.collection("users").document(username)
             

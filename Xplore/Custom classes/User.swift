@@ -18,7 +18,7 @@ class User {
     var email : String
     var DOB : Date
     var currentLocation : CLLocationCoordinate2D // (0,0) if location unavailable
-    var currentEvent : DocumentReference // "" if no event
+    var currentEvent : [DocumentReference] // []] if no event
     var isPrivate : Bool
     var friends : [DocumentReference]
     var blocked : [DocumentReference]
@@ -29,7 +29,7 @@ class User {
     var infoDictionary : [String:Any]
     
     
-    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:DocumentReference, isPrivate:Bool, friends:[DocumentReference], blocked:[DocumentReference], eventsUserHosted:[DocumentReference], eventsUserAttended:[DocumentReference], eventsUserBookmarked:[DocumentReference]) {
+    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:[DocumentReference], isPrivate:Bool, friends:[DocumentReference], blocked:[DocumentReference], eventsUserHosted:[DocumentReference], eventsUserAttended:[DocumentReference], eventsUserBookmarked:[DocumentReference]) {
         self.uid = uid
         self.username = username
         self.name = name
@@ -84,7 +84,7 @@ class User {
         self.DOB = (user_info["dob"] as! Timestamp).dateValue()
         let loc = user_info["current_location"] as! GeoPoint
         self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
-        self.currentEvent = user_info["current_event"] as! DocumentReference
+        self.currentEvent = user_info["current_event"] as! [DocumentReference]
         self.isPrivate = user_info["is_private"] as! Bool
         
         self.friends = social["friends"] as! [DocumentReference]
@@ -121,7 +121,7 @@ class User {
         
         let user_info = data["user_information"] as! [String:Any]
         let social = data["social"] as! [String:Any]
-        let events = data["evemts"] as! [String:Any]
+        let events = data["events"] as! [String:Any]
         
         self.uid = user_info["uid"] as! String
         self.username = user_info["username"] as! String
@@ -130,30 +130,30 @@ class User {
         self.DOB = (user_info["dob"] as! Timestamp).dateValue()
         let loc = user_info["current_location"] as! GeoPoint
         self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
-        self.currentEvent = user_info["current_event"] as! String
+        self.currentEvent = user_info["current_event"] as! [DocumentReference]
         self.isPrivate = user_info["is_private"] as! Bool
         
-        self.friends = social["friends"] as! [String]
-        self.blocked = social["blocked"] as! [String]
+        self.friends = social["friends"] as! [DocumentReference]
+        self.blocked = social["blocked"] as! [DocumentReference]
         
-        self.eventsUserHosted = events["events_user_hosted"] as! [String]
-        self.eventsUserAttended = events["events_user_attended"] as! [String]
-        self.eventsUserBookmarked = events["events_user_bookmarked"] as! [String]
+        self.eventsUserHosted = events["events_user_hosted"] as! [DocumentReference]
+        self.eventsUserAttended = events["events_used_attended"] as! [DocumentReference]
+        self.eventsUserBookmarked = events["events_user_bookmarked"] as! [DocumentReference]
         
         self.infoDictionary = [
-            "uid" : user_info["uid"] as! String,
-            "username" : user_info["username"] as! String,
-            "name" : user_info["name"] as! String,
-            "email": user_info["email"] as! String,
-            "dob": (user_info["dob"] as! Timestamp).dateValue(),
-            "current_location" : CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
-            "current_event" : user_info["current_event"] as! String,
-            "is_private" : user_info["is_private"] as! Bool,
-            "friends" :  social["friends"] as! [String],
-            "blocked" : social["blocked"] as! [String],
-            "events_user_hosted" : events["events_user_hosted"] as! [String],
-            "events_user_attended" : events["events_user_attended"] as! [String],
-            "events_user_bookmarked" : events["events_user_bookmarked"] as! [String]
+            "uid" : self.uid,
+            "username" : self.username,
+            "name" : self.name,
+            "email": self.email,
+            "dob": self.DOB,
+            "current_location" : self.currentLocation,
+            "current_event" : self.currentEvent,
+            "is_private" : self.isPrivate,
+            "friends" :  self.friends,
+            "blocked" : self.blocked,
+            "events_user_hosted" : self.eventsUserHosted,
+            "events_user_attended" : self.eventsUserAttended,
+            "events_user_bookmarked" : self.eventsUserBookmarked
             ] as [String:Any]
         
     }
@@ -264,7 +264,7 @@ class User {
                 
                 
             case "current_event":
-                if self.infoDictionary[key] as! DocumentReference != self.currentEvent {
+                if self.infoDictionary[key] as! [DocumentReference] != self.currentEvent {
                     data["user_information.current_event"] = self.currentEvent
                 }
                 
@@ -289,7 +289,7 @@ class User {
                     data["events.events_user_hosted"] = self.eventsUserHosted
                 }
                 
-            case "events_used_attended":
+            case "events_used_attended", "events_user_attended":
                 if self.infoDictionary[key] as! [DocumentReference] != self.eventsUserAttended {
                     data["events.events_used_attended"] = eventsUserAttended
                 }

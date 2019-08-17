@@ -627,7 +627,4 @@
         <image name="profileIcon" width="512" height="512"/>
         <image name="userIcon" width="512" height="512"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="oje-5e-kVj"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -46,7 +46,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     var imagePicker = UIImagePickerController()
     var profile = UIImageView()
     
-    var userdata = User(fromDatabaseFile: <#T##QueryDocumentSnapshot#>) // don't think I did this correctly
     
     enum screen {
         case Main
@@ -209,7 +208,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let docRef = db.collection("users").document(username)
         
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
-        namelabel.text = userdata.username
+        namelabel.text = currentUser!.username
 //        db.collection("users").document(username!).getDocument { (document, error) in
 //            if let document = document, document.exists {
 //                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
@@ -236,7 +235,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         
         //  Retrieve all of user's bookmarked events
         var bookmarks : [(time_left: Date, event: UIButton)] = []
-        for eventRef in userdata.eventsUserBookmarked {
+        for eventRef in currentUser!.eventsUserBookmarked {
             let eventtile = UIButton()
             eventtile.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
             var buttonText : NSString = ""
@@ -247,7 +246,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
 //                    namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
                     let title = (document.data()!["information"] as! [String:Any])["title"] as! NSString
                     let creator = (document.data()!["attendees"] as! [String:Any])["creator_username"]
-                    buttonText = (document.data()!["information"] as! [String:Any])["title"] as! NSString + "\n" + documen
+                    buttonText = (document.data()!["information"] as! [String:Any])["title"] as! NSString //TODO WHAT IS THIS?
                 } else {
                     print("Document does not exist")
                 }
@@ -333,23 +332,29 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //Add map and button to scroll view
         self.view.addSubview(mapView)
         
-        let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 50)
+        let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_main = UIButton(frame: f2)
-        bottomMenu_main.setTitle("main", for: UIControl.State.normal)
-        bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
         bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
+        bottomMenu_main.setImage(UIImage(named: "home.jpg"), for: UIControl.State.normal)
         
-        let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 50)
+        let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_map = UIButton(frame: f3)
-        bottomMenu_map.setTitle("+", for: UIControl.State.normal)
-        bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
+        bottomMenu_map.setImage(UIImage(named: "map.jpg"), for: UIControl.State.normal)
         
-        let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 85, height: 50)
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+        self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
+        
+        bottomMenu_map_new = UIButton(frame:f3)
+        bottomMenu_map_new.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
+
+
+        
+        let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
-        bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-        bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
+        bottomMenu_friends.setImage(UIImage(named: "friends.jpg"), for: UIControl.State.normal)
+
         
         self.view.addSubview(bottomMenu_main)
         self.view.addSubview(bottomMenu_map)
@@ -555,10 +560,24 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         }
     }
     
+    @objc func longPressed(sender: UILongPressGestureRecognizer)
+    {
+        print("longpressed")
+
+        
+    }
+    
+    func showExtraButtons() {
+        //do animations to show add event and filter buttons
+        UIView.animate(withDuration: 0.2, animations: <#T##() -> Void#>)
+        self.performSegue(withIdentifier: "mapToAddEvent", sender: self)
+
+    }
+    
     @objc func goMap() {
         
         if currentScreen == .Map {
-            self.performSegue(withIdentifier: "mapToAddEvent", sender: self)
+            showExtraButtons()
         }
         
         currentScreen = .Map
