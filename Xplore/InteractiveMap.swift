@@ -59,11 +59,35 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
-    
+    func addRandomEvents() ->  [Event]{
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
+        var start = formatter.date(from: "2019/08/06 21:00")
+        var end = formatter.date(from: "2019/08/06 23:00")
+
+        
+        let event_1 : Event = Event(creator_username: "new", title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
+        
+        start = formatter.date(from: "2019/08/08 20:00")
+        end = formatter.date(from: "2019/08/08 23:00")
+        
+        let event_2 : Event = Event(creator_username: "new", title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
+        
+        let allEvents = [event_1, event_2]
+        
+        for event in allEvents {
+            event.saveEvent()
+        }
+        
+        return allEvents
+        
+    }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-
+        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -96,6 +120,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 for document in querySnapshot!.documents {
                     let e = Event(QueryDocumentSpapshot: document)
                     allEvents.append(e)
+                    print("distance")
+                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
                 }
                 
                 
@@ -345,8 +371,8 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
         self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
         
-        bottomMenu_map_new = UIButton(frame:f3)
-        bottomMenu_map_new.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
+//        bottomMenu_map_new = UIButton(frame:f3)
+//        bottomMenu_map_new.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
 
 
         
@@ -485,7 +511,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
                 bottom_descriptionLabel.text = point.desc!
                 
                 showTopTile(show: true)
-                
                 topTileShowing = true
             }
         }
@@ -501,6 +526,35 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         }
     }
     
+    func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        print("JUST CHANGED")
+        
+        OperationQueue.main.addOperation
+            {() -> Void in
+                
+                //  do some UI stuff
+                
+                
+//                let zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width
+//                let newAnnotations = self.annotationsWithinRect(rect:mapView.visibleMapRect, zoomScale:zoomScale)
+//
+//                self.updateMapViewAnnotationsWithAnnotations(annotations: newAnnotations)
+        }
+        
+    
+    }
+
+    func annotationsWithinRect(rect:MGLCoordinateBounds, zoomScale:Double) -> [MGLAnnotation] {
+        
+        return []
+    }
+    
+    func updateMapViewAnnotationsWithAnnotations(annotations:[MGLAnnotation]) {
+        
+    }
+    
+    
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //  Determine user's current location and save boundaries
         let location = locations[0]
@@ -511,6 +565,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         //  Display the user's region onto screen
         mapView.setVisibleCoordinateBounds(region, animated: false)
         mapView.showsUserLocation = true
+        
         
         currentLocation = location.coordinate
     }
@@ -569,7 +624,9 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     func showExtraButtons() {
         //do animations to show add event and filter buttons
-        UIView.animate(withDuration: 0.2, animations: <#T##() -> Void#>)
+        UIView.animate(withDuration: 0.2) {
+            
+        }
         self.performSegue(withIdentifier: "mapToAddEvent", sender: self)
 
     }
@@ -898,6 +955,32 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
         UIGraphicsEndImageContext()
         
         return image
+    }
+    
+    func distanceBetweenTwoCoordinates(loc1:CLLocationCoordinate2D, loc2: CLLocationCoordinate2D) -> Int  {
+        // using the haversine formula
+        
+        let R = 6371000.0; // metres
+        
+        let lat1 = loc1.latitude * .pi / 180
+        let lat2 = loc2.latitude * .pi / 180
+        
+        let lon1 = loc1.longitude * .pi / 180
+        let lon2 = loc2.longitude * .pi / 180
+
+
+        let deltaLat = lat1-lat2
+        let deltaLon = lon1-lon2
+        
+        let a = sin(deltaLat/2) * sin(deltaLat/2) +
+            cos(lat1) * cos(lat2) *
+            sin(deltaLon/2) * sin(deltaLon/2)
+        
+        let c = 2 * atan2(sqrt(a), sqrt(1-a))
+        
+        let d = R * c;
+        
+        return Int(d)
     }
 
 }
