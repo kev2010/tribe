@@ -101,7 +101,7 @@ class User {
             "email": user_info["email"] as! String,
             "dob": (user_info["dob"] as! Timestamp).dateValue(),
             "current_location" : CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
-            "current_event" : user_info["current_event"] as! DocumentReference,
+            "current_event" : user_info["current_event"] as! [DocumentReference],
             "is_private" : user_info["is_private"] as! Bool,
             "friends" :  social["friends"] as! [DocumentReference],
             "blocked" : social["blocked"] as! [DocumentReference],

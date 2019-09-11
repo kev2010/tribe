@@ -88,6 +88,7 @@ class Menu: UIViewController, UITextFieldDelegate {
                 let username = user!.user.displayName!
                 let docRef = self.db.collection("users").document(username)
                 
+                print("test")
                 docRef.getDocument { (document, error) in
                     if let d = document {
                         

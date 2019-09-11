@@ -22,6 +22,8 @@
 		2B8B5B6422F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6522F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6622F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
+		2B98A8D1232423E100FA7895 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D0232423E100FA7895 /* Friend.swift */; };
+		2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D2232427F700FA7895 /* FriendsAPI.swift */; };
 		2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */; };
 		2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
@@ -101,6 +103,8 @@
 		2B7F870022F672A800347911 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedWhiteButton.swift; sourceTree = "<group>"; };
 		2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B98A8D0232423E100FA7895 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		2B98A8D2232427F700FA7895 /* FriendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPI.swift; sourceTree = "<group>"; };
 		2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword.swift; sourceTree = "<group>"; };
 		2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundUIView.swift; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -204,10 +208,10 @@
 				F44CED9022FB3B1B0077138F /* temp UI */,
 				F4B258C322F6E1BB00E12BF4 /* Custom classes */,
 				F4B258C222F6E17800E12BF4 /* Login and Signup */,
-				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
+				2B98A8CF2324238800FA7895 /* Friends */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
+				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				F44CEDC722FD4AB30077138F /* SettingsViewController.swift */,
-				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F44CEDC122FD43450077138F /* FilterViewController.swift */,
@@ -247,6 +251,16 @@
 				8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B98A8CF2324238800FA7895 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
+				2B98A8D0232423E100FA7895 /* Friend.swift */,
+				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
+			);
+			path = Friends;
 			sourceTree = "<group>";
 		};
 		F44CED9022FB3B1B0077138F /* temp UI */ = {
@@ -560,9 +574,11 @@
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
 				2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
+				2B98A8D1232423E100FA7895 /* Friend.swift in Sources */,
 				2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */,
 				F4B258C922F6E96C00E12BF4 /* CircularAnnotationView.swift in Sources */,
 				2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */,
+				2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */,
 				F44CEDC622FD45F30077138F /* AddEventViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

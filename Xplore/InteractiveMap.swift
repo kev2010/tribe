@@ -403,22 +403,42 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     func createRightFriends() {
         //  Add Background gradient
+//        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        rightFriendsView = UIView(frame: f)
+        
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView = UIView(frame: f)
+        rightFriendsView = UITableView(frame: f)
+//        rightFriendsView.alpha = 1
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
         rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
+
         
-        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-        let randomLabel = UILabel(frame: f2)
-        randomLabel.text = "lol you have no friends"
-        randomLabel.textAlignment = .center
+//        let friendsTableView = UIView(frame: f)
+//        friendsTableView.backgroundColor = UIColor.blue
+//        self.view.addSubview(friendsTableView)
+//        friendsTableView.translatesAutoresizingMaskIntoConstraints = false
+//        friendsTableView.topAnchor.constraint(equalTo:view.topAnchor).isActive = true
+//        friendsTableView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
+//        friendsTableView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
+//        friendsTableView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
+
+
         
-        rightFriendsView.addSubview(randomLabel)
+//        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
+//        let randomLabel = UILabel(frame: f2)
+//        randomLabel.text = "lol you have no friends"
+//        randomLabel.textAlignment = .center
+//
+//        rightFriendsView.addSubview(randomLabel)
         self.view.addSubview(rightFriendsView)
         
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
-        rightFriendsView.addGestureRecognizer(gestureRecognizer)
+//        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
+//        rightFriendsView.addGestureRecognizer(gestureRecognizer)
+//        self.view.addSubview(friendsTableView)
+//        self.view.bringSubviewToFront(friendsTableView)
+
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
