@@ -11,13 +11,18 @@ import Mapbox
 import Firebase
 import FirebaseStorage
 
-class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate{
+class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
+    // Used for Settings Screen
+    var window: UIWindow?
+    
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
+    
+    private let friends = FriendsAPI.getFriends() // model
 
     
     //  Bottom tile variables - global
@@ -37,7 +42,7 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     var leftMenuView = UIView()
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-    var rightFriendsView = UIView()
+    var rightFriendsView = UITableView()
     
     var bottomMenu_main = UIButton()
     var bottomMenu_map = UIButton()
@@ -403,22 +408,62 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     
     func createRightFriends() {
         //  Add Background gradient
+//        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        rightFriendsView = UIView(frame: f)
+        let friends = FriendsAPI.getFriends() // model
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView = UIView(frame: f)
+        rightFriendsView = UITableView(frame: f)
+        
+//        rightFriendsView.alpha = 1
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
         rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
-        
-        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-        let randomLabel = UILabel(frame: f2)
-        randomLabel.text = "lol you have no friends"
-        randomLabel.textAlignment = .center
-        
-        rightFriendsView.addSubview(randomLabel)
         self.view.addSubview(rightFriendsView)
+
         
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
-        rightFriendsView.addGestureRecognizer(gestureRecognizer)
+//        rightFriendsView.dataSource = self
+        
+        
+//        let friendsTableView = UIView(frame: f)
+//        friendsTableView.backgroundColor = UIColor.blue
+//        self.view.addSubview(friendsTableView)
+//        rightFriendsView.translatesAutoresizingMaskIntoConstraints = false
+//        rightFriendsView.topAnchor.constraint(equalTo:view.topAnchor).isActive = true
+//        friendsTableView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
+//        friendsTableView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
+//        rightFriendsView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
+
+
+        
+//        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
+//        let randomLabel = UILabel(frame: f2)
+//        randomLabel.text = "lol you have no friends"
+//        randomLabel.textAlignment = .center
+//
+//        rightFriendsView.addSubview(randomLabel)
+//        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
+//        rightFriendsView.addGestureRecognizer(gestureRecognizer)
+        rightFriendsView.dataSource = self
+        rightFriendsView.delegate = self
+        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+//        contactsTableView.register(ContactTableViewCell.self, forCellReuseIdentifier: "contactCell")
+
+
+//        self.view.addSubview(friendsTableView)
+//        self.view.bringSubviewToFront(friendsTableView)
+
+    }
+    
+    //  protocol methods for Friends UITable
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return friends.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
+        cell.textLabel?.text = friends[indexPath.row].name
+        return cell
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -610,8 +655,6 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
             
             
-            
-            
         }
     }
     
@@ -695,6 +738,10 @@ class InteractiveMap: UIViewController, MGLMapViewDelegate, CLLocationManagerDel
     }
     
     @objc func goSettings() {
+        
+        window = UIWindow()
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
         self.performSegue(withIdentifier: "mapToSettings", sender: self)
     }
     

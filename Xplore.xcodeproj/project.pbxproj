@@ -22,9 +22,13 @@
 		2B8B5B6422F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6522F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B8B5B6622F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
+		2B98A8D1232423E100FA7895 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D0232423E100FA7895 /* Friend.swift */; };
+		2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D2232427F700FA7895 /* FriendsAPI.swift */; };
 		2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */; };
 		2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
+		2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5D233570AE006143FD /* SettingsCell.swift */; };
+		2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5F23357CAD006143FD /* SettingsSection.swift */; };
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
 		E402270DE27343D3205C478B /* Pods_XploreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */; };
@@ -101,9 +105,13 @@
 		2B7F870022F672A800347911 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedWhiteButton.swift; sourceTree = "<group>"; };
 		2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B98A8D0232423E100FA7895 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		2B98A8D2232427F700FA7895 /* FriendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPI.swift; sourceTree = "<group>"; };
 		2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword.swift; sourceTree = "<group>"; };
 		2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundUIView.swift; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		2BFDBE5D233570AE006143FD /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		2BFDBE5F23357CAD006143FD /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		47F66CEE35E658A85D423B5A /* Pods-Xplore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplore.release.xcconfig"; path = "Target Support Files/Pods-Xplore/Pods-Xplore.release.xcconfig"; sourceTree = "<group>"; };
 		5EE5D4470D9A32823E16C27A /* Pods-Xplore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplore.debug.xcconfig"; path = "Target Support Files/Pods-Xplore/Pods-Xplore.debug.xcconfig"; sourceTree = "<group>"; };
 		66A6AA4AF24E2BC82359CE28 /* Pods-XploreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreTests.debug.xcconfig"; path = "Target Support Files/Pods-XploreTests/Pods-XploreTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -204,10 +212,10 @@
 				F44CED9022FB3B1B0077138F /* temp UI */,
 				F4B258C322F6E1BB00E12BF4 /* Custom classes */,
 				F4B258C222F6E17800E12BF4 /* Login and Signup */,
+				2B98A8CF2324238800FA7895 /* Friends */,
+				2BFDBE5C23349A85006143FD /* Settings */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
-				F44CEDC722FD4AB30077138F /* SettingsViewController.swift */,
-				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F44CEDC122FD43450077138F /* FilterViewController.swift */,
@@ -247,6 +255,26 @@
 				8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B98A8CF2324238800FA7895 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
+				2B98A8D0232423E100FA7895 /* Friend.swift */,
+				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		2BFDBE5C23349A85006143FD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F44CEDC722FD4AB30077138F /* SettingsViewController.swift */,
+				2BFDBE5D233570AE006143FD /* SettingsCell.swift */,
+				2BFDBE5F23357CAD006143FD /* SettingsSection.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		F44CED9022FB3B1B0077138F /* temp UI */ = {
@@ -544,11 +572,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
 				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
 				F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */,
 				F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */,
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
+				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
@@ -560,9 +590,11 @@
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
 				2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
+				2B98A8D1232423E100FA7895 /* Friend.swift in Sources */,
 				2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */,
 				F4B258C922F6E96C00E12BF4 /* CircularAnnotationView.swift in Sources */,
 				2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */,
+				2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */,
 				F44CEDC622FD45F30077138F /* AddEventViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
