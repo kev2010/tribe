@@ -16,6 +16,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
+    // Used for Settings Screen
+    var window: UIWindow?
+    
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
     
@@ -652,8 +655,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
             
             
-            
-            
         }
     }
     
@@ -737,6 +738,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goSettings() {
+        
+        window = UIWindow()
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
         self.performSegue(withIdentifier: "mapToSettings", sender: self)
     }
     
