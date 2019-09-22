@@ -414,13 +414,17 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UITableView(frame: f)
         
+        rightFriendsView.dataSource = self
+        rightFriendsView.delegate = self
+        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+        
 //        rightFriendsView.alpha = 1
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
 //        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
         rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
         self.view.addSubview(rightFriendsView)
-
+        
         
 //        rightFriendsView.dataSource = self
         
@@ -444,14 +448,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        rightFriendsView.addSubview(randomLabel)
 //        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
 //        rightFriendsView.addGestureRecognizer(gestureRecognizer)
-        rightFriendsView.dataSource = self
-        rightFriendsView.delegate = self
-        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+
 //        contactsTableView.register(ContactTableViewCell.self, forCellReuseIdentifier: "contactCell")
 
 
 //        self.view.addSubview(friendsTableView)
 //        self.view.bringSubviewToFront(friendsTableView)
+        
+        rightFriendsView.reloadData()
 
     }
     
@@ -461,6 +465,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("")
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
         cell.textLabel?.text = friends[indexPath.row].name
         return cell
@@ -678,7 +683,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if currentScreen == .Map {
             showExtraButtons()
+            return
         }
+        
+        
         
         currentScreen = .Map
         
