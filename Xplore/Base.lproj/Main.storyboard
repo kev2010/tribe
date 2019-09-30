@@ -129,6 +129,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bLV-nO-d7A"/>
                     </view>
+                    <navigationItem key="navigationItem" id="gU0-u0-dyh"/>
                     <connections>
                         <outlet property="emailField" destination="0tY-Bb-DCW" id="ORo-W8-yIT"/>
                         <outlet property="invalidLogin" destination="Yns-SW-N76" id="3lf-CM-OfT"/>
@@ -635,7 +636,7 @@
                         <segue destination="Rb0-dy-jcy" kind="presentation" identifier="mainToLogin" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="lIA-OK-nEK"/>
                         <segue destination="9xQ-b7-r4J" kind="presentation" identifier="mapToFilter" id="b5G-fd-nzd"/>
                         <segue destination="fsU-cj-AEO" kind="presentation" identifier="mapToAddEvent" id="s62-2x-ieZ"/>
-                        <segue destination="grN-lF-0dp" kind="presentation" identifier="mapToSettings" id="HLK-0T-eKK"/>
+                        <segue destination="grN-lF-0dp" kind="presentation" identifier="mapToSettings" modalPresentationStyle="fullScreen" id="HLK-0T-eKK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -652,10 +653,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Lnh-Xn-F5v"/>
                     </view>
+                    <navigationItem key="navigationItem" id="zvz-rm-9eB"/>
+                    <connections>
+                        <segue destination="URg-I0-M46" kind="unwind" identifier="unwindToLogin" unwindAction="unwindToLogin:" id="2dl-Mh-X8O"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jpg-yc-GRB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="URg-I0-M46" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-907" y="-645"/>
+            <point key="canvasLocation" x="-930" y="-648"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="91A-oS-BGT">
