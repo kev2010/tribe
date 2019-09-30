@@ -373,8 +373,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
         bottomMenu_map.setImage(UIImage(named: "map.jpg"), for: UIControl.State.normal)
         
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
-        self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
+//        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+//        self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
         
 //        bottomMenu_map_new = UIButton(frame:f3)
 //        bottomMenu_map_new.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
