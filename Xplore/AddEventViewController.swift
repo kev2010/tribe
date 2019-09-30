@@ -82,7 +82,9 @@ class AddEventViewController: UIViewController {
             validate(textView: description_label) &&
             currentUser != nil {
             
-            let tags = generateTags(tags_label.text!)
+            let tags = generateTags(input:tags_label.text!)
+            
+
             
             let newEvent = Event(creator_username: currentUser!.username, title: title_label.text!, description: description_label.text!, startDate: Date(), endDate: Date(), location: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), capacity: -1, visibility: self.visibility_label.text!, tags: tags, attendees: [currentUser!.username])
             
@@ -98,10 +100,19 @@ class AddEventViewController: UIViewController {
         }
         
     }
+//
+//    func generateDate() -> String {
+//        let dateFormatter = DateFormatter()
+//
+//        dateFormatter.dateStyle = .medium
+//        dateFormatter.timeStyle = .none
+//        return dateFormatter.stringFromDate(sender.date)
+//
+//    }
     
     func generateTags(input:String) -> [String] {
         //TODO: What if they type hello, hello2 and have a space too with the comma?
-        let finalTags = input.characters.split{$0 == ","}.map(String.init)
+        let finalTags = input.split{$0 == ","}.map(String.init)
         return finalTags
     }
     

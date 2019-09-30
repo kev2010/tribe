@@ -122,6 +122,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
+                print("found one")
                 for document in querySnapshot!.documents {
                     let e = Event(QueryDocumentSpapshot: document)
                     allEvents.append(e)
@@ -366,12 +367,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_main = UIButton(frame: f2)
         bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
-        bottomMenu_main.setImage(UIImage(named: "home.jpg"), for: UIControl.State.normal)
+        bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
         
         let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_map = UIButton(frame: f3)
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
-        bottomMenu_map.setImage(UIImage(named: "map.jpg"), for: UIControl.State.normal)
+        bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
         self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
@@ -384,7 +385,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
-        bottomMenu_friends.setImage(UIImage(named: "friends.jpg"), for: UIControl.State.normal)
+        bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
 
         
         self.view.addSubview(bottomMenu_main)
@@ -638,7 +639,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK: - Navigation
 
     @objc func goMain() {
-        
+                
         currentScreen = .Main
         
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
@@ -651,13 +652,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
             
-            self.bottomMenu_main.setTitle("MAIN", for: UIControl.State.normal)
-            self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
+            self.bottomMenu_map.setImage(UIImage(named: "map.png"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "100_home.png"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
 
-            self.bottomMenu_main.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
-            self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
             
             
         }
@@ -680,7 +678,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goMap() {
-        
+        print("to map")
         if currentScreen == .Map {
             showExtraButtons()
             return
@@ -694,19 +692,19 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.leftMenuView.frame.origin = CGPoint(x: -self.view.frame.width, y: 0)
             self.mapView.frame.origin = CGPoint(x: 0, y: 0)
             self.rightFriendsView.frame.origin = CGPoint(x: self.view.frame.width, y: 0)
+            
         }) { (true) in
+            
+            self.bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
+
+            
             
             self.view.bringSubviewToFront(self.bottomMenu_main)
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
             
-            self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
-            self.bottomMenu_map.setTitle("+", for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitle("friends", for: UIControl.State.normal)
-
-            self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
-            self.bottomMenu_map.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitleColor(UIColor.white, for: UIControl.State.normal)
             
         }
         
@@ -724,13 +722,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
             
-            self.bottomMenu_main.setTitle("main", for: UIControl.State.normal)
-            self.bottomMenu_map.setTitle("map", for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitle("FRIENDS", for: UIControl.State.normal)
+            self.bottomMenu_map.setImage(UIImage(named: "map.png"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "100_friends.png"), for: UIControl.State.normal)
 
-            self.bottomMenu_main.setTitleColor(UIColor.white, for: UIControl.State.normal)
-            self.bottomMenu_map.setTitleColor(UIColor.white, for: UIControl.State.normal)
-            self.bottomMenu_friends.setTitleColor(UIColor.yellow, for: UIControl.State.normal)
         }
         
         
