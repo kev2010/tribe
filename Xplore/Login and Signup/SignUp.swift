@@ -13,9 +13,6 @@ import Firebase
 import FirebaseStorage
 
 class SignUp: UIViewController, UITextFieldDelegate {
-    
-    @IBOutlet weak var profileIcon: UIImageView!
-    
     //  Outlets for each of the user's inputs into register screen
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
@@ -56,8 +53,6 @@ class SignUp: UIViewController, UITextFieldDelegate {
         emailField.delegate = self
         usernameField.delegate = self
         passwordField.delegate = self
-        
-        profileIcon.setImageColor(color: UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1))
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -134,7 +129,6 @@ class SignUp: UIViewController, UITextFieldDelegate {
             self.usernameShort.alpha = 0.8
             valid = false
         } else {
-            print("over here")
             self.usernameShort.alpha = 0
             
             let characterSet:CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789_.-")
@@ -143,16 +137,13 @@ class SignUp: UIViewController, UITextFieldDelegate {
                 valid = false
             } else {
                 self.usernameInvalid.alpha = 0
-                print("omgomg")
                 
                 let docRef = db.collection("users").document(username)
                 print(username)
                 docRef.getDocument { (document, error) in
                     if let document = document, document.exists {
-                        print("ahhhhhhhhhh")
                         self.usernameTaken.alpha = 0.8
                         valid = false
-                        print("wtf", valid)
                     } else {
                         self.usernameTaken.alpha = 0
                     }
@@ -168,7 +159,6 @@ class SignUp: UIViewController, UITextFieldDelegate {
             self.shortPassword.alpha = 0
         }
         
-        print(valid)
         // If all requirements are good, create the user
         if valid {
             //  Create user on Firebase Authentication
@@ -176,7 +166,6 @@ class SignUp: UIViewController, UITextFieldDelegate {
                 if error == nil && user != nil {
                     //  Send verification email
                     Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                    print("User created!")
                     
                     //  Update displayName and photoURL Firebase Authentication
                     let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
@@ -206,9 +195,6 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     new_user.saveUser()
                     
                     currentUser = new_user
-                    
-                    
-
                     
                     //  Transition to Map Screen
                     self.dismiss(animated: true, completion: nil)

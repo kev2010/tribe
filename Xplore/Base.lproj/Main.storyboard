@@ -60,14 +60,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Goa-V3-PZu">
-                                <rect key="frame" x="131" y="169" width="156" height="142"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="148"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="XPLORE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sfm-uh-EK9">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="tribe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sfm-uh-EK9">
                                 <rect key="frame" x="152" y="262" width="114" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="24"/>
@@ -126,6 +119,14 @@
                                     <action selector="signupTapped:" destination="Rb0-dy-jcy" eventType="touchUpInside" id="xkh-Hy-uED"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tribe4" translatesAutoresizingMaskIntoConstraints="NO" id="zmU-D4-lcO">
+                                <rect key="frame" x="127" y="147" width="165" height="139"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tribe4" translatesAutoresizingMaskIntoConstraints="NO" id="KyG-Mf-FiZ">
+                                <rect key="frame" x="137" y="157" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="bLV-nO-d7A"/>
                     </view>
@@ -411,24 +412,21 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Join the community" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVj-uH-mY2">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Join the community" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVj-uH-mY2">
                                                 <rect key="frame" x="131" y="174" width="152" height="20"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="JQE-kO-v2D">
-                                                <rect key="frame" x="118" y="222" width="178" height="73"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ln-jo-Puc">
-                                                <rect key="frame" x="131" y="62" width="152" height="140"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="100"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tribe4" translatesAutoresizingMaskIntoConstraints="NO" id="W7B-w9-g01">
+                                                <rect key="frame" x="166" y="89" width="82" height="77"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="YnF-uq-Iiz">
+                                                <rect key="frame" x="166" y="220" width="82" height="77"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
                                         </subviews>
                                         <viewLayoutGuide key="safeArea" id="C6c-Q4-Flm"/>
                                     </view>
@@ -454,7 +452,6 @@
                         <outlet property="missingFields" destination="MrG-Z3-Y4V" id="Ivw-Ov-YnC"/>
                         <outlet property="nameField" destination="1cv-Lh-aaX" id="5Xt-rF-sYr"/>
                         <outlet property="passwordField" destination="6oz-Rh-RH9" id="dpr-jk-3wU"/>
-                        <outlet property="profileIcon" destination="JQE-kO-v2D" id="rK9-rv-d7q"/>
                         <outlet property="shortPassword" destination="GZk-6O-b3F" id="IQO-S1-yBc"/>
                         <outlet property="usernameField" destination="uPx-7V-r4p" id="v0d-xb-wxF"/>
                         <outlet property="usernameInvalid" destination="hCW-hk-UxD" id="Dip-tY-Sv5"/>
@@ -464,7 +461,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BZm-XW-lJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1223" y="777"/>
+            <point key="canvasLocation" x="-1223.1884057971015" y="776.78571428571422"/>
         </scene>
         <!--Add Event View Controller-->
         <scene sceneID="u2W-w5-TGs">
@@ -648,7 +645,7 @@
             <objects>
                 <viewController id="grN-lF-0dp" customClass="SettingsViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uCe-FO-Mrq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Lnh-Xn-F5v"/>
@@ -730,11 +727,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Image" width="512" height="512"/>
         <image name="emailIcon" width="512" height="512"/>
         <image name="nameIcon" width="512" height="512"/>
         <image name="passwordIcon" width="512" height="512"/>
         <image name="passwordIcon2" width="759" height="980"/>
-        <image name="profileIcon" width="512" height="512"/>
+        <image name="tribe4" width="120" height="120"/>
         <image name="userIcon" width="512" height="512"/>
     </resources>
 </document>

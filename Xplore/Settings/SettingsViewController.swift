@@ -126,12 +126,22 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             print(description)
             if description == "Log Out" {
                 try! Auth.auth().signOut()
-                self.performSegue(withIdentifier: "unwindToLogin", sender: self)
+//                self.performSegue(withIdentifier: "unwindToLogin", sender: self)
+                //  DEBUG: Attempting to go back to root view controller (login page)
+                _ = self.navigationController?.popToRootViewController(animated: true)
                 
             }
                 
         case .Communications:
-            print(CommunicationOptions(rawValue: indexPath.row)?.description)
+            let description = CommunicationOptions(rawValue: indexPath.row)?.description
+            print(description)
+            if description == "Back" {
+                //  DEBUG: Attempting to go back to home page
+                DispatchQueue.main.async {
+                    print("Waht's going on???")
+                    self.dismiss(animated: true)
+                }
+            }
         }
     }
     

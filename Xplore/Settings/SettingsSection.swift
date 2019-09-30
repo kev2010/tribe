@@ -23,8 +23,8 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
 }
 
 enum SocialOptions: Int, CaseIterable, SectionType {
-    case logout
     case privacy
+    case logout
     
     var containsSwitch: Bool { return false }
     
@@ -57,12 +57,14 @@ enum CommunicationOptions: Int, CaseIterable, SectionType {
 //        }
 //    }
     case contactus
+    case back
     
     var containsSwitch: Bool { return false }
     
     var description: String {
         switch self {
         case .contactus: return "Contact Us"
+        case .back: return "Back"
         }
     }
 }
