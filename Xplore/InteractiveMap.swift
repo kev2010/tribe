@@ -742,9 +742,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @objc func goSettings() {
         
-        window = UIWindow()
-        window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
+        //window = UIWindow()
+        //window?.makeKeyAndVisible()
+        //window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
         self.performSegue(withIdentifier: "mapToSettings", sender: self)
     }
     

@@ -633,32 +633,12 @@
                         <segue destination="Rb0-dy-jcy" kind="presentation" identifier="mainToLogin" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="lIA-OK-nEK"/>
                         <segue destination="9xQ-b7-r4J" kind="presentation" identifier="mapToFilter" id="b5G-fd-nzd"/>
                         <segue destination="fsU-cj-AEO" kind="presentation" identifier="mapToAddEvent" id="s62-2x-ieZ"/>
-                        <segue destination="grN-lF-0dp" kind="presentation" identifier="mapToSettings" modalPresentationStyle="fullScreen" id="HLK-0T-eKK"/>
+                        <segue destination="RUf-GU-ZiP" kind="presentation" identifier="mapToSettings" id="frd-Sc-Oa1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-178" y="37"/>
-        </scene>
-        <!--Settings View Controller-->
-        <scene sceneID="pgF-te-0Dq">
-            <objects>
-                <viewController id="grN-lF-0dp" customClass="SettingsViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="uCe-FO-Mrq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="Lnh-Xn-F5v"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="zvz-rm-9eB"/>
-                    <connections>
-                        <segue destination="URg-I0-M46" kind="unwind" identifier="unwindToLogin" unwindAction="unwindToLogin:" id="2dl-Mh-X8O"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jpg-yc-GRB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="URg-I0-M46" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="-930" y="-648"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="91A-oS-BGT">
@@ -724,6 +704,130 @@
                 </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-178.2608695652174" y="-647.54464285714278"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="eK9-3g-ptc">
+            <objects>
+                <viewController id="RUf-GU-ZiP" customClass="SettingsViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8NR-vJ-EwC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Settings" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lIg-GF-Fh4">
+                                <rect key="frame" x="58" y="20" width="298" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" red="0.0" green="0.71372549019607845" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="36"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="C7Z-fs-Xt8"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="7A2-bq-XF9"/>
+                    <connections>
+                        <outlet property="settingsHeader" destination="lIg-GF-Fh4" id="Z97-t8-v1A"/>
+                        <segue destination="Daf-UV-F5e" kind="unwind" identifier="logout" unwindAction="unwindToLogin:" id="csx-2Y-ady"/>
+                        <segue destination="csX-5Z-tdz" kind="presentation" identifier="toPrivacy" id="DSt-zV-lSa"/>
+                        <segue destination="N8Y-Z1-YtM" kind="presentation" identifier="toToS" id="jZc-hA-ObH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mPv-4N-Vij" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="Daf-UV-F5e" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1036.231884057971" y="-637.5"/>
+        </scene>
+        <!--ToS-->
+        <scene sceneID="zG6-x7-HlP">
+            <objects>
+                <viewController id="N8Y-Z1-YtM" customClass="ToS" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ztr-VB-lDW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Terms of Service" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qlq-R2-k4A">
+                                <rect key="frame" x="62" y="20" width="290" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" red="0.0" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="36"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Ha, gay!" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kq9-Lg-eL3">
+                                <rect key="frame" x="62" y="215" width="244" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-hh-qj1">
+                                <rect key="frame" x="0.0" y="87" width="414" height="755"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="40" id="YL9-4W-qUB">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YL9-4W-qUB" id="Tjz-1p-57h">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="N8Y-Z1-YtM" id="gFO-Sq-wWh"/>
+                                    <outlet property="delegate" destination="N8Y-Z1-YtM" id="Nuk-0Y-ZNw"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="2ai-ua-QuD"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y7r-LS-Ieg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1491.304347826087" y="-1351.3392857142856"/>
+        </scene>
+        <!--Privacy-->
+        <scene sceneID="IfD-GF-dPI">
+            <objects>
+                <viewController id="csX-5Z-tdz" customClass="Privacy" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KhC-LT-tB6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Privacy" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OQP-1y-6Qm">
+                                <rect key="frame" x="58" y="20" width="298" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" red="0.0" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="GeezaPro-Bold" family="Geeza Pro" pointSize="36"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kDV-Qs-gqq">
+                                <rect key="frame" x="0.0" y="87" width="414" height="755"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="40" id="uPv-bi-ErL">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uPv-bi-ErL" id="ePY-IF-0dW">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="csX-5Z-tdz" id="wJB-q4-HMp"/>
+                                    <outlet property="delegate" destination="csX-5Z-tdz" id="Ff5-uT-Rxa"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="fUL-dg-lAn"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jaR-WD-IsB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-581.15942028985512" y="-1351.3392857142856"/>
         </scene>
     </scenes>
     <resources>

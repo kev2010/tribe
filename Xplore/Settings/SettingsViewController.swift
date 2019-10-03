@@ -16,11 +16,17 @@ class SettingsViewController: UIViewController {
     //  MARK: - Properties
     var tableView: UITableView!
 //    var window: UIWindow?
+    @IBOutlet weak var settingsHeader: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        currentUser?.updateUser()
     }
     
     func configureTableView() {
@@ -31,7 +37,7 @@ class SettingsViewController: UIViewController {
         
         tableView.register(SettingsCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
-        tableView.frame = view.frame
+        tableView.frame = CGRect(x: 0, y: 88, width: view.frame.width, height: view.frame.height)
         
         tableView.tableFooterView = UIView()
     }
@@ -40,13 +46,13 @@ class SettingsViewController: UIViewController {
         
         configureTableView()
         
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .default
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-        navigationController?.navigationBar.barTintColor = color1
-        navigationItem.title = "Settings"
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.isTranslucent = false
+//        navigationController?.navigationBar.barStyle = .default
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        navigationController?.navigationBar.barTintColor = color1
+//        navigationItem.title = "Settings"
     }
 
     
@@ -80,7 +86,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
+        view.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         
         print("Section is \(section)")
         
@@ -108,6 +114,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .Social:
             let social = SocialOptions(rawValue: indexPath.row)
             cell.sectionType = social
+            
+            if social?.description == "Log Out" {
+                cell.textLabel?.textColor = .red
+            }
+            
         case .Communications:
             let communications = CommunicationOptions(rawValue: indexPath.row)
             cell.sectionType = communications
@@ -123,23 +134,22 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Social:
             let description = SocialOptions(rawValue: indexPath.row)?.description
-            print(description)
             if description == "Log Out" {
+                currentUser?.updateUser()
                 try! Auth.auth().signOut()
-//                self.performSegue(withIdentifier: "unwindToLogin", sender: self)
-                //  DEBUG: Attempting to go back to root view controller (login page)
-                _ = self.navigationController?.popToRootViewController(animated: true)
-                
+                self.performSegue(withIdentifier: "logout", sender: self)
             }
                 
         case .Communications:
             let description = CommunicationOptions(rawValue: indexPath.row)?.description
-            print(description)
-            if description == "Back" {
-                //  DEBUG: Attempting to go back to home page
-                DispatchQueue.main.async {
-                    print("Waht's going on???")
-                    self.dismiss(animated: true)
+            
+            if description == "Terms of Service" {
+                self.performSegue(withIdentifier: "toToS", sender: self)
+            }
+            
+            if description == "Contact Us!" {
+                if let url = URL(string: "https://orange-gold-zjax.squarespace.com/") {
+                    UIApplication.shared.open(url)
                 }
             }
         }
