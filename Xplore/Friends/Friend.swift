@@ -12,5 +12,5 @@ import FirebaseStorage
 
 struct Friend {
     let name: String?
-    let currentEvent: DocumentReference?
+//    let currentEvent: DocumentReference?
 }

@@ -20,16 +20,17 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        // Do any additional setup after loading the view.
+        configureTableView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
+        //  Update Firebase user data upon exiting settings screen
         currentUser?.updateUser()
     }
     
     func configureTableView() {
+        //  Set up the settings UITable
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -40,19 +41,6 @@ class SettingsViewController: UIViewController {
         tableView.frame = CGRect(x: 0, y: 88, width: view.frame.width, height: view.frame.height)
         
         tableView.tableFooterView = UIView()
-    }
-    
-    func configureUI() {
-        
-        configureTableView()
-        
-//        navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.navigationBar.isTranslucent = false
-//        navigationController?.navigationBar.barStyle = .default
-//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-//        navigationController?.navigationBar.barTintColor = color1
-//        navigationItem.title = "Settings"
     }
 
     
@@ -75,7 +63,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         guard let section = SettingsSection(rawValue: section) else { return 0 }
         
         switch section {

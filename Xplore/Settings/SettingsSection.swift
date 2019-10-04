@@ -44,25 +44,6 @@ enum SocialOptions: Int, CaseIterable, SectionType {
 }
 
 enum CommunicationOptions: Int, CaseIterable, SectionType {
-//    case notifications
-//    case email
-//    case reportCrashes
-//
-//    var containsSwitch: Bool {
-//        switch self {
-//        case .notifications: return true
-//        case .email: return true
-//        case .reportCrashes: return true
-//        }
-//    }
-//
-//    var description: String {
-//        switch self {
-//        case .notifications: return "Notifications"
-//        case .email: return "Email"
-//        case .reportCrashes: return "Report Crashes"
-//        }
-//    }
     case tos
     case contactus
     

@@ -16,13 +16,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
-    // Used for Settings Screen
+    //  Used for Settings Screen
     var window: UIWindow?
     
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
     
-    private let friends = FriendsAPI.getFriends() // model
+    //  Used for Friends Screen
+    private var friends:[Friend] = []
 
     
     //  Bottom tile variables - global
@@ -92,6 +93,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        friends = FriendsAPI.getFriends() // model
         
         self.createThreeViewUI()
         
@@ -166,10 +169,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func createLeftMenu() {
         
         //  Logout Button - move to settings in future
-        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
-        let logout_button = UIButton(frame: f3)
-        logout_button.setTitle("Logout", for: UIControl.State.normal)
-        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
+//        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
+//        let logout_button = UIButton(frame: f3)
+//        logout_button.setTitle("Logout", for: UIControl.State.normal)
+//        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
         
         //  Create the top background
         let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
@@ -345,7 +348,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         leftMenuView.addSubview(usernamelabel)
         leftMenuView.addSubview(bookmarklabel)
         leftMenuView.addSubview(bookmarkpic)
-        leftMenuView.addSubview(logout_button)
         self.view.addSubview(leftMenuView)
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
@@ -411,19 +413,21 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Add Background gradient
 //        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
 //        rightFriendsView = UIView(frame: f)
-        let friends = FriendsAPI.getFriends() // model
+        
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UITableView(frame: f)
         
         rightFriendsView.dataSource = self
         rightFriendsView.delegate = self
-        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+//        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
         
+       
 //        rightFriendsView.alpha = 1
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
 //        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
-        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
+//        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
+//        rightFriendsView.backgroundColor = color1
         self.view.addSubview(rightFriendsView)
         
         
@@ -456,20 +460,31 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        self.view.addSubview(friendsTableView)
 //        self.view.bringSubviewToFront(friendsTableView)
         
-        rightFriendsView.reloadData()
+//        rightFriendsView.reloadData()
 
     }
     
     //  protocol methods for Friends UITable
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("ugh")
+        print(friends.count)
         return friends.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
+        print("ahh")
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        print(friends[indexPath.row].name)
         cell.textLabel?.text = friends[indexPath.row].name
+        rightFriendsView.bringSubviewToFront(cell)
+        view.bringSubviewToFront(rightFriendsView)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(friends[indexPath.row].name)
+        self.goMap()
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -622,7 +637,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func saveUserLocation() {
-        
         if !(currentLocation.latitude == previousLocation.latitude && currentLocation.longitude == previousLocation.longitude){
             
             previousLocation = currentLocation
