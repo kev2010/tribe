@@ -24,6 +24,7 @@
 		2B8B5B6622F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
 		2B907C9F23454D3F0021EF98 /* Privacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B907C9E23454D3F0021EF98 /* Privacy.swift */; };
 		2B907CA3234575DA0021EF98 /* ToS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B907CA2234575DA0021EF98 /* ToS.swift */; };
+		2B907CA5234888170021EF98 /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B907CA4234888170021EF98 /* FriendsCell.swift */; };
 		2B98A8D1232423E100FA7895 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D0232423E100FA7895 /* Friend.swift */; };
 		2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D2232427F700FA7895 /* FriendsAPI.swift */; };
 		2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */; };
@@ -112,6 +113,7 @@
 		2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B907C9E23454D3F0021EF98 /* Privacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Privacy.swift; sourceTree = "<group>"; };
 		2B907CA2234575DA0021EF98 /* ToS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToS.swift; sourceTree = "<group>"; };
+		2B907CA4234888170021EF98 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		2B98A8D0232423E100FA7895 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		2B98A8D2232427F700FA7895 /* FriendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPI.swift; sourceTree = "<group>"; };
 		2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
+				2B907CA4234888170021EF98 /* FriendsCell.swift */,
 				2B98A8D0232423E100FA7895 /* Friend.swift */,
 				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
 			);
@@ -609,6 +612,7 @@
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
 				2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
+				2B907CA5234888170021EF98 /* FriendsCell.swift in Sources */,
 				2B98A8D1232423E100FA7895 /* Friend.swift in Sources */,
 				2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */,
 				F4B258C922F6E96C00E12BF4 /* CircularAnnotationView.swift in Sources */,

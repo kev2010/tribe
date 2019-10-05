@@ -95,6 +95,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         friends = FriendsAPI.getFriends() // model
+        print("What's going on?")
+        print(friends)
         
         self.createThreeViewUI()
         
@@ -209,7 +211,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
-        print("ack", Auth.auth().currentUser!.uid)
         ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
             if let error = error {
                 print("Error in retrieving image: \(error.localizedDescription)")
@@ -413,22 +414,23 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Add Background gradient
 //        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
 //        rightFriendsView = UIView(frame: f)
-        
-        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView = UITableView(frame: f)
+        rightFriendsView = UITableView()
         
         rightFriendsView.dataSource = self
         rightFriendsView.delegate = self
-//        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+        rightFriendsView.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
         
        
 //        rightFriendsView.alpha = 1
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
 //        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
 //        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
 //        rightFriendsView.backgroundColor = color1
         self.view.addSubview(rightFriendsView)
+        rightFriendsView.frame = CGRect(x: self.view.frame.width, y: 200, width: self.view.frame.width, height: self.view.frame.height)
+        rightFriendsView.tableFooterView = UIView()
+        
         
         
 //        rightFriendsView.dataSource = self
@@ -471,12 +473,17 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         return friends.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+       return 100
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("ahh")
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
+//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         print(friends[indexPath.row].name)
-        cell.textLabel?.text = friends[indexPath.row].name
+//        cell.textLabel?.text = friends[indexPath.row].name
+        cell.friend = friends[indexPath.row]
         rightFriendsView.bringSubviewToFront(cell)
         view.bringSubviewToFront(rightFriendsView)
         return cell
