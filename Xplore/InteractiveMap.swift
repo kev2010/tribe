@@ -23,7 +23,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
     
     //  Used for Friends Screen
-    private var friends:[Friend] = []
+    var friends:[Friend] = []
 
     
     //  Bottom tile variables - global
@@ -94,7 +94,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         super.viewDidLoad()
         
-        friends = FriendsAPI.getFriends() // model
+        FriendsAPI.getFriends() // model
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
+        
         print("What's going on?")
         print(friends)
         
@@ -117,6 +120,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    @objc func onDidReceiveData(_ notification:Notification) {
+        if let data = notification.object as? [Friend]
+        {
+            friends = data
+            rightFriendsView.reloadData()
+        }
+                
+    }
     
     func loadAndAddEvents(){
         
@@ -175,7 +186,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        let logout_button = UIButton(frame: f3)
 //        logout_button.setTitle("Logout", for: UIControl.State.normal)
 //        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
-        
+
         //  Create the top background
         let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
         topbackground.layer.cornerRadius = topbackground.bounds.height/2
@@ -481,6 +492,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         print("ahh")
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
 //        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        print("**")
         print(friends[indexPath.row].name)
 //        cell.textLabel?.text = friends[indexPath.row].name
         cell.friend = friends[indexPath.row]

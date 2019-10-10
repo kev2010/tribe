@@ -11,7 +11,7 @@ import Firebase
 import FirebaseStorage
 
 class FriendsAPI {
-    static func getFriends() -> [Friend]{
+    static func getFriends(){
         var friends : [Friend] = []
         for friend in currentUser!.friends{
             print("big yikes")
@@ -37,6 +37,7 @@ class FriendsAPI {
                             print("Got the image!")
                             image = UIImage(data: data!)!
                         }
+                        
                     }
                     
                     //  Check if friend has a current event
@@ -44,6 +45,8 @@ class FriendsAPI {
                         print("no current event!")
                         //  Add friend struct to list with no current event
                         friends.append(Friend(picture: image, name: name, currentEvent: ""))
+                        print("posted")
+                        NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                     } else {
                         print("has current event!")
                         //  Retrieve friend's current event
@@ -56,13 +59,18 @@ class FriendsAPI {
                         }
                         //  Add friend struct to list
                         friends.append(Friend(picture: image, name: name, currentEvent: event))
+                        NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                     }
+                    
+                    print("fappy")
                 } else {
                     print("Friend Document does not exist")
                 }
+                
             }
+            print("bap")
+
         }
         
-        return friends
     }
 }
