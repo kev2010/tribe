@@ -16,13 +16,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
-    // Used for Settings Screen
+    //  Used for Settings Screen
     var window: UIWindow?
     
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
     
-    private let friends = FriendsAPI.getFriends() // model
+    //  Used for Friends Screen
+    var friends:[Friend] = []
 
     
     //  Bottom tile variables - global
@@ -93,6 +94,13 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         super.viewDidLoad()
         
+        FriendsAPI.getFriends() // model
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
+        
+        print("What's going on?")
+        print(friends)
+        
         self.createThreeViewUI()
         
         loadAndAddEvents()
@@ -112,6 +120,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    @objc func onDidReceiveData(_ notification:Notification) {
+        if let data = notification.object as? [Friend]
+        {
+            friends = data
+            rightFriendsView.reloadData()
+        }
+                
+    }
     
     func loadAndAddEvents(){
         
@@ -166,11 +182,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func createLeftMenu() {
         
         //  Logout Button - move to settings in future
-        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
-        let logout_button = UIButton(frame: f3)
-        logout_button.setTitle("Logout", for: UIControl.State.normal)
-        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
-        
+//        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
+//        let logout_button = UIButton(frame: f3)
+//        logout_button.setTitle("Logout", for: UIControl.State.normal)
+//        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
+
         //  Create the top background
         let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
         topbackground.layer.cornerRadius = topbackground.bounds.height/2
@@ -206,7 +222,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
-        print("ack", Auth.auth().currentUser!.uid)
         ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
             if let error = error {
                 print("Error in retrieving image: \(error.localizedDescription)")
@@ -345,7 +360,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         leftMenuView.addSubview(usernamelabel)
         leftMenuView.addSubview(bookmarklabel)
         leftMenuView.addSubview(bookmarkpic)
-        leftMenuView.addSubview(logout_button)
         self.view.addSubview(leftMenuView)
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
@@ -411,20 +425,23 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Add Background gradient
 //        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
 //        rightFriendsView = UIView(frame: f)
-        let friends = FriendsAPI.getFriends() // model
-        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView = UITableView(frame: f)
+        rightFriendsView = UITableView()
         
         rightFriendsView.dataSource = self
         rightFriendsView.delegate = self
-        rightFriendsView.register(UITableViewCell.self, forCellReuseIdentifier: "friendCell")
+        rightFriendsView.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
         
+       
 //        rightFriendsView.alpha = 1
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
 //        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
-        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
+//        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
+//        rightFriendsView.backgroundColor = color1
         self.view.addSubview(rightFriendsView)
+        rightFriendsView.frame = CGRect(x: self.view.frame.width, y: 200, width: self.view.frame.width, height: self.view.frame.height)
+        rightFriendsView.tableFooterView = UIView()
+        
         
         
 //        rightFriendsView.dataSource = self
@@ -456,20 +473,37 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        self.view.addSubview(friendsTableView)
 //        self.view.bringSubviewToFront(friendsTableView)
         
-        rightFriendsView.reloadData()
+//        rightFriendsView.reloadData()
 
     }
     
     //  protocol methods for Friends UITable
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("ugh")
+        print(friends.count)
         return friends.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+       return 100
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
-        cell.textLabel?.text = friends[indexPath.row].name
+        print("ahh")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
+//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        print("**")
+        print(friends[indexPath.row].name)
+//        cell.textLabel?.text = friends[indexPath.row].name
+        cell.friend = friends[indexPath.row]
+        rightFriendsView.bringSubviewToFront(cell)
+        view.bringSubviewToFront(rightFriendsView)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(friends[indexPath.row].name)
+        self.goMap()
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -622,7 +656,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func saveUserLocation() {
-        
         if !(currentLocation.latitude == previousLocation.latitude && currentLocation.longitude == previousLocation.longitude){
             
             previousLocation = currentLocation
@@ -742,9 +775,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @objc func goSettings() {
         
-        window = UIWindow()
-        window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
+        //window = UIWindow()
+        //window?.makeKeyAndVisible()
+        //window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
         self.performSegue(withIdentifier: "mapToSettings", sender: self)
     }
     

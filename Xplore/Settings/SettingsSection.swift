@@ -23,46 +23,36 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
 }
 
 enum SocialOptions: Int, CaseIterable, SectionType {
-    case logout
     case privacy
+    case logout
     
-    var containsSwitch: Bool { return false }
+    var containsSwitch: Bool {
+        switch self {
+        case .privacy:
+            return true
+        default:
+            return false
+        }
+    }
     
     var description: String {
         switch self {
-        case .privacy: return "Privacy"
+        case .privacy: return "Hide Location"
         case .logout: return "Log Out"
         }
     }
 }
 
 enum CommunicationOptions: Int, CaseIterable, SectionType {
-//    case notifications
-//    case email
-//    case reportCrashes
-//
-//    var containsSwitch: Bool {
-//        switch self {
-//        case .notifications: return true
-//        case .email: return true
-//        case .reportCrashes: return true
-//        }
-//    }
-//
-//    var description: String {
-//        switch self {
-//        case .notifications: return "Notifications"
-//        case .email: return "Email"
-//        case .reportCrashes: return "Report Crashes"
-//        }
-//    }
+    case tos
     case contactus
     
     var containsSwitch: Bool { return false }
     
     var description: String {
         switch self {
-        case .contactus: return "Contact Us"
+        case .tos: return "Terms of Service"
+        case .contactus: return "Contact Us!"
         }
     }
 }
