@@ -22,7 +22,7 @@ class SettingsCell: UITableViewCell {
     
     lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
-        switchControl.isOn = true
+        switchControl.isOn = currentUser!.isPrivate
         switchControl.onTintColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
@@ -47,9 +47,9 @@ class SettingsCell: UITableViewCell {
     
     @objc func handleSwitchAction(sender: UISwitch) {
         if sender.isOn {
-            print("Turned on")
+            currentUser?.isPrivate = true
         } else {
-            print("Turned off")
+            currentUser?.isPrivate = false
         }
     }
     

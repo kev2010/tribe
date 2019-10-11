@@ -11,6 +11,7 @@ import Firebase
 import FirebaseStorage
 
 struct Friend {
+    let picture: UIImage?
     let name: String?
-    let currentEvent: DocumentReference?
+    let currentEvent: String?
 }
