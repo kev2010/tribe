@@ -656,8 +656,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.bottomMenu_main.setImage(UIImage(named: "100_home.png"), for: UIControl.State.normal)
             self.bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
 
-            
-            
         }
     }
     

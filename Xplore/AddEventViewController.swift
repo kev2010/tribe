@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import Mapbox
+import CoreLocation
 
 class AddEventViewController: UIViewController {
 
@@ -84,9 +85,36 @@ class AddEventViewController: UIViewController {
             
             let tags = generateTags(input:tags_label.text!)
             
-
+            // Create Address String
             
-            let newEvent = Event(creator_username: currentUser!.username, title: title_label.text!, description: description_label.text!, startDate: Date(), endDate: Date(), location: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), capacity: -1, visibility: self.visibility_label.text!, tags: tags, attendees: [currentUser!.username])
+            var newLocation = CLLocationCoordinate2D()
+            // Geocode Address String
+            
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(location.text!) { (placemarks, error) in
+                if let error = error {
+                    print("Unable to Forward Geocode Address (\(error))")
+
+                } else {
+                    var location: CLLocation?
+
+                    if let placemarks = placemarks, placemarks.count > 0 {
+                        location = placemarks.first?.location
+                    }
+
+                    if let location = location {
+                        let coordinate = location.coordinate
+                        newLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                        
+                    } else {
+                        print("No matching locations found")
+                    }
+                }
+            }
+
+            print("start date below:")
+            print(start_label.text!)
+            let newEvent = Event(creator_username: currentUser!.username, title: title_label.text!, description: description_label.text!, startDate: Date(), endDate: Date(), location: newLocation, capacity: -1, visibility: self.visibility_label.text!, tags: tags, attendees: [currentUser!.username])
             
             print(newEvent.generate_information_map())
             
