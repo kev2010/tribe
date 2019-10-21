@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseStorage
+import UIKit
 
 struct Friend {
     let picture: UIImage?
