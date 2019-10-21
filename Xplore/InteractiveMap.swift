@@ -11,7 +11,7 @@ import Mapbox
 import Firebase
 import FirebaseStorage
 
-class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
+class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     let db = Firestore.firestore()
@@ -24,7 +24,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //  Used for Friends Screen
     var friends:[Friend] = []
-
+    var filteredfriends:[Friend] = []
+    var friendtable = UITableView()
+    var friendsearch = UISearchBar()
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -43,7 +45,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var leftMenuView = UIView()
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-    var rightFriendsView = UITableView()
+    var rightFriendsView = UIView()
     
     var bottomMenu_main = UIButton()
     var bottomMenu_map = UIButton()
@@ -95,6 +97,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         FriendsAPI.getFriends() // model
+        filteredfriends = friends
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
         
@@ -124,7 +127,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if let data = notification.object as? [Friend]
         {
             friends = data
-            rightFriendsView.reloadData()
+            filteredfriends = friends
+            friendtable.reloadData()
         }
                 
     }
@@ -197,7 +201,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Create the bottom background
         let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        let f = CGRect(x: -self.view.frame.width, y: self.view.frame.height/2, width: 400, height: 400)
         leftMenuView = UIView(frame: f)
+//        leftMenuView.backgroundColor = .black
         leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
 //        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
@@ -422,66 +428,52 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func createRightFriends() {
-        //  Add Background gradient
-//        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        rightFriendsView = UIView(frame: f)
-        rightFriendsView = UITableView()
-        
-        rightFriendsView.dataSource = self
-        rightFriendsView.delegate = self
-        rightFriendsView.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
-        
-       
-//        rightFriendsView.alpha = 1
+        //  Set up rightFriendsView
+        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        rightFriendsView = UIView(frame: f)
 //        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-//        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
-//        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
-//        rightFriendsView.backgroundColor = color1
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        rightFriendsView.backgroundColor = color2
+        
+        //  Add Friends screen title
+        let friendsHeader = UILabel()
+        friendsHeader.text = "Friends"
+        friendsHeader.frame = CGRect(x: 19, y: 60, width: rightFriendsView.frame.width, height: 49)
+        friendsHeader.font = UIFont(name: "GeezaPro-Bold", size: 36)
+        friendsHeader.textColor = .white
+        rightFriendsView.addSubview(friendsHeader)
+        
+        //  Add add friend button
+        let add = UIButton()
+        add.frame = CGRect(x: rightFriendsView.frame.width-60, y: 55, width: 49, height: 49)
+        add.addTarget(self, action: #selector(self.addFriend), for: UIControl.Event.touchDown)
+        add.setTitle("+", for: UIControl.State.normal)
+        add.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 42)
+        add.titleLabel?.textAlignment = .center
+        rightFriendsView.addSubview(add)
+        
+        //  Set up friend uitable
+        friendtable.dataSource = self
+        friendtable.delegate = self
+        friendtable.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
+        rightFriendsView.addSubview(friendtable)
+        friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height)
+        friendtable.tableFooterView = UIView()
+        
+        //  Set up search bar
+        friendsearch.delegate = self
+        friendsearch.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5-friendsearch.frame.height-55, width: rightFriendsView.frame.width, height: 56)
+        friendsearch.backgroundColor = .white
+        rightFriendsView.addSubview(friendsearch)
+        
         self.view.addSubview(rightFriendsView)
-        rightFriendsView.frame = CGRect(x: self.view.frame.width, y: 200, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView.tableFooterView = UIView()
-        
-        
-        
-//        rightFriendsView.dataSource = self
-        
-        
-//        let friendsTableView = UIView(frame: f)
-//        friendsTableView.backgroundColor = UIColor.blue
-//        self.view.addSubview(friendsTableView)
-//        rightFriendsView.translatesAutoresizingMaskIntoConstraints = false
-//        rightFriendsView.topAnchor.constraint(equalTo:view.topAnchor).isActive = true
-//        friendsTableView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
-//        friendsTableView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-//        rightFriendsView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
-
-
-        
-//        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-//        let randomLabel = UILabel(frame: f2)
-//        randomLabel.text = "lol you have no friends"
-//        randomLabel.textAlignment = .center
-//
-//        rightFriendsView.addSubview(randomLabel)
-//        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
-//        rightFriendsView.addGestureRecognizer(gestureRecognizer)
-
-//        contactsTableView.register(ContactTableViewCell.self, forCellReuseIdentifier: "contactCell")
-
-
-//        self.view.addSubview(friendsTableView)
-//        self.view.bringSubviewToFront(friendsTableView)
-        
-//        rightFriendsView.reloadData()
-
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
+        rightFriendsView.addGestureRecognizer(gestureRecognizer)
     }
     
     //  protocol methods for Friends UITable
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("ugh")
-        print(friends.count)
-        return friends.count
+        return filteredfriends.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -489,21 +481,53 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("ahh")
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
-//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        print("**")
-        print(friends[indexPath.row].name)
-//        cell.textLabel?.text = friends[indexPath.row].name
-        cell.friend = friends[indexPath.row]
-        rightFriendsView.bringSubviewToFront(cell)
-        view.bringSubviewToFront(rightFriendsView)
+        cell.friend = filteredfriends[indexPath.row]
+        friendtable.bringSubviewToFront(cell)
+        view.bringSubviewToFront(friendtable)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(friends[indexPath.row].name)
+        self.searchBarCancelButtonClicked(friendsearch)
         self.goMap()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //  If there is no text, filteredfriends is the same as original friends
+        filteredfriends = searchText.isEmpty ? friends : friends.filter { (item: Friend) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.name!.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        
+        friendtable.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        friendsearch.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        friendsearch.showsCancelButton = false
+        friendsearch.text = ""
+        friendsearch.resignFirstResponder()
+        friendsearch.endEditing(true)
+        filteredfriends = friends   // Is there a way to not do this?
+        friendtable.reloadData()
+    }
+    
+    @objc func addFriend(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
+        print("Coming soon!")
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {

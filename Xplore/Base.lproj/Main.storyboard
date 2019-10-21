@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -136,7 +136,7 @@
                         <outlet property="invalidLogin" destination="Yns-SW-N76" id="3lf-CM-OfT"/>
                         <outlet property="passwordField" destination="8mD-cS-C4J" id="NNK-Q9-O2d"/>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="toMain" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="oje-5e-kVj"/>
-                        <segue destination="1KD-3q-1Ms" kind="show" identifier="toSignUpScreen" id="iVe-4d-t32"/>
+                        <segue destination="1KD-3q-1Ms" kind="presentation" identifier="toSignUpScreen" modalPresentationStyle="fullScreen" id="iVe-4d-t32"/>
                         <segue destination="2Et-zP-0px" kind="show" identifier="toForgetPassword" id="Wm0-dR-mNf"/>
                     </connections>
                 </viewController>
@@ -253,7 +253,7 @@
             <objects>
                 <viewController id="1KD-3q-1Ms" customClass="SignUp" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0RG-Ca-fvN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zbJ-3S-0e8">

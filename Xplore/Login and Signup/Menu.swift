@@ -98,7 +98,6 @@ class Menu: UIViewController, UITextFieldDelegate {
                     
                     self.invalidLogin.alpha = 0.8
                     print("Error logging in")
-                    assert(1==2)
                     }
                 }
                 
@@ -149,7 +148,6 @@ class Menu: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         //  Check if user is already signed in
         if Auth.auth().currentUser != nil{
             let user = Auth.auth().currentUser!
@@ -158,17 +156,19 @@ class Menu: UIViewController, UITextFieldDelegate {
             }
             let username = user.displayName!
             let docRef = self.db.collection("users").document(username)
-            
             docRef.getDocument { (document, error) in
                 if let d = document {
                     currentUser = User(DocumentSnapshot: d)
                     self.performSegue(withIdentifier: "toMain", sender: self)
-                    
                 }
-            
+            }
         }
-    }
         
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.emailField.text = nil
+        self.passwordField.text = nil
     }
     /*
     // MARK: - Navigation
