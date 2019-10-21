@@ -130,10 +130,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
-        print("oh boi")
         if let data = notification.object as? [Friend]
         {
-            print("god")
             friends = data
             filteredfriends = friends
             friendtable.reloadData()
@@ -141,8 +139,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if let data = notification.object as? [Bookmark]
         {
-            print("yeet")
-            print(data)
             bookmarks = data
             bookmarksTable.reloadData()
         }
@@ -235,15 +231,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         leftMenuView.addSubview(settings_button)
         
         //  Add "Bookmarked Events" title
-        let bookmarklabel = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
-        let bookmarkpic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-        bookmarklabel.text = "Bookmarked Events"
-        bookmarklabel.textAlignment = .center
-        bookmarklabel.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
-        bookmarklabel.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
-        bookmarkpic.image = UIImage(named: "bookmark")
-        leftMenuView.addSubview(bookmarklabel)
-        leftMenuView.addSubview(bookmarkpic)
+        let bookmark_label = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
+        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+        bookmark_label.text = "Bookmarked Events"
+        bookmark_label.textAlignment = .center
+        bookmark_label.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        bookmark_label.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
+        bookmark_pic.image = UIImage(named: "bookmark")
+        leftMenuView.addSubview(bookmark_label)
+        leftMenuView.addSubview(bookmark_pic)
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
@@ -296,11 +292,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.dataSource = self
         bookmarksTable.delegate = self
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
-        print("asdffdsa")
         leftMenuView.addSubview(bookmarksTable)
-        bookmarksTable.frame = CGRect(x: 0, y: 2*leftMenuView.frame.height/3, width: leftMenuView.frame.width, height: rightFriendsView.frame.height/2)  //  Need to change frame later
+        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/4)  //  Need to change frame later
         bookmarksTable.tableFooterView = UIView()
-        print("ww/W")
+        bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         
         //  Sort by start date? - Might want to customize sorting in the future
@@ -419,16 +414,25 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         rightFriendsView.addGestureRecognizer(gestureRecognizer)
     }
     
-    //  protocol methods for Friends UITable
+    //  protocol methods for Friends and BookmarkedEvents Tables
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if tableView == bookmarksTable {
+            return bookmarks.count
+        }
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == friendtable {
             return filteredfriends.count
-        } else if tableView == bookmarksTable {
-            print("yike")
-            print(bookmarks.count)
-            return bookmarks.count
         }
-        print("lmao")
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView == bookmarksTable {
+            return 5
+        }
         return 0
     }
     
@@ -437,15 +441,21 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if tableView == friendtable {
             return 100
         } else if tableView == bookmarksTable {
-            print("kebg")
-            return 100
+            return 75
         }
-        print("ooooo")
         return 10
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == bookmarksTable {
+            let headerView = UIView()
+            headerView.backgroundColor = UIColor.clear
+            return headerView
+        }
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("summm")
         if tableView == friendtable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
             cell.friend = filteredfriends[indexPath.row]
@@ -453,14 +463,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             view.bringSubviewToFront(friendtable)
             return cell
         } else if tableView == bookmarksTable {
-            print("wya")
             let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkCell
-            cell.bookmark = bookmarks[indexPath.row]
+            cell.bookmark = bookmarks[indexPath.section]
+            cell.layer.cornerRadius = 25
+            cell.layer.masksToBounds = true
+            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
             bookmarksTable.bringSubviewToFront(cell)
             view.bringSubviewToFront(bookmarksTable)
             return cell
         }
-        print("what")
         return UITableViewCell()
     }
     
@@ -469,7 +480,19 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.searchBarCancelButtonClicked(friendsearch)
             self.goMap()
         } else if tableView == bookmarksTable {
+            let cell = bookmarks[indexPath.section]
             self.goMap()
+            guard let location = cell.event?.location else { return }
+            guard let title = cell.event?.title else { return }
+            guard let capacity = cell.event?.capacity else { return }
+            guard let description = cell.event?.description else { return }
+            
+            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
+//            mapView(self.mapView, imageFor: point)
+//            mapView(self.mapView, didSelect: point)
+            self.mapView.selectAnnotation(point, animated: true) {
+            }
+            bookmarksTable.reloadData()
         }
     }
     
@@ -587,18 +610,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         if let point = annotation as? CustomPointAnnotation {
-            
+
             if topTileShowing {
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
             }
             else {
-                
+
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
-                
+
                 showTopTile(show: true)
                 topTileShowing = true
             }
@@ -870,7 +893,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
-        
+
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
         

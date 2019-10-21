@@ -20,16 +20,17 @@ class BookmarksAPI {
         for eventRef in currentUser!.eventsUserBookmarked {
             eventRef.getDocument { (document, error) in
                 if let document = document, document.exists {
-                    //  Retrieve/initialize relevant event information
-                    let icon = UIImage()  //  need to update picture
-                    let title = (document.data()!["information"] as! [String:Any])["title"] as! String
-                    let creator = document.data()!["creator_username"] as! DocumentReference
+                    let event = Event(DocumentSnapshot: document)
+//                    //  Retrieve/initialize relevant event information
+////                    let icon = UIImage()  //  need to update picture
+//                    let title = (document.data()!["information"] as! [String:Any])["title"] as! String
+//                    let creator = document.data()!["creator_username"] as! DocumentReference
                     var username = ""
-//                    let date = (document.data()!["information"] as! [String:Any])["startDate"] as! Timestamp
-                    
+////                    let date = (document.data()!["information"] as! [String:Any])["startDate"] as! Timestamp
+//
                     //  Retrieve creator's username
                     info.enter()
-                    creator.getDocument { (document, error) in
+                    event.creator_username.getDocument { (document, error) in
                         if let document = document, document.exists {
                             username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
                         } else {
@@ -37,10 +38,10 @@ class BookmarksAPI {
                         }
                         info.leave()
                     }
-                    
+//
                     //  Add Bookmark struct to bookmarks list
                     info.notify(queue: DispatchQueue.main) {
-                        bookmarks.append(Bookmark(picture: icon, title: title, creator: username))
+                        bookmarks.append(Bookmark(creator: username, event: event))
                         NotificationCenter.default.post(name: Notification.Name("didDownloadBookmarks"), object: bookmarks)
                     }
                 } else {

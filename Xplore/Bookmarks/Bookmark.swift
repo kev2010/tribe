@@ -10,8 +10,9 @@ import Foundation
 import UIKit
 
 struct Bookmark {
-    let picture: UIImage?
-    let title: String?
+//    let picture: UIImage?
+//    let title: String?
     let creator: String?
 //    let date: Date?
+    let event: Event?
 }

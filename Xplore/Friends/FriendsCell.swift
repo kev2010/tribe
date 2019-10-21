@@ -98,8 +98,6 @@ class FriendsCell: UITableViewCell {
         //  current event label auto layout constraints
         currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor).isActive = true
         currentEventLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
-        currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor).isActive = true
-        currentEventLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
      }
     
     required init?(coder aDecoder: NSCoder) {

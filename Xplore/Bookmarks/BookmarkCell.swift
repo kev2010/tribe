@@ -13,14 +13,12 @@ class BookmarkCell: UITableViewCell {
     //  Initializers for bookmark cell
     var bookmark:Bookmark? {
         didSet {
-            print("1")
             guard let bookmarkItem = bookmark else {return}
-            if let picture = bookmarkItem.picture {
-                eventImageView.image = picture
-            }
-            print("2")
+//            if let picture = bookmarkItem.picture {
+//                eventImageView.image = picture
+//            }
             
-            if let title = bookmarkItem.title {
+            if let title = bookmarkItem.event?.title {
                 titleLabel.text = title
             }
             if let creator = bookmarkItem.creator {
@@ -44,15 +42,14 @@ class BookmarkCell: UITableViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
         img.layer.cornerRadius = 35
         img.clipsToBounds = true
-        print("uh oh!!!!")
        return img
     }()
     
     //  Title of Event
     let titleLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .black
+        label.font = UIFont(name: "GeezaPro-Bold", size: 16)
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -60,11 +57,11 @@ class BookmarkCell: UITableViewCell {
     //  Username of creator
     let creatorLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor =  .white
-        label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
-        label.layer.cornerRadius = 5
-        label.clipsToBounds = true
+//        label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+//        label.layer.cornerRadius = 5
+//        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -88,8 +85,9 @@ class BookmarkCell: UITableViewCell {
         
         //  containerview auto layout constraints
         containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo:self.eventImageView.trailingAnchor, constant:10).isActive = true
-        containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
+        containerView.centerXAnchor.constraint(equalTo:self.contentView.centerXAnchor).isActive = true
+//        containerView.leadingAnchor.constraint(equalTo:self.eventImageView.trailingAnchor, constant:10).isActive = true
+//        containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
         containerView.heightAnchor.constraint(equalToConstant:40).isActive = true
         
         //  title label auto layout constraints
@@ -99,9 +97,7 @@ class BookmarkCell: UITableViewCell {
         
         //  creator label auto layout constraints
         creatorLabel.topAnchor.constraint(equalTo:self.titleLabel.bottomAnchor).isActive = true
-        creatorLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
-        creatorLabel.topAnchor.constraint(equalTo:self.titleLabel.bottomAnchor).isActive = true
-        creatorLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
+        creatorLabel.centerXAnchor.constraint(equalTo:self.containerView.centerXAnchor).isActive = true
      }
     
     required init?(coder aDecoder: NSCoder) {
