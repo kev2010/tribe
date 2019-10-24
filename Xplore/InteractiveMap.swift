@@ -32,6 +32,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
     
+    //  Used for Interactive Map Screen
+    var timer = Timer()
+    
     //  Bottom tile variables - global
     var topTileShowing = false
     var topTile = UIView()
@@ -97,10 +100,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        //  Set Up relevant Friends Screen data
+        //  Create the home, map, and friends screens
+        self.createThreeViewUI()
+        
+        //  Set Up relevant Friends data for Interactive Map and Friends Screen
         FriendsAPI.getFriends() // model
         filteredfriends = friends
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
@@ -109,13 +114,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         BookmarksAPI.getBookmarks() // model
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
         
-        
-        self.createThreeViewUI()
-        
+        //  Load Events onto the map
         loadAndAddEvents()
         
-        // Configure location manager to user's location
-        
+        //  Configure location manager to user's location
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
@@ -124,17 +126,25 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         loadBottomTile()
         loadBigTile()
         
-        let timer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
+        //  Create a timer that refreshes location every 10 seconds
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
         
+        //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
         
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.object as? [Friend]
         {
+            //  Update friend variables
             friends = data
             filteredfriends = friends
+            
+            //  Update Friends Screen
             friendtable.reloadData()
+            //  Update Map Screen
+            addFriendsToMap()
         }
         
         if let data = notification.object as? [Bookmark]
@@ -165,9 +175,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.addEventsToMap(events: allEvents)
             }
         }
-        
-        
-        
     }
     
     func addEventsToMap(events:[Event]) {
@@ -183,6 +190,20 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         mapView.addAnnotations(pointAnnotations)
     }
+    
+    func addFriendsToMap(){
+        //  Create an annotation for each friend
+        var pointAnnotations = [CustomPointAnnotation]()
+        for friend in friends {
+            let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
+            annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
+//            annotation.image = friend.picture
+            annotation.image = dot(size: 25, num: 5)
+            pointAnnotations.append(annotation)
+        }
+        mapView.addAnnotations(pointAnnotations)
+    }
+
     
     // MARK: - Create UI
     
@@ -326,12 +347,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //Add map and button to scroll view
         self.view.addSubview(mapView)
         
-        let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f2 = CGRect(x: self.view.frame.width/2-140, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_main = UIButton(frame: f2)
         bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
         bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
         
-        let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f3 = CGRect(x: self.view.frame.width/2-35, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_map = UIButton(frame: f3)
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
         bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
@@ -344,7 +365,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 
 
         
-        let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f4 = CGRect(x: self.view.frame.width/2+70, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
@@ -477,8 +498,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == friendtable {
+            let cell = filteredfriends[indexPath.row]
             self.searchBarCancelButtonClicked(friendsearch)
             self.goMap()
+            guard let location = cell.user?.currentLocation else { return }
+            guard let title = cell.user?.name else { return }
+            
+            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "", description: "ecks dee")
+            self.mapView.selectAnnotation(point, animated: true) {
+            }
         } else if tableView == bookmarksTable {
             let cell = bookmarks[indexPath.section]
             self.goMap()
@@ -500,7 +528,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  If there is no text, filteredfriends is the same as original friends
         filteredfriends = searchText.isEmpty ? friends : friends.filter { (item: Friend) -> Bool in
             // If dataItem matches the searchText, return true to include it
-            return item.name!.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+            return item.user?.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         
         friendtable.reloadData()

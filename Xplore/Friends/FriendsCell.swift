@@ -18,7 +18,7 @@ class FriendsCell: UITableViewCell {
                 profileImageView.image = picture
             }
             
-            if let name = friendItem.name {
+            if let name = friendItem.user?.name {
                 nameLabel.text = name
             }
             if let currentEvent = friendItem.currentEvent {

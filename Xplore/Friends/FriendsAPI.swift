@@ -21,8 +21,9 @@ class FriendsAPI {
             friend.getDocument { (document, error) in
                 if let document = document, document.exists {
                     //  Retrieve/initialize relevant friend information
+                    let user = User(DocumentSnapshot: document)
                     let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
-                    let name = (document.data()!["user_information"] as! [String:Any])["name"] as! String
+//                    let name = (document.data()!["user_information"] as! [String:Any])["name"] as! String
                     let currentEvent = (document.data()!["user_information"] as! [String:Any])["current_event"] as! Array<Any>
                     var image = UIImage()
                     var event = String()
@@ -43,7 +44,7 @@ class FriendsAPI {
                     info.notify(queue: DispatchQueue.main) {
                         if currentEvent.count == 0 {
                             //  Add friend struct to list with no current event
-                            friends.append(Friend(picture: image, name: name, currentEvent: ""))
+                            friends.append(Friend(picture: image, user: user, currentEvent: ""))
                             NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                         } else {
                             //  Retrieve friend's current event
@@ -58,7 +59,7 @@ class FriendsAPI {
                             }
                             //  Add friend struct to list
                             info.notify(queue: DispatchQueue.main) {
-                                friends.append(Friend(picture: image, name: name, currentEvent: event))
+                                friends.append(Friend(picture: image, user: user, currentEvent: event))
                                 NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                             }
                         }
