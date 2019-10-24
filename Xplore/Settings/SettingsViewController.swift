@@ -135,7 +135,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             if description == "Contact Us!" {
-                if let url = URL(string: "https://orange-gold-zjax.squarespace.com/") {
+                if let url = URL(string: "tribe-app.com") {
                     UIApplication.shared.open(url)
                 }
             }

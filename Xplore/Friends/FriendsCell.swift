@@ -18,7 +18,7 @@ class FriendsCell: UITableViewCell {
                 profileImageView.image = picture
             }
             
-            if let name = friendItem.name {
+            if let name = friendItem.user?.name {
                 nameLabel.text = name
             }
             if let currentEvent = friendItem.currentEvent {
@@ -44,6 +44,7 @@ class FriendsCell: UITableViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
         img.layer.cornerRadius = 35
         img.clipsToBounds = true
+        print("uh oh!!!!")
        return img
     }()
     
@@ -95,8 +96,6 @@ class FriendsCell: UITableViewCell {
         nameLabel.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor).isActive = true
         
         //  current event label auto layout constraints
-        currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor).isActive = true
-        currentEventLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
         currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor).isActive = true
         currentEventLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
      }

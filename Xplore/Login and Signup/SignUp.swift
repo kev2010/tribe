@@ -116,6 +116,9 @@ class SignUp: UIViewController, UITextFieldDelegate {
         //  Make sure all field requirements are fulfilled
         var valid = true
         
+        //  Initialize dispatch group to contorl threading priority
+        let check = DispatchGroup()
+        
         //  Check if any field is empty and email has "@"
         if name == "" || email == "" || username == "" || !email.contains("@") {
             self.missingFields.alpha = 0.8
@@ -123,7 +126,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
         } else {
             self.missingFields.alpha = 0
         }
-        
+    
         //  Check if username has valid syntax and doesn't already exist
         if username.count < 3 {
             self.usernameShort.alpha = 0.8
@@ -139,7 +142,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
                 self.usernameInvalid.alpha = 0
                 
                 let docRef = db.collection("users").document(username)
-                print(username)
+                check.enter()
                 docRef.getDocument { (document, error) in
                     if let document = document, document.exists {
                         self.usernameTaken.alpha = 0.8
@@ -147,10 +150,11 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     } else {
                         self.usernameTaken.alpha = 0
                     }
+                    check.leave()
                 }
             }
         }
-        
+    
         //  Check if password is at least 6 characters
         if pass.count < 6 {
             self.shortPassword.alpha = 0.8
@@ -159,49 +163,56 @@ class SignUp: UIViewController, UITextFieldDelegate {
             self.shortPassword.alpha = 0
         }
         
-        // If all requirements are good, create the user
-        if valid {
-            //  Create user on Firebase Authentication
-            Auth.auth().createUser(withEmail: email, password: pass) { user, error in
-                if error == nil && user != nil {
-                    //  Send verification email
-                    Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                    
-                    //  Update displayName and photoURL Firebase Authentication
-                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-                    
-                    // Upload default profile image to Firebase Storage
-                    let profile = UIImage(named: "profileIcon")
-                    self.uploadProfileImage(profile!){ url in
-                        if url != nil {
-                            //  Update photoURL onto Firebase Authentication
-                            changeRequest?.displayName = username
-                            changeRequest?.photoURL = url
-                            changeRequest?.commitChanges { error in
-                                if error == nil {
-                                    print("User display name and photoURL changed!")
-                                } else {
-                                    print("Error: \(error!.localizedDescription)")
+        // Create the user once all requirements have been checked
+        check.notify(queue: DispatchQueue.main) {
+            if valid {
+                print(valid)
+                //  Create user on Firebase Authentication
+                Auth.auth().createUser(withEmail: email, password: pass) { user, error in
+                    if error == nil && user != nil {
+                        //  Send verification email
+                        Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+                        
+                        //  Update displayName and photoURL Firebase Authentication
+                        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                        
+                        // Upload default profile image to Firebase Storage
+                        let profile = UIImage(named: "profileIcon")
+                        check.enter()
+                        self.uploadProfileImage(profile!){ url in
+                            if url != nil {
+                                //  Update photoURL onto Firebase Authentication
+                                changeRequest?.displayName = username
+                                changeRequest?.photoURL = url
+                                changeRequest?.commitChanges { error in
+                                    if error == nil {
+                                        print("User display name and photoURL changed!")
+                                    } else {
+                                        print("Error: \(error!.localizedDescription)")
+                                    }
+                                    check.leave()
                                 }
+                            } else {
+                                // Error unable to upload profile image
+                                print("Something went wrong when uploading default profile image")
                             }
-                        } else {
-                            // Error unable to upload profile image
-                            print("Something went wrong when uploading default profile image")
                         }
+                        
+                        //  Create user on Firestore Database
+                        let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:[], isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
+                        new_user.saveUser()
+                        currentUser = new_user
+                        
+                        //  Once user has been created, transition to Map Screen
+                        check.notify(queue: DispatchQueue.main) {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                        
+                    } else {
+                        //  If there is an error with creating user with given email, then display email taken error
+                        print("huh")
+                        self.emailTaken.alpha = 0.8
                     }
-                    
-                    //  Create user on Firestore Database
-                    let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:[], isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
-                    new_user.saveUser()
-                    
-                    currentUser = new_user
-                    
-                    //  Transition to Map Screen
-                    self.dismiss(animated: true, completion: nil)
-                    
-                } else {
-                    //  If there is an error with creating user with given email, then display email taken error
-                    self.emailTaken.alpha = 0.8
                 }
             }
         }

@@ -11,20 +11,29 @@ import Mapbox
 import Firebase
 import FirebaseStorage
 
-class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
+class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
-    //  Used for Settings Screen
-    var window: UIWindow?
-    
     var currentLocation = CLLocationCoordinate2D.init(latitude: 0, longitude: 0)
     var previousLocation = CLLocationCoordinate2D.init(latitude: 0.1, longitude: 0.1)
     
+    //  Used for Settings Screen
+    var window: UIWindow?
+    
+    //  Used for Home Screen
+    var bookmarksTable = UITableView()
+    var bookmarks:[Bookmark] = []
+    
     //  Used for Friends Screen
+    var friendtable = UITableView()
     var friends:[Friend] = []
-
+    var filteredfriends:[Friend] = []
+    var friendsearch = UISearchBar()
+    
+    //  Used for Interactive Map Screen
+    var timer = Timer()
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -43,7 +52,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var leftMenuView = UIView()
     var mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-    var rightFriendsView = UITableView()
+    var rightFriendsView = UIView()
     
     var bottomMenu_main = UIButton()
     var bottomMenu_map = UIButton()
@@ -91,22 +100,24 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        FriendsAPI.getFriends() // model
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
-        
-        print("What's going on?")
-        print(friends)
-        
+        //  Create the home, map, and friends screens
         self.createThreeViewUI()
         
+        //  Set Up relevant Friends data for Interactive Map and Friends Screen
+        FriendsAPI.getFriends() // model
+        filteredfriends = friends
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
+        
+        //  Set Up relevant Bookmarks data
+        BookmarksAPI.getBookmarks() // model
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
+        
+        //  Load Events onto the map
         loadAndAddEvents()
         
-        // Configure location manager to user's location
-        
+        //  Configure location manager to user's location
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
@@ -115,18 +126,32 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         loadBottomTile()
         loadBigTile()
         
-        let timer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
+        //  Create a timer that refreshes location every 10 seconds
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
         
+        //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
         
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.object as? [Friend]
         {
+            //  Update friend variables
             friends = data
-            rightFriendsView.reloadData()
+            filteredfriends = friends
+            
+            //  Update Friends Screen
+            friendtable.reloadData()
+            //  Update Map Screen
+            addFriendsToMap()
         }
-                
+        
+        if let data = notification.object as? [Bookmark]
+        {
+            bookmarks = data
+            bookmarksTable.reloadData()
+        }
     }
     
     func loadAndAddEvents(){
@@ -150,9 +175,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.addEventsToMap(events: allEvents)
             }
         }
-        
-        
-        
     }
     
     func addEventsToMap(events:[Event]) {
@@ -168,6 +190,20 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         mapView.addAnnotations(pointAnnotations)
     }
+    
+    func addFriendsToMap(){
+        //  Create an annotation for each friend
+        var pointAnnotations = [CustomPointAnnotation]()
+        for friend in friends {
+            let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
+            annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
+//            annotation.image = friend.picture
+            annotation.image = dot(size: 25, num: 5)
+            pointAnnotations.append(annotation)
+        }
+        mapView.addAnnotations(pointAnnotations)
+    }
+
     
     // MARK: - Create UI
     
@@ -186,7 +222,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        let logout_button = UIButton(frame: f3)
 //        logout_button.setTitle("Logout", for: UIControl.State.normal)
 //        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
-
+        
+        //  Create the background
+        let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        let f = CGRect(x: -self.view.frame.width, y: self.view.frame.height/2, width: 400, height: 400)
+        leftMenuView = UIView(frame: f)
+//        leftMenuView.backgroundColor = .black
+        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        
         //  Create the top background
         let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
         topbackground.layer.cornerRadius = topbackground.bounds.height/2
@@ -194,11 +237,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
         let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
-        
-        //  Create the bottom background
-        let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        leftMenuView = UIView(frame: f)
-        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+        leftMenuView.addSubview(topbackground)
         
 //        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
 //        let topbackground = CAShapeLayer()
@@ -210,15 +249,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         settings_button.frame = CGRect(x: 19, y: 45, width: 36, height: 36)
         settings_button.setImage(UIImage(named: "settings"), for: .normal)
         settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
+        leftMenuView.addSubview(settings_button)
         
         //  Add "Bookmarked Events" title
-        let bookmarklabel = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
-        let bookmarkpic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-        bookmarklabel.text = "Bookmarked Events"
-        bookmarklabel.textAlignment = .center
-        bookmarklabel.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
-        bookmarklabel.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
-        bookmarkpic.image = UIImage(named: "bookmark")
+        let bookmark_label = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
+        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+        bookmark_label.text = "Bookmarked Events"
+        bookmark_label.textAlignment = .center
+        bookmark_label.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        bookmark_label.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
+        bookmark_pic.image = UIImage(named: "bookmark")
+        leftMenuView.addSubview(bookmark_label)
+        leftMenuView.addSubview(bookmark_pic)
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
@@ -242,31 +284,22 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         imagePicker.allowsEditing = true
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
+        leftMenuView.addSubview(profile)
         
         //  Add status - Need to add to database?
         let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
         let status = CAShapeLayer()
         status.path = statuspath.cgPath
         status.fillColor = UIColor.green.cgColor
+        leftMenuView.layer.addSublayer(status)
         
         //  Add Name under profile picture
-
-        let username = currentUser!.username
-        let docRef = db.collection("users").document(username)
-        
         let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
         namelabel.text = currentUser!.username
-//        db.collection("users").document(username!).getDocument { (document, error) in
-//            if let document = document, document.exists {
-//                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-//                namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
         namelabel.textAlignment = .center
         namelabel.textColor = UIColor.white
         namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        leftMenuView.addSubview(namelabel)
         
         //  Add Username under Name
         let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
@@ -274,72 +307,16 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         usernamelabel.textAlignment = .center
         usernamelabel.textColor = UIColor.white
         usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
+        leftMenuView.addSubview(usernamelabel)
         
-        
-        //  Add event tiles
-        
-        //  Create a vertical scrollview
-        
-        //  Retrieve all of user's bookmarked events
-        var bookmarks : [(time_left: Date, event: UIButton)] = []
-        for eventRef in currentUser!.eventsUserBookmarked {
-            let eventtile = UIButton()
-            eventtile.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-            var buttonText : NSString = ""
-            
-            db.collection("events").document(eventRef.documentID).getDocument { (document, error) in
-                if let document = document, document.exists {
-                    //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-//                    namelabel.text = ((document.data()!["user_information"] as! [String:Any])["name"] as! String)
-                    let title = (document.data()!["information"] as! [String:Any])["title"] as! NSString
-                    let creator = (document.data()!["attendees"] as! [String:Any])["creator_username"]
-                    buttonText = (document.data()!["information"] as! [String:Any])["title"] as! NSString //TODO WHAT IS THIS?
-                } else {
-                    print("Document does not exist")
-                }
-            }
-            
-            //applying the line break mode
-            eventtile.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping;
-            
-//            let buttonText: NSString = "hello\nthere"
-            
-            //getting the range to separate the button title strings
-            let newlineRange: NSRange = buttonText.range(of: "\n")
-            
-            //getting both substrings
-            var substring1: NSString = ""
-            var substring2: NSString = ""
-            
-            if(newlineRange.location != NSNotFound) {
-                substring1 = buttonText.substring(to: newlineRange.location) as NSString
-                substring2 = buttonText.substring(from: newlineRange.location) as NSString
-            }
-            
-            //assigning diffrent fonts to both substrings
-            let font:UIFont? = UIFont(name: "Arial", size: 17.0)
-            let attrString = NSMutableAttributedString(
-                string: substring1 as String,
-                attributes: (NSDictionary(
-                    object: font!,
-                    forKey: NSAttributedString.Key.font as NSCopying) as [NSObject : AnyObject] as [NSObject : AnyObject] as! [NSAttributedString.Key : Any]))
-            
-            let font1:UIFont? = UIFont(name: "Arial", size: 11.0)
-            let attrString1 = NSMutableAttributedString(
-                string: substring2 as String,
-                attributes: (NSDictionary(
-                    object: font1!,
-                    forKey: NSAttributedString.Key.font as NSCopying) as [NSObject : AnyObject] as [NSObject : AnyObject] as! [NSAttributedString.Key : Any]))
-            
-            //appending both attributed strings
-            attrString.append(attrString1)
-            
-            //assigning the resultant attributed strings to the button
-            eventtile.setAttributedTitle(attrString, for: .normal)
-            
-            
-//            bookmarks.append(())
-        }
+        //  Add bookmarked events UITableView
+        bookmarksTable.dataSource = self
+        bookmarksTable.delegate = self
+        bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
+        leftMenuView.addSubview(bookmarksTable)
+        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/4)  //  Need to change frame later
+        bookmarksTable.tableFooterView = UIView()
+        bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         
         //  Sort by start date? - Might want to customize sorting in the future
@@ -352,16 +329,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //(414, 896)
         //  Add all the subviews to the left menu
 //        leftMenuView.layer.addSublayer(topbackground)
-        leftMenuView.addSubview(topbackground)
-        leftMenuView.addSubview(settings_button)
-        leftMenuView.addSubview(profile)
-        leftMenuView.layer.addSublayer(status)
-        leftMenuView.addSubview(namelabel)
-        leftMenuView.addSubview(usernamelabel)
-        leftMenuView.addSubview(bookmarklabel)
-        leftMenuView.addSubview(bookmarkpic)
-        self.view.addSubview(leftMenuView)
         
+        self.view.addSubview(leftMenuView)
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
         leftMenuView.addGestureRecognizer(gestureRecognizer)
         
@@ -378,12 +347,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //Add map and button to scroll view
         self.view.addSubview(mapView)
         
-        let f2 = CGRect(x: self.view.frame.width/2-150, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f2 = CGRect(x: self.view.frame.width/2-140, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_main = UIButton(frame: f2)
         bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
         bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
         
-        let f3 = CGRect(x: self.view.frame.width/2-50, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f3 = CGRect(x: self.view.frame.width/2-35, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_map = UIButton(frame: f3)
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
         bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
@@ -396,7 +365,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 
 
         
-        let f4 = CGRect(x: self.view.frame.width/2+50, y: 3*self.view.frame.height/4, width: 70, height: 70)
+        let f4 = CGRect(x: self.view.frame.width/2+70, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
@@ -422,88 +391,174 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func createRightFriends() {
-        //  Add Background gradient
-//        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        rightFriendsView = UIView(frame: f)
-        rightFriendsView = UITableView()
-        
-        rightFriendsView.dataSource = self
-        rightFriendsView.delegate = self
-        rightFriendsView.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
-        
-       
-//        rightFriendsView.alpha = 1
+        //  Set up rightFriendsView
+        let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        rightFriendsView = UIView(frame: f)
 //        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-//        self.view.addGradientLayer(topColor: color1, bottomColor: color2)
-//        rightFriendsView.addGradientLayer(topColor: color1, bottomColor: color2)
-//        rightFriendsView.backgroundColor = color1
+        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        rightFriendsView.backgroundColor = color2
+        
+        //  Add Friends screen title
+        let friendsHeader = UILabel()
+        friendsHeader.text = "Friends"
+        friendsHeader.frame = CGRect(x: 19, y: 60, width: rightFriendsView.frame.width, height: 49)
+        friendsHeader.font = UIFont(name: "GeezaPro-Bold", size: 36)
+        friendsHeader.textColor = .white
+        rightFriendsView.addSubview(friendsHeader)
+        
+        //  Add add friend button
+        let add = UIButton()
+        add.frame = CGRect(x: rightFriendsView.frame.width-60, y: 55, width: 49, height: 49)
+        add.addTarget(self, action: #selector(self.addFriend), for: UIControl.Event.touchDown)
+        add.setTitle("+", for: UIControl.State.normal)
+        add.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 42)
+        add.titleLabel?.textAlignment = .center
+        rightFriendsView.addSubview(add)
+        
+        //  Set up friend uitable
+        friendtable.dataSource = self
+        friendtable.delegate = self
+        friendtable.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
+        rightFriendsView.addSubview(friendtable)
+        friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height)
+        friendtable.tableFooterView = UIView()
+        
+        //  Set up search bar
+        friendsearch.delegate = self
+        friendsearch.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5-friendsearch.frame.height-55, width: rightFriendsView.frame.width, height: 56)
+        friendsearch.backgroundColor = .white
+        friendsearch.placeholder = "Search"
+        rightFriendsView.addSubview(friendsearch)
+        
         self.view.addSubview(rightFriendsView)
-        rightFriendsView.frame = CGRect(x: self.view.frame.width, y: 200, width: self.view.frame.width, height: self.view.frame.height)
-        rightFriendsView.tableFooterView = UIView()
-        
-        
-        
-//        rightFriendsView.dataSource = self
-        
-        
-//        let friendsTableView = UIView(frame: f)
-//        friendsTableView.backgroundColor = UIColor.blue
-//        self.view.addSubview(friendsTableView)
-//        rightFriendsView.translatesAutoresizingMaskIntoConstraints = false
-//        rightFriendsView.topAnchor.constraint(equalTo:view.topAnchor).isActive = true
-//        friendsTableView.leftAnchor.constraint(equalTo:view.leftAnchor).isActive = true
-//        friendsTableView.rightAnchor.constraint(equalTo:view.rightAnchor).isActive = true
-//        rightFriendsView.bottomAnchor.constraint(equalTo:view.bottomAnchor).isActive = true
-
-
-        
-//        let f2 = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 30)
-//        let randomLabel = UILabel(frame: f2)
-//        randomLabel.text = "lol you have no friends"
-//        randomLabel.textAlignment = .center
-//
-//        rightFriendsView.addSubview(randomLabel)
-//        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
-//        rightFriendsView.addGestureRecognizer(gestureRecognizer)
-
-//        contactsTableView.register(ContactTableViewCell.self, forCellReuseIdentifier: "contactCell")
-
-
-//        self.view.addSubview(friendsTableView)
-//        self.view.bringSubviewToFront(friendsTableView)
-        
-//        rightFriendsView.reloadData()
-
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanRight))
+        rightFriendsView.addGestureRecognizer(gestureRecognizer)
     }
     
-    //  protocol methods for Friends UITable
+    //  protocol methods for Friends and BookmarkedEvents Tables
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if tableView == bookmarksTable {
+            return bookmarks.count
+        }
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("ugh")
-        print(friends.count)
-        return friends.count
+        if tableView == friendtable {
+            return filteredfriends.count
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView == bookmarksTable {
+            return 5
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       return 100
+        //  Will need to adjust values later
+        if tableView == friendtable {
+            return 100
+        } else if tableView == bookmarksTable {
+            return 75
+        }
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == bookmarksTable {
+            let headerView = UIView()
+            headerView.backgroundColor = UIColor.clear
+            return headerView
+        }
+        return nil
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("ahh")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
-//        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        print("**")
-        print(friends[indexPath.row].name)
-//        cell.textLabel?.text = friends[indexPath.row].name
-        cell.friend = friends[indexPath.row]
-        rightFriendsView.bringSubviewToFront(cell)
-        view.bringSubviewToFront(rightFriendsView)
-        return cell
+        if tableView == friendtable {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsCell
+            cell.friend = filteredfriends[indexPath.row]
+            friendtable.bringSubviewToFront(cell)
+            view.bringSubviewToFront(friendtable)
+            return cell
+        } else if tableView == bookmarksTable {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkCell
+            cell.bookmark = bookmarks[indexPath.section]
+            cell.layer.cornerRadius = 25
+            cell.layer.masksToBounds = true
+            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+            bookmarksTable.bringSubviewToFront(cell)
+            view.bringSubviewToFront(bookmarksTable)
+            return cell
+        }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(friends[indexPath.row].name)
-        self.goMap()
+        if tableView == friendtable {
+            let cell = filteredfriends[indexPath.row]
+            self.searchBarCancelButtonClicked(friendsearch)
+            self.goMap()
+            guard let location = cell.user?.currentLocation else { return }
+            guard let title = cell.user?.name else { return }
+            
+            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "", description: "ecks dee")
+            self.mapView.selectAnnotation(point, animated: true) {
+            }
+        } else if tableView == bookmarksTable {
+            let cell = bookmarks[indexPath.section]
+            self.goMap()
+            guard let location = cell.event?.location else { return }
+            guard let title = cell.event?.title else { return }
+            guard let capacity = cell.event?.capacity else { return }
+            guard let description = cell.event?.description else { return }
+            
+            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
+//            mapView(self.mapView, imageFor: point)
+//            mapView(self.mapView, didSelect: point)
+            self.mapView.selectAnnotation(point, animated: true) {
+            }
+            bookmarksTable.reloadData()
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //  If there is no text, filteredfriends is the same as original friends
+        filteredfriends = searchText.isEmpty ? friends : friends.filter { (item: Friend) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return item.user?.name.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        
+        friendtable.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        friendsearch.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        friendsearch.showsCancelButton = false
+        friendsearch.text = ""
+        friendsearch.resignFirstResponder()
+        friendsearch.endEditing(true)
+        filteredfriends = friends   // Is there a way to not do this?
+        friendtable.reloadData()
+    }
+    
+    @objc func addFriend(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
+        self.performSegue(withIdentifier: "friendsToAdd", sender: self)
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -583,18 +638,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         if let point = annotation as? CustomPointAnnotation {
-            
+
             if topTileShowing {
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
             }
             else {
-                
+
                 bottom_titleLabel.text = point.title!
                 bottom_subtitleLabel.text  = point.subtitle!
                 bottom_descriptionLabel.text = point.desc!
-                
+
                 showTopTile(show: true)
                 topTileShowing = true
             }
@@ -866,7 +921,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
-        
+
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
         

@@ -17,6 +17,10 @@
 		2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */; };
 		2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5422F3EFCE00B1C90F /* Home.swift */; };
 		2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */; };
+		2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */; };
+		2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F5235D76C0008E2B66 /* Bookmark.swift */; };
+		2B5565F8235D76D4008E2B66 /* BookmarksAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */; };
+		2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */; };
 		2B7F870122F672A800347911 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7F870022F672A800347911 /* SignUp.swift */; };
 		2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */; };
 		2B8B5B6422F55FE400BDEB23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */; };
@@ -108,6 +112,10 @@
 		2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		2B1E3E5422F3EFCE00B1C90F /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveMap.swift; sourceTree = "<group>"; };
+		2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
+		2B5565F5235D76C0008E2B66 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
+		2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksAPI.swift; sourceTree = "<group>"; };
+		2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkCell.swift; sourceTree = "<group>"; };
 		2B7F870022F672A800347911 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedWhiteButton.swift; sourceTree = "<group>"; };
 		2B8B5B6322F55FE400BDEB23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -226,6 +234,7 @@
 				F4B258C222F6E17800E12BF4 /* Login and Signup */,
 				2B98A8CF2324238800FA7895 /* Friends */,
 				2BFDBE5C23349A85006143FD /* Settings */,
+				2B5565F4235D766A008E2B66 /* Bookmarks */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
@@ -269,6 +278,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2B5565F4235D766A008E2B66 /* Bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				2B5565F5235D76C0008E2B66 /* Bookmark.swift */,
+				2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */,
+				2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */,
+			);
+			path = Bookmarks;
+			sourceTree = "<group>";
+		};
 		2B98A8CF2324238800FA7895 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +295,7 @@
 				2B907CA4234888170021EF98 /* FriendsCell.swift */,
 				2B98A8D0232423E100FA7895 /* Friend.swift */,
 				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
+				2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -596,17 +616,21 @@
 				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
 				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
 				2B907CA3234575DA0021EF98 /* ToS.swift in Sources */,
+				2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */,
 				F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */,
 				F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */,
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
+				2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
+				2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
 				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
 				2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */,
+				2B5565F8235D76D4008E2B66 /* BookmarksAPI.swift in Sources */,
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,
 				F44CEDC222FD43450077138F /* FilterViewController.swift in Sources */,
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
