@@ -104,6 +104,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Create the home, map, and friends screens
         self.createThreeViewUI()
+        print("ay lmao")
         
         //  Set Up relevant Friends data for Interactive Map and Friends Screen
         FriendsAPI.getFriends() // model
