@@ -314,7 +314,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.delegate = self
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
         leftMenuView.addSubview(bookmarksTable)
-        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/4)  //  Need to change frame later
+        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/3)  //  Need to change frame later
         bookmarksTable.tableFooterView = UIView()
         bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
