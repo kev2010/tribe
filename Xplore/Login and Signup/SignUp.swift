@@ -199,7 +199,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
                         }
                         
                         //  Create user on Firestore Database
-                        let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:[], isPrivate:false, friends:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
+                        let new_user = User(uid: Auth.auth().currentUser!.uid, username:username, name:name, email:email, DOB:Date(), currentLocation:CLLocationCoordinate2D(), currentEvent:[], privacy:"public", friends:[], friend_req:[], blocked:[], eventsUserHosted:[], eventsUserAttended:[], eventsUserBookmarked:[])
                         new_user.saveUser()
                         currentUser = new_user
                         

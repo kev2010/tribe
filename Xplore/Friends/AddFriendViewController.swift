@@ -15,6 +15,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var addUser: UITableView!
     @IBOutlet weak var addUserSearch: UISearchBar!
 
+    let info = DispatchGroup()
+    
     //  List of users to display on UITableView
     var users:[Friend] = []
 
@@ -37,7 +39,6 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let info = DispatchGroup()
         users = []
         
         //  Check if the text is at least 2 characters
@@ -60,7 +61,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                             var image = UIImage()
                             
                             //  Retrieve user's profile picture
-                            info.enter()
+                            self.info.enter()
                             let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
                             ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
                                 if let error = error {
@@ -68,11 +69,11 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                                 } else {
                                     image = UIImage(data: data!)!
                                 }
-                                info.leave()
+                                self.info.leave()
                             }
                             
                             //  Add the user to the users list
-                            info.notify(queue: DispatchQueue.main) {
+                            self.info.notify(queue: DispatchQueue.main) {
                                 self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
                                 self.addUser.reloadData()
                             }
@@ -99,16 +100,47 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //  Get User Friend Requests
+        for request in currentUser!.friend_req{
+            request.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
+                    var image = UIImage()
+                                               
+                    //  Retrieve user's profile picture
+                    self.info.enter()
+                   let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
+                   ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+                       if let error = error {
+                           print("Error in retrieving image: \(error.localizedDescription)")
+                       } else {
+                           image = UIImage(data: data!)!
+                       }
+                        self.info.leave()
+                   }
+                   
+                   //  Add the user to the users list
+                    self.info.notify(queue: DispatchQueue.main) {
+                       self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
+                       self.addUser.reloadData()
+                   }
+                } else {
+                    print("User Document does not exist")
+                }
+            }
+        }
+        
+        self.info.notify(queue: DispatchQueue.main) {
+            //  Set up addUser UITableView and addUserSearch UISearchBar
+            self.addUser.dataSource = self
+            self.addUser.delegate = self
+            self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
+            self.addUser.tableFooterView = UIView()
 
-        //  Set up addUser UITableView and addUserSearch UISearchBar
-        addUser.dataSource = self
-        addUser.delegate = self
-        addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
-        addUser.tableFooterView = UIView()
-
-        addUserSearch.delegate = self
-        addUserSearch.backgroundColor = .white
-        addUserSearch.placeholder = "Search"
+            self.addUserSearch.delegate = self
+            self.addUserSearch.backgroundColor = .white
+            self.addUserSearch.placeholder = "Search"
+        }
 
     }
 

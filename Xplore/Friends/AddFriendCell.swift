@@ -18,7 +18,7 @@ class AddFriendCell: UITableViewCell {
                 profileImageView.image = picture
             }
             
-            if let name = friendItem.user?.name {
+            if let name = friendItem.user?.username {
                 nameLabel.text = name
             }
         }

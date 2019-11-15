@@ -195,11 +195,13 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Create an annotation for each friend
         var pointAnnotations = [CustomPointAnnotation]()
         for friend in friends {
-            let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
-            annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
-//            annotation.image = friend.picture
-            annotation.image = dot(size: 25, num: 5)
-            pointAnnotations.append(annotation)
+            if friend.user?.privacy != "Private" {
+                let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
+                annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
+    //            annotation.image = friend.picture
+                annotation.image = dot(size: 25, num: 5)
+                pointAnnotations.append(annotation)
+            }
         }
         mapView.addAnnotations(pointAnnotations)
     }
