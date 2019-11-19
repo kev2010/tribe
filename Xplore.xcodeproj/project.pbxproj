@@ -33,6 +33,7 @@
 		2B98A8D3232427F700FA7895 /* FriendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98A8D2232427F700FA7895 /* FriendsAPI.swift */; };
 		2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */; };
 		2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */; };
+		2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA19262367CA2A0045E82C /* AddFriendCell.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
 		2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5D233570AE006143FD /* SettingsCell.swift */; };
 		2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5F23357CAD006143FD /* SettingsSection.swift */; };
@@ -127,6 +128,7 @@
 		2B98A8D2232427F700FA7895 /* FriendsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPI.swift; sourceTree = "<group>"; };
 		2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword.swift; sourceTree = "<group>"; };
 		2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundUIView.swift; sourceTree = "<group>"; };
+		2BBA19262367CA2A0045E82C /* AddFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010AddFriendCell.swift"; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		2BFDBE5D233570AE006143FD /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		2BFDBE5F23357CAD006143FD /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				2B98A8D0232423E100FA7895 /* Friend.swift */,
 				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
 				2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */,
+				2BBA19262367CA2A0045E82C /* AddFriendCell.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */,
 				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
 				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
 				2B907CA3234575DA0021EF98 /* ToS.swift in Sources */,

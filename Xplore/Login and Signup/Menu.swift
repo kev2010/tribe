@@ -31,7 +31,6 @@ class Menu: UIViewController, UITextFieldDelegate {
         loginButton.center.y = view.center.y+200
 
         view.addSubview(loginButton)
-        
         //  Initially hide error login text
         self.invalidLogin.alpha = 0
         
