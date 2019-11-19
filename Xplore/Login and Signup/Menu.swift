@@ -20,10 +20,8 @@ class Menu: UIViewController, UITextFieldDelegate {
     
     let db = Firestore.firestore()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         //  Initially hide error login text
         self.invalidLogin.alpha = 0

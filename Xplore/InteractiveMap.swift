@@ -195,11 +195,13 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Create an annotation for each friend
         var pointAnnotations = [CustomPointAnnotation]()
         for friend in friends {
-            let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
-            annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
-//            annotation.image = friend.picture
-            annotation.image = dot(size: 25, num: 5)
-            pointAnnotations.append(annotation)
+            if friend.user?.privacy != "Private" {
+                let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
+                annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
+    //            annotation.image = friend.picture
+                annotation.image = dot(size: 25, num: 5)
+                pointAnnotations.append(annotation)
+            }
         }
         mapView.addAnnotations(pointAnnotations)
     }
@@ -314,7 +316,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.delegate = self
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
         leftMenuView.addSubview(bookmarksTable)
-        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/4)  //  Need to change frame later
+        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/3)  //  Need to change frame later
         bookmarksTable.tableFooterView = UIView()
         bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
