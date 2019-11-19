@@ -9,7 +9,10 @@
 import UIKit
 import FirebaseUI
 import Firebase
+import FacebookLogin
 
+// Add this to the header of your file, e.g. in ViewController.m
+// after #import "ViewController.h"
 
 class Menu: UIViewController, UITextFieldDelegate {
     
@@ -19,12 +22,15 @@ class Menu: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var invalidLogin: UILabel!
     
     let db = Firestore.firestore()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let loginButton = FBLoginButton(permissions: [ .publicProfile ])
+        loginButton.center.x = view.center.x
+        loginButton.center.y = view.center.y+200
+
+        view.addSubview(loginButton)
         //  Initially hide error login text
         self.invalidLogin.alpha = 0
         
@@ -109,6 +115,8 @@ class Menu: UIViewController, UITextFieldDelegate {
         }
     }
 
+    @IBAction func fbtapped(_ sender: Any) {
+    }
     
     @IBAction func signupTapped(_ sender: UIButton) {
         // Transition to sign up screen

@@ -26,18 +26,21 @@ enum SocialOptions: Int, CaseIterable, SectionType {
     case privacy
     case logout
     
-    var containsSwitch: Bool {
-        switch self {
-        case .privacy:
-            return true
-        default:
-            return false
-        }
-    }
+        var containsSwitch: Bool { return false }
+    
+//    var containsSwitch: Bool {
+//        switch self {
+//        case .privacy:
+//            return true
+//        default:
+//            return false
+//        }
+//    }
     
     var description: String {
         switch self {
-        case .privacy: return "Hide Location"
+//        case .privacy: return "Hide Location"
+        case .privacy: return "Privacy"
         case .logout: return "Log Out"
         }
     }

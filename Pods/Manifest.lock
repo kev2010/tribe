@@ -5,6 +5,30 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - FacebookCore (0.9.0):
+    - FBSDKCoreKit (~> 5.0)
+  - FacebookLogin (0.9.0):
+    - FacebookCore (~> 0.9.0)
+    - FBSDKCoreKit (~> 5.0)
+    - FBSDKLoginKit (~> 5.0)
+  - FacebookShare (0.9.0):
+    - FacebookCore (~> 0.9.0)
+    - FBSDKCoreKit (~> 5.0)
+    - FBSDKShareKit (~> 5.0)
+  - FBSDKCoreKit (5.11.0):
+    - FBSDKCoreKit/Basics (= 5.11.0)
+    - FBSDKCoreKit/Core (= 5.11.0)
+  - FBSDKCoreKit/Basics (5.11.0)
+  - FBSDKCoreKit/Core (5.11.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.11.0):
+    - FBSDKLoginKit/Login (= 5.11.0)
+  - FBSDKLoginKit/Login (5.11.0):
+    - FBSDKCoreKit (~> 5.0)
+  - FBSDKShareKit (5.11.0):
+    - FBSDKShareKit/Share (= 5.11.0)
+  - FBSDKShareKit/Share (5.11.0):
+    - FBSDKCoreKit (~> 5.0)
   - Firebase/Analytics (6.5.0):
     - Firebase/Core
   - Firebase/Auth (6.5.0):
@@ -119,6 +143,9 @@ PODS:
   - Protobuf (3.9.0)
 
 DEPENDENCIES:
+  - FacebookCore
+  - FacebookLogin
+  - FacebookShare
   - Firebase/Analytics
   - Firebase/Core
   - Firebase/Firestore
@@ -128,8 +155,14 @@ DEPENDENCIES:
   - Mapbox-iOS-SDK (~> 5.2)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - BoringSSL-GRPC
+    - FacebookCore
+    - FacebookLogin
+    - FacebookShare
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -151,6 +184,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  FacebookCore: ba86524b66cfa86d0f8e65d08faa8504a9f732dd
+  FacebookLogin: 6cee9fd6e1fe976fe8f7eec199e27b28b14f5d63
+  FacebookShare: 85968ad1b1606c4944fb154924e425fd29184ea5
+  FBSDKCoreKit: 9fbfb5b0022d34861bfa6b79f56f8e2ddcd8170b
+  FBSDKLoginKit: 0e976e0c91ee69dd5dc69062c095205146f1dd9f
+  FBSDKShareKit: 6f8781da6fca79fe64830fd3404add0660d9f139
   Firebase: dedc9e48ea3f3649ad5f6b982f8a0c73508a14b5
   FirebaseAnalytics: 3fb375bc9d13779add4039716f868d233a473fad
   FirebaseAuth: a06ad63e9bf4c86165b54cceb1c14d4f4c38d419
@@ -170,6 +209,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
 
-PODFILE CHECKSUM: c884ecd6aaa8d038df45974d04c8fd6313a6a05e
+PODFILE CHECKSUM: 0bfbeb322b66d9f8f1d7422f9a08ccd81f2009d4
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
