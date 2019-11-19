@@ -61,6 +61,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var imagePicker = UIImagePickerController()
     var profile = UIImageView()
     
+    var firstTimeLocation = true
     
     enum screen {
         case Main
@@ -189,6 +190,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         mapView.addAnnotations(pointAnnotations)
+        
     }
     
     func addFriendsToMap(){
@@ -703,7 +705,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
         
         //  Display the user's region onto screen
+        if (firstTimeLocation) {
         mapView.setVisibleCoordinateBounds(region, animated: false)
+            firstTimeLocation = false
+        }
         mapView.showsUserLocation = true
         
         
@@ -904,11 +909,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         case 30..<50:
             return heatmap_smallToBig[5]
             
-        case 50..<100:
-            return heatmap_smallToBig[6]
-            
         default:
-            return heatmap_smallToBig[7]
+            return heatmap_smallToBig[6]
+
         }
         
     }

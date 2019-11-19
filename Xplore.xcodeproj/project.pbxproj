@@ -62,6 +62,8 @@
 		F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */; };
 		F4B258CF22F6F83900E12BF4 /* third_party_vector_style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */; };
 		F4B258D722F884BA00E12BF4 /* map_example.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4B258D622F884BA00E12BF4 /* map_example.jpg */; };
+		F4C4026223746C7400B60DD8 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C4026123746C7400B60DD8 /* next.png */; };
+		F4E6BB09237FB54B007F7A1E /* PickAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +162,8 @@
 		F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = third_party_vector_style.json; sourceTree = "<group>"; };
 		F4B258D622F884BA00E12BF4 /* map_example.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = map_example.jpg; sourceTree = "<group>"; };
+		F4C4026123746C7400B60DD8 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickAddressViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +241,7 @@
 				2B5565F4235D766A008E2B66 /* Bookmarks */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
+				F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F44CEDC122FD43450077138F /* FilterViewController.swift */,
@@ -315,6 +320,7 @@
 		F44CED9022FB3B1B0077138F /* temp UI */ = {
 			isa = PBXGroup;
 			children = (
+				F4C4026123746C7400B60DD8 /* next.png */,
 				F4B258D622F884BA00E12BF4 /* map_example.jpg */,
 				F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */,
 				F44CED9322FB3B2C0077138F /* filter.jpg */,
@@ -481,6 +487,7 @@
 				F4B258D722F884BA00E12BF4 /* map_example.jpg in Resources */,
 				F45676452341791500938AA7 /* 100_map.png in Resources */,
 				F45676462341791500938AA7 /* 100_new_event.png in Resources */,
+				F4C4026223746C7400B60DD8 /* next.png in Resources */,
 				F456764023400D6C00938AA7 /* home.png in Resources */,
 				F45676472341791500938AA7 /* 100_friends.png in Resources */,
 				F44CED9922FB3B2C0077138F /* filter.jpg in Resources */,
@@ -619,6 +626,7 @@
 				2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */,
 				F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */,
 				F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */,
+				F4E6BB09237FB54B007F7A1E /* PickAddressViewController.swift in Sources */,
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
@@ -821,8 +829,9 @@
 			baseConfigurationReference = 5EE5D4470D9A32823E16C27A /* Pods-Xplore.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D3U7988G6Z;
+				DEVELOPMENT_TEAM = Z4VWXLP8VL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -833,8 +842,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = MIT.Xplore;
+				PRODUCT_BUNDLE_IDENTIFIER = MIT.XploreAppMIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -845,8 +855,9 @@
 			baseConfigurationReference = 47F66CEE35E658A85D423B5A /* Pods-Xplore.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D3U7988G6Z;
+				DEVELOPMENT_TEAM = Z4VWXLP8VL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -857,8 +868,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = MIT.Xplore;
+				PRODUCT_BUNDLE_IDENTIFIER = MIT.XploreAppMIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
