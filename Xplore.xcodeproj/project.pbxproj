@@ -38,6 +38,7 @@
 		2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5F23357CAD006143FD /* SettingsSection.swift */; };
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
+		BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE38948E236C92A600DF6CBE /* FBLogin.swift */; };
 		E402270DE27343D3205C478B /* Pods_XploreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */; };
 		F44CED8F22F99F8D0077138F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CED8E22F99F8D0077138F /* User.swift */; };
 		F44CED9922FB3B2C0077138F /* filter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F44CED9322FB3B2C0077138F /* filter.jpg */; };
@@ -135,6 +136,7 @@
 		6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Xplore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A254FBD73FB5DA5BADDBE36 /* Pods-XploreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreUITests.debug.xcconfig"; path = "Target Support Files/Pods-XploreUITests/Pods-XploreUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		BE38948E236C92A600DF6CBE /* FBLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLogin.swift; sourceTree = "<group>"; };
 		ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F8835B12AF5808FA44F0FD /* Pods-XploreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreTests.release.xcconfig"; path = "Target Support Files/Pods-XploreTests/Pods-XploreTests.release.xcconfig"; sourceTree = "<group>"; };
 		F44CED8E22F99F8D0077138F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 			children = (
 				2B7F870022F672A800347911 /* SignUp.swift */,
 				2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */,
+				BE38948E236C92A600DF6CBE /* FBLogin.swift */,
 				2BE5B57722F567B000B39563 /* Menu.swift */,
 				2BA9C75E22FAB38C001A0DB5 /* ForgetPassword.swift */,
 				2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */,
@@ -622,6 +625,7 @@
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
+				BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */,
 				2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
@@ -834,7 +838,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = MIT.Xplore;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Xplore;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -858,7 +862,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = MIT.Xplore;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Xplore;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

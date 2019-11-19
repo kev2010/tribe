@@ -14,6 +14,10 @@ target 'Xplore' do
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
+  pod 'FacebookShare'
+
   
 
   target 'XploreTests' do
