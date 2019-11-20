@@ -117,10 +117,17 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     //  Remove string descriptions of settings cells?
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return }
-
+        
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        
         switch section {
         case .Social:
             let description = SocialOptions(rawValue: indexPath.row)?.description
+            
+            if description == "Privacy" {
+                self.performSegue(withIdentifier: "toPrivacy", sender: self)
+            }
+            
             if description == "Log Out" {
                 currentUser?.updateUser()
                 try! Auth.auth().signOut()
@@ -135,11 +142,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             if description == "Contact Us!" {
-                if let url = URL(string: "https://orange-gold-zjax.squarespace.com/") {
+                if let url = URL(string: "https://www.tribe-app.com") {
                     UIApplication.shared.open(url)
                 }
             }
         }
+        
     }
     
     

@@ -19,8 +19,9 @@ class User {
     var DOB : Date
     var currentLocation : CLLocationCoordinate2D // (0,0) if location unavailable
     var currentEvent : [DocumentReference] // []] if no event
-    var isPrivate : Bool
+    var privacy : String
     var friends : [DocumentReference]
+    var friend_req : [DocumentReference]
     var blocked : [DocumentReference]
     var eventsUserHosted : [DocumentReference]
     var eventsUserAttended : [DocumentReference]
@@ -29,7 +30,7 @@ class User {
     var infoDictionary : [String:Any]
     
     
-    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:[DocumentReference], isPrivate:Bool, friends:[DocumentReference], blocked:[DocumentReference], eventsUserHosted:[DocumentReference], eventsUserAttended:[DocumentReference], eventsUserBookmarked:[DocumentReference]) {
+    init(uid:String, username:String, name:String, email:String, DOB:Date, currentLocation:CLLocationCoordinate2D, currentEvent:[DocumentReference], privacy:String, friends:[DocumentReference], friend_req:[DocumentReference], blocked:[DocumentReference], eventsUserHosted:[DocumentReference], eventsUserAttended:[DocumentReference], eventsUserBookmarked:[DocumentReference]) {
         self.uid = uid
         self.username = username
         self.name = name
@@ -37,8 +38,9 @@ class User {
         self.DOB = DOB
         self.currentLocation = currentLocation
         self.currentEvent = currentEvent
-        self.isPrivate  = isPrivate
+        self.privacy = privacy
         self.friends = friends
+        self.friend_req = friend_req
         self.blocked = blocked
         self.eventsUserHosted = eventsUserHosted
         self.eventsUserAttended = eventsUserAttended
@@ -52,8 +54,9 @@ class User {
             "dob": DOB,
             "current_location" : currentLocation,
             "current_event" : currentEvent,
-            "is_private" : isPrivate,
+            "privacy" : privacy,
             "friends" : friends,
+            "friend_req" : friend_req,
             "blocked" : blocked,
             "events_user_hosted" : eventsUserHosted,
             "events_user_attended" : eventsUserAttended,
@@ -85,9 +88,10 @@ class User {
         let loc = user_info["current_location"] as! GeoPoint
         self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
         self.currentEvent = user_info["current_event"] as! [DocumentReference]
-        self.isPrivate = user_info["is_private"] as! Bool
+        self.privacy = user_info["privacy"] as! String
         
         self.friends = social["friends"] as! [DocumentReference]
+        self.friend_req = social["friend_req"] as! [DocumentReference]
         self.blocked = social["blocked"] as! [DocumentReference]
         
         self.eventsUserHosted = events["events_user_hosted"] as! [DocumentReference]
@@ -102,8 +106,9 @@ class User {
             "dob": (user_info["dob"] as! Timestamp).dateValue(),
             "current_location" : CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
             "current_event" : user_info["current_event"] as! [DocumentReference],
-            "is_private" : user_info["is_private"] as! Bool,
+            "privacy" : user_info["privacy"] as! String,
             "friends" :  social["friends"] as! [DocumentReference],
+            "friend_req" : social["friend_req"] as! [DocumentReference],
             "blocked" : social["blocked"] as! [DocumentReference],
             "events_user_hosted" : events["events_user_hosted"] as! [DocumentReference],
             "events_user_attended" : events["events_user_attended"] as! [DocumentReference],
@@ -131,9 +136,11 @@ class User {
         let loc = user_info["current_location"] as! GeoPoint
         self.currentLocation = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
         self.currentEvent = user_info["current_event"] as! [DocumentReference]
-        self.isPrivate = user_info["is_private"] as! Bool
+        self.privacy = user_info["privacy"] as! String
         
         self.friends = social["friends"] as! [DocumentReference]
+        print(self.username)
+        self.friend_req = social["friend_req"] as! [DocumentReference]
         self.blocked = social["blocked"] as! [DocumentReference]
         
         self.eventsUserHosted = events["events_user_hosted"] as! [DocumentReference]
@@ -148,8 +155,9 @@ class User {
             "dob": self.DOB,
             "current_location" : self.currentLocation,
             "current_event" : self.currentEvent,
-            "is_private" : self.isPrivate,
+            "privacy" : self.privacy,
             "friends" :  self.friends,
+            "friend_req" : self.friend_req,
             "blocked" : self.blocked,
             "events_user_hosted" : self.eventsUserHosted,
             "events_user_attended" : self.eventsUserAttended,
@@ -167,8 +175,9 @@ class User {
             "dob": self.DOB,
             "current_location" : self.currentLocation,
             "current_event" : self.currentEvent,
-            "is_private" : self.isPrivate,
+            "privacy" : self.privacy,
             "friends" : self.friends,
+            "friend_req" : self.friend_req,
             "blocked" : self.blocked,
             "events_user_hosted" : self.eventsUserHosted,
             "events_user_attended" : self.eventsUserAttended,
@@ -186,13 +195,14 @@ class User {
             "current_location" : GeoPoint(latitude: self.currentLocation.latitude, longitude: self.currentLocation.longitude),
             "current_event" : self.currentEvent,
 //            "current_event" : (self.currentEvent != "" ? db.document("events/\(self.currentEvent)") : "") ,
-            "is_private" : self.isPrivate
+            "privacy" : self.privacy
         ]
     }
     
     func generate_social_map() -> [String:Any] {
         return [
             "friends": self.friends,
+            "friend_req": self.friend_req,
             "blocked" : self.blocked
         ]
     }
@@ -262,21 +272,25 @@ class User {
                     data["user_information.current_location"] = GeoPoint(latitude: self.currentLocation.latitude, longitude: self.currentLocation.longitude)
                 }
                 
-                
             case "current_event":
                 if self.infoDictionary[key] as! [DocumentReference] != self.currentEvent {
                     data["user_information.current_event"] = self.currentEvent
                 }
                 
                 
-            case "is_private":
-                if self.infoDictionary[key] as! Bool != self.isPrivate {
-                    data["user_information.is_private"] = self.isPrivate
+            case "privacy":
+                if self.infoDictionary[key] as! String != self.privacy {
+                    data["user_information.privacy"] = self.privacy
                 }
                 
             case "friends":
                 if self.infoDictionary[key] as! [DocumentReference] != self.friends {
                     data["social.friends"] = self.friends
+                }
+            
+            case "friend_req":
+                if self.infoDictionary[key] as! [DocumentReference] != self.friend_req {
+                    data["social.friend_req"] = self.friend_req
                 }
                 
             case "blocked":

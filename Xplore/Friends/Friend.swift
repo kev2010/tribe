@@ -7,11 +7,11 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseStorage
+import UIKit
 
 struct Friend {
     let picture: UIImage?
-    let name: String?
+    let user: User?
+//    let name: String?
     let currentEvent: String?
 }
