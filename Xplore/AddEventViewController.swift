@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import Mapbox
+import CoreLocation
 
 class AddEventViewController: UIViewController {
     
@@ -324,18 +325,64 @@ class AddEventViewController: UIViewController {
          }
        
 
-//    func saveEvent() {
-//        if validate(textView: title_label) &&
-//            validate(textView: start_label) &&
-//            validate(textView: end_label) &&
-//           // validate(textView: location) &&
-//            validate(textView: capacity_label) &&
-//            validate(textView: visibility_label) &&
-//            validate(textView: tags_label) &&
-//            validate(textView: description_label) &&
-//            currentUser != nil {
-//
-//            let tags = generateTags(input:tags_label.text!)
+
+    @IBAction func saveEvent(_ sender: Any) {
+        if validate(textView: title_label) &&
+            validate(textView: start_label) &&
+            validate(textView: end_label) &&
+            validate(textView: location) &&
+            validate(textView: capacity_label) &&
+            validate(textView: visibility_label) &&
+            validate(textView: tags_label) &&
+            validate(textView: description_label) &&
+            currentUser != nil {
+            
+            let tags = generateTags(input:tags_label.text!)
+            
+            // Create Address String
+            
+            var newLocation = CLLocationCoordinate2D()
+            // Geocode Address String
+            
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(location.text!) { (placemarks, error) in
+                if let error = error {
+                    print("Unable to Forward Geocode Address (\(error))")
+
+                } else {
+                    var location: CLLocation?
+
+                    if let placemarks = placemarks, placemarks.count > 0 {
+                        location = placemarks.first?.location
+                    }
+
+                    if let location = location {
+                        let coordinate = location.coordinate
+                        newLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                        
+                    } else {
+                        print("No matching locations found")
+                    }
+                }
+            }
+
+            print("start date below:")
+            print(start_label.text!)
+            let newEvent = Event(creator_username: currentUser!.username, title: title_label.text!, description: description_label.text!, startDate: Date(), endDate: Date(), location: newLocation, capacity: -1, visibility: self.visibility_label.text!, tags: tags, attendees: [currentUser!.username])
+            
+            print(newEvent.generate_information_map())
+            
+//            newEvent.saveEvent()
+            
+            //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
+        }
+        else {
+            print("error: not all boxes filled out")
+            // TODO: finish this implementation with a user notice or popup
+        }
+        
+    }
+
 //
 //
 //
