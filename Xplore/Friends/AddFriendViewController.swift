@@ -32,10 +32,23 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! AddFriendCell
+        cell.isUserInteractionEnabled = true
+        cell.contentView.isUserInteractionEnabled = false
         cell.friend = users[indexPath.row]
-        addUser.bringSubviewToFront(cell)
-        view.bringSubviewToFront(addUser)  //  Necessary?
+        
+        
+//        addUser.bringSubviewToFront(cell)
+//        view.bringSubviewToFront(addUser)  //  Necessary?
+        cell.addButton.tag = indexPath.row
+        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
+
+
         return cell
+    }
+    
+    @objc func addFriend() {
+        print("hi")
+        print("bye")
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -134,12 +147,14 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
             //  Set up addUser UITableView and addUserSearch UISearchBar
             self.addUser.dataSource = self
             self.addUser.delegate = self
+            self.addUser.allowsSelection = false
             self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
             self.addUser.tableFooterView = UIView()
 
             self.addUserSearch.delegate = self
             self.addUserSearch.backgroundColor = .white
             self.addUserSearch.placeholder = "Search"
+            
         }
 
     }

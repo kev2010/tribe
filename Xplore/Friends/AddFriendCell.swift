@@ -59,28 +59,23 @@ class AddFriendCell: UITableViewCell {
 //        btn.titleLabel?.textColor = .black
         btn.setImage(UIImage(named: "add"), for: UIControl.State.normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(addFriend), for: UIControl.Event.touchDown)
 //        btn.layer.cornerRadius = 13
 //        btn.clipsToBounds = true
         print("woahhhh")
         return btn
     }()
     
-    @IBAction func addFriend(sender: UIButton) {
-        print("hi")
-        print("bye")
-    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.contentView.isUserInteractionEnabled = false
+//        self.contentView.isUserInteractionEnabled = false
         
         //  Add all the views to Friends TableView
-        self.contentView.addSubview(addButton)
         self.contentView.addSubview(profileImageView)
         containerView.addSubview(nameLabel)
         self.contentView.addSubview(containerView)
+        self.contentView.addSubview(addButton)
         
         //  Add constraints to profile image
         profileImageView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
