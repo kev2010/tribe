@@ -391,6 +391,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         mapView.addSubview(filter_button)
         
+        let f6 = CGRect(x: 19, y: 50, width: 100, height: 50)
+        let search_button = UIButton(frame: f6)
+        search_button.setTitle("Search", for: UIControl.State.normal)
+        search_button.titleLabel?.textColor = .black
+        search_button.addTarget(self, action: #selector(self.goSearch), for: UIControl.Event.touchDown)
+        
+        mapView.addSubview(search_button)
+        
         
         
     }
@@ -832,6 +840,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @objc func goFilter() {
         self.performSegue(withIdentifier: "mapToFilter", sender: self)
+    }
+    
+    @objc func goSearch() {
+        self.performSegue(withIdentifier: "mapToSearch", sender: self)
     }
     
     @objc func goSettings() {

@@ -35,6 +35,9 @@
 		2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */; };
 		2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA19262367CA2A0045E82C /* AddFriendCell.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
+		2BEAE8C72389E51500A32FB0 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8C62389E51500A32FB0 /* SearchCell.swift */; };
+		2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8C82389EF5600A32FB0 /* Search.swift */; };
+		2BEAE8CB2389F27900A32FB0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8CA2389F27900A32FB0 /* SearchViewController.swift */; };
 		2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5D233570AE006143FD /* SettingsCell.swift */; };
 		2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDBE5F23357CAD006143FD /* SettingsSection.swift */; };
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
@@ -132,6 +135,9 @@
 		2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundUIView.swift; sourceTree = "<group>"; };
 		2BBA19262367CA2A0045E82C /* AddFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010AddFriendCell.swift"; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		2BEAE8C62389E51500A32FB0 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		2BEAE8C82389EF5600A32FB0 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		2BEAE8CA2389F27900A32FB0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2BFDBE5D233570AE006143FD /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		2BFDBE5F23357CAD006143FD /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		47F66CEE35E658A85D423B5A /* Pods-Xplore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplore.release.xcconfig"; path = "Target Support Files/Pods-Xplore/Pods-Xplore.release.xcconfig"; sourceTree = "<group>"; };
@@ -243,6 +249,7 @@
 				2B98A8CF2324238800FA7895 /* Friends */,
 				2BFDBE5C23349A85006143FD /* Settings */,
 				2B5565F4235D766A008E2B66 /* Bookmarks */,
+				2BEAE8C32389E4DA00A32FB0 /* Search Event */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
 				F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */,
@@ -308,6 +315,16 @@
 				2BBA19262367CA2A0045E82C /* AddFriendCell.swift */,
 			);
 			path = Friends;
+			sourceTree = "<group>";
+		};
+		2BEAE8C32389E4DA00A32FB0 /* Search Event */ = {
+			isa = PBXGroup;
+			children = (
+				2BEAE8C82389EF5600A32FB0 /* Search.swift */,
+				2BEAE8C62389E51500A32FB0 /* SearchCell.swift */,
+				2BEAE8CA2389F27900A32FB0 /* SearchViewController.swift */,
+			);
+			path = "Search Event";
 			sourceTree = "<group>";
 		};
 		2BFDBE5C23349A85006143FD /* Settings */ = {
@@ -634,12 +651,14 @@
 				F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */,
 				F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */,
 				F4E6BB09237FB54B007F7A1E /* PickAddressViewController.swift in Sources */,
+				2BEAE8C72389E51500A32FB0 /* SearchCell.swift in Sources */,
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
 				BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */,
 				2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
+				2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
 				2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
@@ -650,6 +669,7 @@
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,
 				F44CEDC222FD43450077138F /* FilterViewController.swift in Sources */,
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
+				2BEAE8CB2389F27900A32FB0 /* SearchViewController.swift in Sources */,
 				2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */,
 				2B09A32822F265CF00F52209 /* AppDelegate.swift in Sources */,
 				2B907CA5234888170021EF98 /* FriendsCell.swift in Sources */,
