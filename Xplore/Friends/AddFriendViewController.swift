@@ -40,10 +40,15 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
 //        addUser.bringSubviewToFront(cell)
 //        view.bringSubviewToFront(addUser)  //  Necessary?
         cell.addButton.tag = indexPath.row
-        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
+//        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
+//        cell.bringSubviewToFront(cell.addButton)
 
 
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        addFriend()
     }
     
     @objc func addFriend() {
@@ -112,6 +117,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     override func viewDidLoad() {
+        addUser.allowsSelection = true
         super.viewDidLoad()
         //  Get User Friend Requests
         for request in currentUser!.friend_req{
@@ -147,7 +153,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
             //  Set up addUser UITableView and addUserSearch UISearchBar
             self.addUser.dataSource = self
             self.addUser.delegate = self
-            self.addUser.allowsSelection = false
+//            self.addUser.allowsSelection = false
             self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
             self.addUser.tableFooterView = UIView()
 
