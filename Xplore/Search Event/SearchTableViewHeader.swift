@@ -72,8 +72,23 @@ class SearchTableViewHeader: UITableViewHeaderFooterView {
         // Animate the arrow rotation (see Extensions.swf)
         //
         if !collapsed {
-            arrowLabel.transform = CGAffineTransform(rotationAngle: .pi / 2)
+            arrowLabel.rotate(collapsed ? 0.0 : .pi / 2)
         }
     }
     
+}
+
+extension UIView {
+
+    func rotate(_ toValue: CGFloat, duration: CFTimeInterval = 0.2) {
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        
+        animation.toValue = toValue
+        animation.duration = duration
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = CAMediaTimingFillMode.forwards
+        
+        self.layer.add(animation, forKey: nil)
+    }
+
 }

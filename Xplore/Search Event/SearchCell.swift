@@ -62,7 +62,7 @@ class SearchCell: UITableViewCell {
     //  Name of friend
     let nameLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -71,8 +71,8 @@ class SearchCell: UITableViewCell {
     //  Name of event friend is attending (if any)
     let locationLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.italicSystemFont(ofSize: 14)
-        label.textColor =  .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor =  .lightGray
 //        label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
