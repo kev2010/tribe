@@ -23,7 +23,7 @@ class PickAddressViewController: UIViewController, MGLMapViewDelegate {
         //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
         self.mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
         self.mapView.delegate = self
-       self.view.addSubview(self.mapView)
+        self.view.addSubview(self.mapView)
         
         let f1 = CGRect(x: self.view.frame.width*(1/10), y: 30, width: self.view.frame.width*(8/10), height: 30)
         let completed_view = UIView(frame: f1)

@@ -83,12 +83,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         var end = formatter.date(from: "2019/08/06 23:00")
 
         
-        let event_1 : Event = Event(creator_username: "new", title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
+        let event_1 : Event = Event(creator_username: "new", title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), address: "Phi Sigma Kappa", capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
         
         start = formatter.date(from: "2019/08/08 20:00")
         end = formatter.date(from: "2019/08/08 23:00")
         
-        let event_2 : Event = Event(creator_username: "new", title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
+        let event_2 : Event = Event(creator_username: "new", title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), address: "Maseeh Hall", capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
         
         let allEvents = [event_1, event_2]
         
@@ -167,7 +167,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             } else {
                 print("found one")
                 for document in querySnapshot!.documents {
-                    let e = Event(QueryDocumentSpapshot: document)
+                    let e = Event(QueryDocumentSnapshot: document)
                     allEvents.append(e)
                     print("distance")
                     print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))

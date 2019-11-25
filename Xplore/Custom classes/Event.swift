@@ -18,6 +18,7 @@ class Event {
     var startDate : Date
     var endDate : Date
     var location : CLLocationCoordinate2D
+    var address : String
     var capacity : Int
     var visibility : String
     var tags : [String]
@@ -27,7 +28,7 @@ class Event {
     
     var infoDictionary : [String:Any]
     
-    init(creator_username:String, title:String, description:String, startDate:Date, endDate: Date, location: CLLocationCoordinate2D, capacity:Int, visibility:String, tags:[String], attendees:[String]) {
+    init(creator_username:String, title:String, description:String, startDate:Date, endDate: Date, location: CLLocationCoordinate2D, address: String, capacity:Int, visibility:String, tags:[String], attendees:[String]) {
         /**
          USAGE: This initialiser should be used to create a completely new event.
          After creating the event, self.saveEvent() should be called once,
@@ -42,6 +43,7 @@ class Event {
         self.startDate = startDate
         self.endDate = endDate
         self.location = location
+        self.address = address
         self.capacity = capacity
         self.visibility = visibility
         self.tags = tags
@@ -55,6 +57,7 @@ class Event {
             "startDate" : Timestamp(date: self.startDate),
             "endDate"  : Timestamp(date: self.endDate),
             "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "address" : self.address,
             "capacity" : self.capacity,
             "visibility" : self.visibility,
             "tags" : self.tags,
@@ -62,7 +65,7 @@ class Event {
         ]
     }
     
-    init(QueryDocumentSpapshot file: QueryDocumentSnapshot) {
+    init(QueryDocumentSnapshot file: QueryDocumentSnapshot) {
         /**
          USAGE: Use this initialiser to load in a file (QueryDocumentSnapshot) that is retrieved from the cloud.
          Once initialised this way, self.saveEvent() should not be used,
@@ -84,6 +87,7 @@ class Event {
         self.endDate = (information["endDate"] as! Timestamp).dateValue()
         let loc = information["location"] as! GeoPoint
         self.location = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        self.address = information["address"] as! String
         self.capacity = information["capacity"] as! Int
         self.visibility = information["visibility"] as! String
         self.tags = information["tags"] as! [String]
@@ -97,6 +101,7 @@ class Event {
             "startDate" : Timestamp(date: self.startDate),
             "endDate"  : Timestamp(date: self.endDate),
             "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "address" : self.address,
             "capacity" : self.capacity,
             "visibility" : self.visibility,
             "tags" : self.tags,
@@ -126,6 +131,7 @@ class Event {
         self.endDate = (information["endDate"] as! Timestamp).dateValue()
         let loc = information["location"] as! GeoPoint
         self.location = CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude)
+        self.address = information["address"] as! String
         self.capacity = information["capacity"] as! Int
         self.visibility = information["visibility"] as! String
         self.tags = information["tags"] as! [String]
@@ -139,6 +145,7 @@ class Event {
             "startDate" : Timestamp(date: self.startDate),
             "endDate"  : Timestamp(date: self.endDate),
             "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "address" : self.address,
             "capacity" : self.capacity,
             "visibility" : self.visibility,
             "tags" : self.tags,
@@ -156,6 +163,7 @@ class Event {
             "startDate" : Timestamp(date: self.startDate),
             "endDate"  : Timestamp(date: self.endDate),
             "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "address" : self.address,
             "capacity" : self.capacity,
             "visibility" : self.visibility,
             "tags" : self.tags
@@ -197,6 +205,7 @@ class Event {
             "startDate" : Timestamp(date: self.startDate),
             "endDate"  : Timestamp(date: self.endDate),
             "location" : GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude),
+            "address" : self.address,
             "capacity" : self.capacity,
             "visibility" : self.visibility,
             "tags" : self.tags,
@@ -244,6 +253,11 @@ class Event {
                 
                 if !((self.infoDictionary[key] as! CLLocationCoordinate2D).latitude == self.location.latitude && (self.infoDictionary[key] as! CLLocationCoordinate2D).longitude == self.location.longitude)  {
                     data["information.location"] = GeoPoint(latitude: self.location.latitude, longitude: self.location.longitude)
+                }
+            
+            case "address":
+                if self.infoDictionary[key] as! String != self.address {
+                    data["information.address"] = self.address
                 }
                 
             case "capacity":
