@@ -16,16 +16,15 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let info = DispatchGroup()
     
-    //  List of users to display on UITableView
-    var events:[Search] = []
-    
     struct Section {
-      var name: String
-      var items: [Search]
-      var collapsed: Bool
+        var name: String
+        var tag: Int
+        var items: [Search]
+        var collapsed: Bool
         
-      init(name: String, items: [Search], collapsed: Bool = false) {
+        init(name: String, tag: Int, items: [Search], collapsed: Bool = false) {
         self.name = name
+        self.tag = tag
         self.items = items
         self.collapsed = collapsed
       }
@@ -59,13 +58,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 44.0
     }
     
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 1.0
-//    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //  Will need to adjust values later
-        return 75
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,7 +94,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //  Check if the text is at least 2 characters
         if searchText.count >= 2 {
             // Rebuild the sections table - creation strategy, would deletion strategy be better?
-            filteredsections = []
+            var temp:[Section] = []
             for sec in sections {
                 var items = [Search]()
                 for search in sec.items {
@@ -104,9 +103,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     }
                 }
                 if items.count > 0 {
-                    filteredsections.append(Section(name: sec.name, items: items))
+                    var temp_list: [Search] = []
+                    temp_list = items.sorted(by: { $0.event!.startDate < $1.event!.startDate })
+                    temp.append(Section(name: sec.name, tag: sec.tag, items: temp_list))
                 }
             }
+            filteredsections = temp.sorted(by: { $0.tag < $1.tag })
         } else {
             filteredsections = sections
         }
@@ -145,14 +147,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     // uncomment to enforce the US locale
                     // dateFormatter.locale = Locale(identifier: "en-US")
                     dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d yyyy")
-                    
-                    
-//                    let calendar = Calendar.current
-//
-//                    let weekday = String(calendar.component(.weekday, from: start))
-//                    let month = String(calendar.component(.month, from: start))
-//                    let day = String(calendar.component(.day, from: start))
-//                    let year = String(calendar.component(.year, from: start))
                     let time = dateFormatter.string(from: start)
                     
                     if date_dic[time] != nil {
@@ -160,21 +154,34 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     } else {
                         date_dic[time] = [Search(event: event)]
                     }
-                    
-//                    let u = (document.data()["information"] as! [String:Any])["title"] as! String
-//                    self.info.notify(queue: DispatchQueue.main) {
-//                        self.events.append(Search(event: Event(QueryDocumentSpapshot: document)))
-//                        self.searchTable.reloadData()
-//                    }
+
                 }
                 self.info.leave()
             }
         }
         
         self.info.notify(queue: DispatchQueue.main) {
+            var temp: [Section] = []
             for (date, list) in date_dic {
-                self.sections.append(Section(name: date, items: list))
+                var year: Int
+                var day: Int
+                
+                if date[10] == "," {
+                    year = Int(date.substring(fromIndex: 12))!
+                    day = Int(date[9])!
+                } else {
+                    year = Int(date.substring(fromIndex: 13))!
+                    day = Int(date[9 ..< 11])!
+                }
+                let month = self.monthToNum(month: date[5 ..< 8])
+                let tag = year * 10000 + month * 100 + day
+                
+                var temp_list: [Search] = []
+                temp_list = list.sorted(by: { $0.event!.startDate < $1.event!.startDate })
+                    
+                temp.append(Section(name: date, tag: tag, items: temp_list))
             }
+            self.sections = temp.sorted(by: { $0.tag < $1.tag })
             self.filteredsections = self.sections
             
             //  Set up addUser UITableView and addUserSearch UISearchBar
@@ -184,13 +191,47 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.searchTable.register(SearchCell.self, forCellReuseIdentifier: "searchCell")
             self.searchTable.tableFooterView = UIView()
             // Auto resizing the height of the cell
-//            self.searchTable.estimatedRowHeight = 44.0
-//            self.searchTable.rowHeight = UITableView.automaticDimension
+            self.searchTable.estimatedRowHeight = 44.0
+            self.searchTable.rowHeight = UITableView.automaticDimension
 
             self.searchEvent.delegate = self
             self.searchEvent.backgroundColor = .white
             self.searchEvent.placeholder = "Search"
         }
+    }
+    
+    func monthToNum(month:String) -> Int{
+        
+        switch month {
+            case "Jan":
+                return 1
+            case "Feb":
+                return 2
+            case "Mar":
+                return 3
+            case "Apr":
+                return 4
+            case "May":
+                return 5
+            case "Jun":
+                return 6
+            case "Jul":
+                return 7
+            case "Aug":
+                return 8
+            case "Sep":
+                return 9
+            case "Oct":
+                return 10
+            case "Nov":
+                return 11
+            case "Dec":
+                return 12
+            default:
+                print("ERROR, unknown key")
+                assert(false)
+        }
+        
     }
 
 }
@@ -207,6 +248,34 @@ extension SearchViewController: SearchTableViewHeaderDelegate {
         self.searchTable.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
     }
     
+}
+
+extension String {
+
+    var length: Int {
+        return count
+    }
+
+    subscript (i: Int) -> String {
+        return self[i ..< i + 1]
+    }
+
+    func substring(fromIndex: Int) -> String {
+        return self[min(fromIndex, length) ..< length]
+    }
+
+    func substring(toIndex: Int) -> String {
+        return self[0 ..< max(0, toIndex)]
+    }
+
+    subscript (r: Range<Int>) -> String {
+        let range = Range(uncheckedBounds: (lower: max(0, min(length, r.lowerBound)),
+                                            upper: min(length, max(0, r.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
+    }
+
 }
 
 
