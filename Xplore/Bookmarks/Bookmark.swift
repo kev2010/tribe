@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Mapbox
 
 struct Bookmark {
 //    let picture: UIImage?
@@ -15,4 +16,5 @@ struct Bookmark {
     let creator: String?
 //    let date: Date?
     let event: Event?
+    var annotation : MGLAnnotation?
 }

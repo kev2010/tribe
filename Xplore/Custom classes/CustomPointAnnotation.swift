@@ -20,10 +20,13 @@ class CustomPointAnnotation: NSObject, MGLAnnotation {
     var image: UIImage?
     var reuseIdentifier: String?
     
-    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, description: String?) {
+    var type : AnnotationType
+    
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, description: String?, annotationType:AnnotationType) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
         self.desc = description
+        self.type = annotationType
     }
 }

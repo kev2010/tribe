@@ -187,9 +187,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for event in events {
-            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description)
+            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event)
             point.reuseIdentifier = "customAnnotation\(event.title)"
             point.image = dot(size: 30, num: event.capacity)
+            
             pointAnnotations.append(point)
         }
         
@@ -200,13 +201,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func addFriendsToMap(){
         //  Create an annotation for each friend
         var pointAnnotations = [CustomPointAnnotation]()
-        for friend in friends {
-            if friend.user?.privacy != "Private" {
-                let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
-                annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
-    //            annotation.image = friend.picture
-                annotation.image = dot(size: 25, num: 5)
+        for i in 0...friends.count-1 {
+            if friends[i].user?.privacy != "Private" {
+                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User)
+                annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
+                annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 20, height: 20))?.circleMasked
+//                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
+                friends[i].annotation = annotation
             }
         }
         mapView.addAnnotations(pointAnnotations)
@@ -222,6 +224,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
     }
+    
     
     func createLeftMenu() {
         
@@ -517,25 +520,34 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             let cell = filteredfriends[indexPath.row]
             self.searchBarCancelButtonClicked(friendsearch)
             self.goMap()
-            guard let location = cell.user?.currentLocation else { return }
-            guard let title = cell.user?.name else { return }
-            
-            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "", description: "ecks dee")
-            self.mapView.selectAnnotation(point, animated: true) {
+            self.mapView.selectAnnotation(filteredfriends[indexPath.row].annotation!, animated: true) {
+                
+                let a : CustomPointAnnotation = self.filteredfriends[indexPath.row].annotation! as! CustomPointAnnotation
+                let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
+                let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
+                let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
+                
+                self.mapView.setVisibleCoordinateBounds(region, animated: false)
+
             }
         } else if tableView == bookmarksTable {
             let cell = bookmarks[indexPath.section]
             self.goMap()
+            
             guard let location = cell.event?.location else { return }
             guard let title = cell.event?.title else { return }
             guard let capacity = cell.event?.capacity else { return }
             guard let description = cell.event?.description else { return }
             
-            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
+//            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
 //            mapView(self.mapView, imageFor: point)
 //            mapView(self.mapView, didSelect: point)
-            self.mapView.selectAnnotation(point, animated: true) {
+            self.mapView.selectAnnotation(bookmarks[indexPath.section].annotation!, animated: true) {
+                
             }
+            
+            
+            
             bookmarksTable.reloadData()
         }
     }
@@ -598,6 +610,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
                 gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
             }
+            
             
         }
             
@@ -662,21 +675,25 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-        if let point = annotation as? CustomPointAnnotation {
+        
+        if (annotation as! CustomPointAnnotation).type == .Event {
+            
+            if let point = annotation as? CustomPointAnnotation {
 
-            if topTileShowing {
-                bottom_titleLabel.text = point.title!
-                bottom_subtitleLabel.text  = point.subtitle!
-                bottom_descriptionLabel.text = point.desc!
-            }
-            else {
+                if topTileShowing {
+                    bottom_titleLabel.text = point.title!
+                    bottom_subtitleLabel.text  = point.subtitle!
+                    bottom_descriptionLabel.text = point.desc!
+                }
+                else {
 
-                bottom_titleLabel.text = point.title!
-                bottom_subtitleLabel.text  = point.subtitle!
-                bottom_descriptionLabel.text = point.desc!
+                    bottom_titleLabel.text = point.title!
+                    bottom_subtitleLabel.text  = point.subtitle!
+                    bottom_descriptionLabel.text = point.desc!
 
-                showTopTile(show: true)
-                topTileShowing = true
+                    showTopTile(show: true)
+                    topTileShowing = true
+                }
             }
         }
     }

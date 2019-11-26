@@ -41,7 +41,8 @@ class BookmarksAPI {
 //
                     //  Add Bookmark struct to bookmarks list
                     info.notify(queue: DispatchQueue.main) {
-                        bookmarks.append(Bookmark(creator: username, event: event))
+                        var b : Bookmark = Bookmark(creator: username, event: event)
+                        bookmarks.append(b)
                         NotificationCenter.default.post(name: Notification.Name("didDownloadBookmarks"), object: bookmarks)
                     }
                 } else {

@@ -75,6 +75,12 @@ class AddEventViewController: UIViewController {
             UIView.animate(withDuration: 1.0) {
                 self.title_label.frame.origin.x -= self.view.frame.width
                 self.title_input.frame.origin.x -= self.view.frame.width
+                
+                self.start_input.frame.origin.x -= self.view.frame.width
+                self.start_label.frame.origin.x -= self.view.frame.width
+                
+                self.end_label.frame.origin.x -= self.view.frame.width
+                self.end_input.frame.origin.x -= self.view.frame.width
             }
             
             status += 1
@@ -97,15 +103,40 @@ class AddEventViewController: UIViewController {
             
             //2. Save previous value: title
             all_data["title"] = title_input.text
+            all_data["start"] = start_input.date
+            all_data["end"] = end_input.date
+            all_data["description"] = description_input.text
+
+
             
             //3. a) Remove prev labels and inputs: title and b) add new labels and inputs: title
 
             UIView.animate(withDuration: 1.0) {
+                //OLD
                 self.title_label.frame.origin.x -= self.view.frame.width
                 self.title_input.frame.origin.x -= self.view.frame.width
                 
                 self.start_input.frame.origin.x -= self.view.frame.width
                 self.start_label.frame.origin.x -= self.view.frame.width
+                
+                self.end_label.frame.origin.x -= self.view.frame.width
+                self.end_input.frame.origin.x -= self.view.frame.width
+                
+                
+                //AND NEW
+                self.tags_label.frame.origin.x -= self.view.frame.width
+                self.tags_input.frame.origin.x -= self.view.frame.width
+                
+                self.capacity_label.frame.origin.x -= self.view.frame.width
+                self.capacity_input.frame.origin.x -= self.view.frame.width
+                
+                self.visibility_label.frame.origin.x -= self.view.frame.width
+                self.visibility_input.frame.origin.x -= self.view.frame.width
+                
+                self.location_input.frame.origin.x -= self.view.frame.width
+                self.location_label.frame.origin.x -= self.view.frame.width
+                
+
             }
             
             status += 1
@@ -114,52 +145,9 @@ class AddEventViewController: UIViewController {
         case 2:
             //SHOW END DATE
             
-            //1. Check valid: nothing to check
+            //1. Check valid: stuff
             
-            //2. Save previous value: start date
-            all_data["start"] = start_input.date
-            
-            //3. a) Remove prev labels and inputs: start date and b) add new labels and inputs: title
-
-            UIView.animate(withDuration: 1.0) {
-                self.start_input.frame.origin.x -= self.view.frame.width
-                self.start_label.frame.origin.x -= self.view.frame.width
-                
-                self.end_label.frame.origin.x -= self.view.frame.width
-                self.end_input.frame.origin.x -= self.view.frame.width
-                
-            }
-            
-            status += 1
-            return true
-            
-        case 3:
-            //SHOW Location
-            
-            //1. Check valid: nothing to check
-            
-            //2. Save previous value: end date
-            all_data["end"] = end_input.date
-
-            
-            //3. a) Remove prev labels and inputs: end date and b) add new labels and inputs: title
-
-            UIView.animate(withDuration: 1.0) {
-                self.end_label.frame.origin.x -= self.view.frame.width
-                self.end_input.frame.origin.x -= self.view.frame.width
-                
-                self.location_input.frame.origin.x -= self.view.frame.width
-                self.location_label.frame.origin.x -= self.view.frame.width
-            }
-            
-            status += 1
-            return true
-            
-        case 4:
-            //SHOW Capacity
-            
-            //1. Check valid: confirm location of pin with segue to view controller
-            
+            //Location
             if let t = location_input.text {
                 if t.count <= 0 {
                     return false
@@ -167,32 +155,6 @@ class AddEventViewController: UIViewController {
             } else {
                 return false
             }
-            
-            self.address_send = location_input.text!
-            self.performSegue(withIdentifier: "confirmLocation", sender: self)
-            
-            //2. Save previous value: location
-            all_data["location_coord"] = finalLocationCoord
-            all_data["location_description"] = finalLocationDescription
-            all_data["address"] = location_input.text
-            
-
-            
-            //3. a) Remove prev labels and inputs: location and b) add new labels and inputs: title
-
-            UIView.animate(withDuration: 1.0) {
-                self.location_input.frame.origin.x -= self.view.frame.width
-                self.location_label.frame.origin.x -= self.view.frame.width
-                
-                self.capacity_label.frame.origin.x -= self.view.frame.width
-                self.capacity_input.frame.origin.x -= self.view.frame.width
-            }
-            
-            status += 1
-            return true
-            
-        case 5:
-            //SHOW Visibility
             
             //1. Check valid: capacity > 1
             if let text = capacity_input.text {
@@ -206,76 +168,24 @@ class AddEventViewController: UIViewController {
             } else {
                 return false
             }
-                        
-            //2. Save previous value: capacity
+            
+            //TODO: check valid: visibility
+            
+            //TODO: check valid: tags selected
+            
+            self.address_send = location_input.text!
+            self.performSegue(withIdentifier: "confirmLocation", sender: self)
+            
+            //2. Save previous values
+            
+            all_data["location_coord"] = finalLocationCoord
+            all_data["location_description"] = finalLocationDescription
             all_data["capacity"] = Int(capacity_input.text!)
-
-            
-            //3. a) Remove prev labels and inputs: capacity and b) add new labels and inputs: title
-
-            UIView.animate(withDuration: 1.0) {
-                self.capacity_label.frame.origin.x -= self.view.frame.width
-                self.capacity_input.frame.origin.x -= self.view.frame.width
-                
-                self.visibility_label.frame.origin.x -= self.view.frame.width
-                self.visibility_input.frame.origin.x -= self.view.frame.width
-                
-            }
-            
-            status += 1
-            return true
-            
-        case 6:
-        //SHOW tags
-        
-        //1. Check valid: visibility is valid // TODO
-                    
-        //2. Save previous value: visibility
+            all_data["address"] = location_input.text
+            all_data["tags"] = tags_input.text
             all_data["visibility"] = (visibility_input.text)
 
-        
-        //3. a) Remove prev labels and inputs: visibility and b) add new labels and inputs: title
-
-        UIView.animate(withDuration: 1.0) {
-            self.visibility_label.frame.origin.x -= self.view.frame.width
-            self.visibility_input.frame.origin.x -= self.view.frame.width
             
-            self.tags_label.frame.origin.x -= self.view.frame.width
-            self.tags_input.frame.origin.x -= self.view.frame.width
-        }
-        
-        status += 1
-        return true
-            
-        case 7:
-            //SHOW description
-            
-            //1. Check valid: tags is valid
-                        
-            //2. Save previous value: tags
-            all_data["tags"] = tags_input.text
-
-            
-            //3. a) Remove prev labels and inputs: tags and b) add new labels and inputs: title
-
-            UIView.animate(withDuration: 1.0) {
-                self.tags_label.frame.origin.x -= self.view.frame.width
-                self.tags_input.frame.origin.x -= self.view.frame.width
-                
-                self.description_label.frame.origin.x -= self.view.frame.width
-                self.description_input.frame.origin.x -= self.view.frame.width
-            }
-            
-            status += 1
-            return true
-        
-        
-        case 8:
-            //1. Check valid (description)
-            
-            //2. Save previous value: description
-            all_data["description"] = description_input.text
-
             let new_event : Event = Event(creator_username: currentUser?.username ?? "", title: all_data["title"] as! String, description: all_data["description"] as! String, startDate: all_data["start"] as! Date, endDate: all_data["end"] as! Date, location: finalLocationCoord, address: all_data["address"] as! String, capacity: all_data["capacity"] as! Int, visibility: all_data["visibility"] as! String, tags: [all_data["tags"] as! String], attendees: [])
             new_event.saveEvent()
             //3. Dismiss view controller
@@ -283,11 +193,12 @@ class AddEventViewController: UIViewController {
                 presenter.addEventsToMap(events: [new_event])
                 self.dismiss(animated: true, completion: {})
             }
-                        
-            return true
+            
         default:
             return true
         }
+        
+        return true
     }
     
          func showDatePicker(){
@@ -303,11 +214,6 @@ class AddEventViewController: UIViewController {
 
         toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
 
-//         start_label.inputAccessoryView = toolbar
-//         start_label.inputView = datePicker
-//
-//        end_label.inputAccessoryView = toolbar
-//        end_label.inputView = datePicker
 
         }
 
@@ -403,115 +309,140 @@ class AddEventViewController: UIViewController {
 //    }
 //
     func create_all_UI() {
-        let f = CGRect(x: self.view.frame.width*(1+1/6), y: 200, width: self.view.frame.width*(2/3), height: 50)
-        let f2 = CGRect(x: self.view.frame.width*(1+1/6), y: 270, width: self.view.frame.width*(2/3), height: 50)
-        let fDate = CGRect(x: self.view.frame.width*(1+1/8), y: 270, width: self.view.frame.width*(3/4), height: 150)
+        
+        //First page
+        let frameTitle = CGRect(x: 40, y: 100, width: self.view.frame.width-100-40, height: 50)
+        let frameTitleLabel = CGRect(x: 20, y: 100, width: 100, height: 50)
+
+        let frameStart = CGRect(x: 40, y: 170, width: self.view.frame.width-100-40, height: 150)
+        let frameStartLabel = CGRect(x: 20, y: 170, width: 100, height: 30)
+
+        let frameEnd = CGRect(x: 40, y: 340, width: self.view.frame.width-100-40, height: 150)
+        let frameEndLabel = CGRect(x: 20, y: 340, width: 100, height: 30)
+
+        let frameDescription = CGRect(x: 40, y: 510, width: self.view.frame.width-100-40, height: 100)
+        let frameDescriptionLabel = CGRect(x: 20, y: 510, width: 100, height: 30)
+
+
+        //Second page
+        let frameTagsAcademic = CGRect(x: self.view.frame.width*(1+1/6), y: 100, width: self.view.frame.width*(2/3), height: 50)
+        let frameTagsArts = CGRect(x: self.view.frame.width*(1+1/6), y: 100, width: self.view.frame.width*(2/3), height: 50)
+        let frameTagsAthletic = CGRect(x: self.view.frame.width*(1+1/6), y: 160, width: self.view.frame.width*(2/3), height: 50)
+        let frameTagsProfessional = CGRect(x: self.view.frame.width*(1+1/6), y: 160, width: self.view.frame.width*(2/3), height: 50)
+        let frameTagsSocial = CGRect(x: self.view.frame.width*(1+1/6), y: 210, width: self.view.frame.width*(2/3), height: 50)
+        let frameTagsCasual = CGRect(x: self.view.frame.width*(1+1/6), y: 210, width: self.view.frame.width*(2/3), height: 50)
+
+        let frameCapacity = CGRect(x: self.view.frame.width*(1+1/6), y: 280, width: self.view.frame.width*(2/3), height: 50)
+        let frameVisibility = CGRect(x: self.view.frame.width*(1+1/6), y: 350, width: self.view.frame.width*(2/3), height: 50)
+        let frameLocation = CGRect(x: self.view.frame.width*(1+1/6), y: 420, width: self.view.frame.width*(2/3), height: 50)
+
 
 
         // ZERO ----------
-           title_label = UILabel(frame: f)
+           title_label = UILabel(frame: frameTitle)
            title_label.text = "Title"
            title_label.textAlignment = .center
     
-           title_input = UITextField(frame: f2)
+            title_input = UITextField(frame: frameTitle)
             title_input.layer.borderWidth = 1
-        title_input.layer.borderColor = UIColor.black.cgColor
+            title_input.layer.borderColor = UIColor.black.cgColor
+            title_input.placeholder = "Title"
         
            view.addSubview(title_label)
            view.addSubview(title_input)
-
-        
-        // ONE ------------
-           start_label = UILabel(frame: f)
-           start_label.text = "Start Time"
-           start_label.textAlignment = .center
-           
-           start_input = UIDatePicker(frame: fDate)
-            start_input.layer.borderWidth = 1
-        start_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(start_label)
-           view.addSubview(start_input)
-        
-
-        // TWO ------------
-           end_label = UILabel(frame: f)
-           end_label.text = "End Time"
-           end_label.textAlignment = .center
-           
-           end_input = UIDatePicker(frame: fDate)
-            end_input.layer.borderWidth = 1
-            end_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(end_label)
-        view.addSubview(end_input)
-        
-        
-        // THREE ------------
-           location_label = UILabel(frame: f)
-           location_label.text = "Event Address"
-           location_label.textAlignment = .center
-           
-           location_input = UITextField(frame: f2)
-            location_input.layer.borderWidth = 1
-        location_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(location_label)
-        view.addSubview(location_input)
-        
-        
-        // FOUR ------------
-           capacity_label = UILabel(frame: f)
-           capacity_label.text = "Capacity of Event"
-           capacity_label.textAlignment = .center
-           
-           capacity_input = UITextField(frame: f2)
-            capacity_input.layer.borderWidth = 1
-        capacity_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(capacity_label)
-        view.addSubview(capacity_input)
-        
-        
-        // FIVE ------------
-           visibility_label = UILabel(frame: f)
-           visibility_label.text = "Visibility of Event"
-           visibility_label.textAlignment = .center
-           
-           visibility_input = UITextField(frame: f2)
-            visibility_input.layer.borderWidth = 1
-        visibility_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(visibility_label)
-        view.addSubview(visibility_input)
-        
-        
-        // SIX ------------
-           tags_label = UILabel(frame: f)
-           tags_label.text = "Event Tags"
-           tags_label.textAlignment = .center
-           
-           tags_input = UITextField(frame: f2)
-            tags_input.layer.borderWidth = 1
-        tags_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(tags_label)
-        view.addSubview(tags_input)
-        
-        
-        // SEVEN ------------
-           description_label = UILabel(frame: f)
-           description_label.text = "Description"
-           description_label.textAlignment = .center
-           
-           description_input = UITextField(frame: f2)
-            description_input.layer.borderWidth = 1
-        description_input.layer.borderColor = UIColor.black.cgColor
-        
-        view.addSubview(description_label)
-        view.addSubview(description_input)
-        
-        
+//
+//
+//        // ONE ------------
+//           start_label = UILabel(frame: f)
+//           start_label.text = "Start Time"
+//           start_label.textAlignment = .center
+//
+//           start_input = UIDatePicker(frame: fDate)
+//            start_input.layer.borderWidth = 1
+//        start_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(start_label)
+//           view.addSubview(start_input)
+//
+//
+//        // TWO ------------
+//           end_label = UILabel(frame: f)
+//           end_label.text = "End Time"
+//           end_label.textAlignment = .center
+//
+//           end_input = UIDatePicker(frame: fDate)
+//            end_input.layer.borderWidth = 1
+//            end_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(end_label)
+//        view.addSubview(end_input)
+//
+//
+//        // THREE ------------
+//           location_label = UILabel(frame: f)
+//           location_label.text = "Event Address"
+//           location_label.textAlignment = .center
+//
+//           location_input = UITextField(frame: f2)
+//            location_input.layer.borderWidth = 1
+//        location_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(location_label)
+//        view.addSubview(location_input)
+//
+//
+//        // FOUR ------------
+//           capacity_label = UILabel(frame: f)
+//           capacity_label.text = "Capacity of Event"
+//           capacity_label.textAlignment = .center
+//
+//           capacity_input = UITextField(frame: f2)
+//            capacity_input.layer.borderWidth = 1
+//        capacity_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(capacity_label)
+//        view.addSubview(capacity_input)
+//
+//
+//        // FIVE ------------
+//           visibility_label = UILabel(frame: f)
+//           visibility_label.text = "Visibility of Event"
+//           visibility_label.textAlignment = .center
+//
+//           visibility_input = UITextField(frame: f2)
+//            visibility_input.layer.borderWidth = 1
+//        visibility_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(visibility_label)
+//        view.addSubview(visibility_input)
+//
+//
+//        // SIX ------------
+//           tags_label = UILabel(frame: f)
+//           tags_label.text = "Event Tags"
+//           tags_label.textAlignment = .center
+//
+//           tags_input = UITextField(frame: f2)
+//            tags_input.layer.borderWidth = 1
+//        tags_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(tags_label)
+//        view.addSubview(tags_input)
+//
+//
+//        // SEVEN ------------
+//           description_label = UILabel(frame: f)
+//           description_label.text = "Description"
+//           description_label.textAlignment = .center
+//
+//           description_input = UITextField(frame: f2)
+//            description_input.layer.borderWidth = 1
+//        description_input.layer.borderColor = UIColor.black.cgColor
+//
+//        view.addSubview(description_label)
+//        view.addSubview(description_input)
+//
+//
         
           
     }
