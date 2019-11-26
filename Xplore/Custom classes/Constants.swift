@@ -110,3 +110,25 @@ extension CATransition {
         return self
     }
 }
+
+extension UIView {
+    func dropShadow(scale: Bool = true) {
+//        layer.masksToBounds = false
+//        layer.shadowColor = UIColor.black.cgColor
+//        layer.shadowOpacity = 0.2
+//        layer.shadowOffset = .zero
+//        layer.shadowRadius = 1
+//        layer.shouldRasterize = true
+//        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+        
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.7
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 1
+
+//        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+}
