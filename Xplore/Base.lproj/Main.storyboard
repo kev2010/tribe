@@ -1286,6 +1286,7 @@
                         <outlet property="capacityField" destination="jAm-Ek-5Zi" id="n8Y-QP-Htf"/>
                         <outlet property="casualTag" destination="g7V-dS-07f" id="Jwv-cO-wYf"/>
                         <outlet property="professionalTag" destination="cVQ-uK-4CS" id="Yoe-mZ-b1Y"/>
+                        <outlet property="saveLabel" destination="nvJ-Iv-PUz" id="HVA-fi-w9x"/>
                         <outlet property="selectAddress" destination="hGz-Ox-UVm" id="aR6-am-p2H"/>
                         <outlet property="socialTag" destination="Lvb-dJ-wH2" id="Bqh-gO-VFj"/>
                         <segue destination="pac-iU-66t" kind="presentation" identifier="confirmLocation" id="bou-zj-xBb"/>
@@ -1307,6 +1308,6 @@
         <image name="userIcon" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7Sd-FI-abZ"/>
+        <segue reference="bou-zj-xBb"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -22,6 +22,7 @@ class AddEventPageTwoViewController: UIViewController {
     @IBOutlet var selectAddress: RoundUIView!
     
     
+    @IBOutlet var saveLabel: RoundUIView!
     
     @IBOutlet var capacityField: UITextField!
     override func viewDidLoad() {
@@ -31,10 +32,20 @@ class AddEventPageTwoViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.academicTap))
         academicTag.addGestureRecognizer(tap)
         
+        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.saveTap))
+        saveLabel.addGestureRecognizer(tap3)
+        
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.artsTap))
         artsTag.addGestureRecognizer(tap2)
         
         // Do any additional setup after loading the view.
+    }
+    
+    
+    @objc func saveTap(_ sender: UITapGestureRecognizer) {
+        
+        self.dismiss(animated: true, completion: {})
+        (self.presentingViewController as! AddEventViewController).close()
     }
     
     

@@ -159,6 +159,9 @@ class AddEventViewController: UIViewController {
 
     }
     
+    func close() {
+        self.dismiss(animated: false, completion: {})
+    }
     
     @objc func nextPage(_ sender: UITapGestureRecognizer) {
         
