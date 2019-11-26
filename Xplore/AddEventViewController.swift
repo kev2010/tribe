@@ -20,7 +20,6 @@ class AddEventViewController: UIViewController {
     var location_label = UILabel()
     var capacity_label = UILabel()
     var visibility_label = UILabel() // public vs private w/ friends
-    var tags_label = UILabel()
     var description_label = UILabel()
     
     var title_input = UITextField()
@@ -31,6 +30,14 @@ class AddEventViewController: UIViewController {
     var visibility_input = UITextField()
     var tags_input = UITextField()
     var description_input = UITextField()
+    
+    var tagAcademic = RoundedButton()
+    var tagArts = RoundedButton()
+    var tagAthletic = RoundedButton()
+    var tagProfessional = RoundedButton()
+    var tagSocial = RoundedButton()
+    var tagCasual = RoundedButton()
+    
     
     let datePicker = UIDatePicker()
     
@@ -55,7 +62,7 @@ class AddEventViewController: UIViewController {
         nextArrow.isUserInteractionEnabled = true
         nextArrow.addGestureRecognizer(tap)
         
-        create_all_UI()
+//        create_all_UI()
         
         handleNextView()
     }
@@ -124,8 +131,12 @@ class AddEventViewController: UIViewController {
                 
                 
                 //AND NEW
-                self.tags_label.frame.origin.x -= self.view.frame.width
-                self.tags_input.frame.origin.x -= self.view.frame.width
+                self.tagAcademic.frame.origin.x -= self.view.frame.width
+                self.tagArts.frame.origin.x -= self.view.frame.width
+                self.tagAthletic.frame.origin.x -= self.view.frame.width
+                self.tagProfessional.frame.origin.x -= self.view.frame.width
+                self.tagSocial.frame.origin.x -= self.view.frame.width
+                self.tagCasual.frame.origin.x -= self.view.frame.width
                 
                 self.capacity_label.frame.origin.x -= self.view.frame.width
                 self.capacity_input.frame.origin.x -= self.view.frame.width
@@ -309,140 +320,153 @@ class AddEventViewController: UIViewController {
 //    }
 //
     func create_all_UI() {
+        let w = self.view.frame.width
         
         //First page
-        let frameTitle = CGRect(x: 40, y: 100, width: self.view.frame.width-100-40, height: 50)
-        let frameTitleLabel = CGRect(x: 20, y: 100, width: 100, height: 50)
+        let frameTitle = CGRect(x: w+40+100, y: 100, width: self.view.frame.width-100-40, height: 50)
+        let frameTitleLabel = CGRect(x: w+20, y: 100, width: 100, height: 50)
 
-        let frameStart = CGRect(x: 40, y: 170, width: self.view.frame.width-100-40, height: 150)
-        let frameStartLabel = CGRect(x: 20, y: 170, width: 100, height: 30)
+        let frameStart = CGRect(x: w+40+100, y: 170, width: self.view.frame.width-100-40, height: 150)
+        let frameStartLabel = CGRect(x: w+20, y: 170, width: 100, height: 30)
 
-        let frameEnd = CGRect(x: 40, y: 340, width: self.view.frame.width-100-40, height: 150)
-        let frameEndLabel = CGRect(x: 20, y: 340, width: 100, height: 30)
+        let frameEnd = CGRect(x: w+40+100, y: 340, width: self.view.frame.width-100-40, height: 150)
+        let frameEndLabel = CGRect(x: w+20, y: 340, width: 100, height: 30)
 
-        let frameDescription = CGRect(x: 40, y: 510, width: self.view.frame.width-100-40, height: 100)
-        let frameDescriptionLabel = CGRect(x: 20, y: 510, width: 100, height: 30)
+        let frameDescription = CGRect(x: w+40+100, y: 510, width: self.view.frame.width-100-40, height: 100)
+        let frameDescriptionLabel = CGRect(x: w+20, y: 510, width: 100, height: 30)
 
 
         //Second page
-        let frameTagsAcademic = CGRect(x: self.view.frame.width*(1+1/6), y: 100, width: self.view.frame.width*(2/3), height: 50)
-        let frameTagsArts = CGRect(x: self.view.frame.width*(1+1/6), y: 100, width: self.view.frame.width*(2/3), height: 50)
-        let frameTagsAthletic = CGRect(x: self.view.frame.width*(1+1/6), y: 160, width: self.view.frame.width*(2/3), height: 50)
-        let frameTagsProfessional = CGRect(x: self.view.frame.width*(1+1/6), y: 160, width: self.view.frame.width*(2/3), height: 50)
-        let frameTagsSocial = CGRect(x: self.view.frame.width*(1+1/6), y: 210, width: self.view.frame.width*(2/3), height: 50)
-        let frameTagsCasual = CGRect(x: self.view.frame.width*(1+1/6), y: 210, width: self.view.frame.width*(2/3), height: 50)
+        let leftTagX = w + 40
+        let rightTagX = w + 40.0 + (self.view.frame.width-100-40-20)/2 + 20.0
+        let tagWidth = (self.view.frame.width-100-40-20)/2
+        
+        let frameTagsAcademic = CGRect(x: leftTagX, y: 100, width: tagWidth, height: 50)
+        let frameTagsArts = CGRect(x: rightTagX, y: 100, width: tagWidth, height: 50)
+        let frameTagsAthletic = CGRect(x: leftTagX, y: 160, width: tagWidth, height: 50)
+        let frameTagsProfessional = CGRect(x: rightTagX, y: 160, width: tagWidth, height: 50)
+        let frameTagsSocial = CGRect(x: leftTagX, y: 210, width: tagWidth, height: 50)
+        let frameTagsCasual = CGRect(x: rightTagX, y: 210, width: tagWidth, height: 50)
 
-        let frameCapacity = CGRect(x: self.view.frame.width*(1+1/6), y: 280, width: self.view.frame.width*(2/3), height: 50)
-        let frameVisibility = CGRect(x: self.view.frame.width*(1+1/6), y: 350, width: self.view.frame.width*(2/3), height: 50)
-        let frameLocation = CGRect(x: self.view.frame.width*(1+1/6), y: 420, width: self.view.frame.width*(2/3), height: 50)
+        let frameCapacity = CGRect(x: leftTagX, y: 280, width: self.view.frame.width-100-40, height: 50)
+        let frameCapacityLabel = CGRect(x: w + 20, y: 280, width: 100, height: 30)
+
+        let frameVisibility = CGRect(x: leftTagX, y: 350, width: self.view.frame.width-100-40, height: 50)
+        let frameVisibilityLabel = CGRect(x: w+20, y: 350, width: 100, height: 30)
+
+        let frameLocation = CGRect(x: leftTagX, y: 420, width: self.view.frame.width-100-40, height: 50)
+        let frameLocationLabel = CGRect(x: w+20, y: 420, width: 100, height: 30)
+
 
 
 
         // ZERO ----------
-           title_label = UILabel(frame: frameTitle)
+           title_label = UILabel(frame: frameTitleLabel)
            title_label.text = "Title"
            title_label.textAlignment = .center
-    
             title_input = UITextField(frame: frameTitle)
             title_input.layer.borderWidth = 1
             title_input.layer.borderColor = UIColor.black.cgColor
-            title_input.placeholder = "Title"
         
            view.addSubview(title_label)
            view.addSubview(title_input)
-//
-//
-//        // ONE ------------
-//           start_label = UILabel(frame: f)
-//           start_label.text = "Start Time"
-//           start_label.textAlignment = .center
-//
-//           start_input = UIDatePicker(frame: fDate)
-//            start_input.layer.borderWidth = 1
-//        start_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(start_label)
-//           view.addSubview(start_input)
-//
-//
-//        // TWO ------------
-//           end_label = UILabel(frame: f)
-//           end_label.text = "End Time"
-//           end_label.textAlignment = .center
-//
-//           end_input = UIDatePicker(frame: fDate)
-//            end_input.layer.borderWidth = 1
-//            end_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(end_label)
-//        view.addSubview(end_input)
-//
-//
-//        // THREE ------------
-//           location_label = UILabel(frame: f)
-//           location_label.text = "Event Address"
-//           location_label.textAlignment = .center
-//
-//           location_input = UITextField(frame: f2)
-//            location_input.layer.borderWidth = 1
-//        location_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(location_label)
-//        view.addSubview(location_input)
-//
-//
-//        // FOUR ------------
-//           capacity_label = UILabel(frame: f)
-//           capacity_label.text = "Capacity of Event"
-//           capacity_label.textAlignment = .center
-//
-//           capacity_input = UITextField(frame: f2)
-//            capacity_input.layer.borderWidth = 1
-//        capacity_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(capacity_label)
-//        view.addSubview(capacity_input)
-//
-//
-//        // FIVE ------------
-//           visibility_label = UILabel(frame: f)
-//           visibility_label.text = "Visibility of Event"
-//           visibility_label.textAlignment = .center
-//
-//           visibility_input = UITextField(frame: f2)
-//            visibility_input.layer.borderWidth = 1
-//        visibility_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(visibility_label)
-//        view.addSubview(visibility_input)
-//
-//
-//        // SIX ------------
-//           tags_label = UILabel(frame: f)
-//           tags_label.text = "Event Tags"
-//           tags_label.textAlignment = .center
-//
-//           tags_input = UITextField(frame: f2)
-//            tags_input.layer.borderWidth = 1
-//        tags_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(tags_label)
-//        view.addSubview(tags_input)
-//
-//
-//        // SEVEN ------------
-//           description_label = UILabel(frame: f)
-//           description_label.text = "Description"
-//           description_label.textAlignment = .center
-//
-//           description_input = UITextField(frame: f2)
-//            description_input.layer.borderWidth = 1
-//        description_input.layer.borderColor = UIColor.black.cgColor
-//
-//        view.addSubview(description_label)
-//        view.addSubview(description_input)
-//
-//
+
+
+        // ONE ------------
+           start_label = UILabel(frame: frameStartLabel)
+           start_label.text = "Start Time"
+           start_label.textAlignment = .center
+
+           start_input = UIDatePicker(frame: frameStart)
+            start_input.layer.borderWidth = 1
+        start_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(start_label)
+           view.addSubview(start_input)
+
+
+        // TWO ------------
+           end_label = UILabel(frame: frameEndLabel)
+           end_label.text = "End Time"
+           end_label.textAlignment = .center
+
+           end_input = UIDatePicker(frame: frameEnd)
+            end_input.layer.borderWidth = 1
+            end_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(end_label)
+        view.addSubview(end_input)
+
+
+        // THREE ------------
+           location_label = UILabel(frame: frameLocationLabel)
+           location_label.text = "Event Address"
+           location_label.textAlignment = .center
+
+           location_input = UITextField(frame: frameLocation)
+            location_input.layer.borderWidth = 1
+        location_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(location_label)
+        view.addSubview(location_input)
+
+
+        // FOUR ------------
+           capacity_label = UILabel(frame: frameCapacityLabel)
+           capacity_label.text = "Capacity of Event"
+           capacity_label.textAlignment = .center
+
+           capacity_input = UITextField(frame: frameCapacity)
+            capacity_input.layer.borderWidth = 1
+        capacity_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(capacity_label)
+        view.addSubview(capacity_input)
+
+
+        // FIVE ------------
+           visibility_label = UILabel(frame: frameVisibilityLabel)
+           visibility_label.text = "Visibility of Event"
+           visibility_label.textAlignment = .center
+
+           visibility_input = UITextField(frame: frameVisibility)
+            visibility_input.layer.borderWidth = 1
+        visibility_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(visibility_label)
+        view.addSubview(visibility_input)
+
+
+        // SIX ------------
+        tagAcademic = RoundedButton(frame: frameTagsAcademic)
+        tagArts = RoundedButton(frame: frameTagsArts)
+        tagAthletic = RoundedButton(frame: frameTagsAthletic)
+        tagProfessional = RoundedButton(frame: frameTagsProfessional)
+        tagSocial = RoundedButton(frame: frameTagsSocial)
+        tagCasual = RoundedButton(frame: frameTagsCasual)
+        
+        
+        
+        view.addSubview(tagArts)
+        view.addSubview(tagAthletic)
+        view.addSubview(tagProfessional)
+        view.addSubview(tagSocial)
+        view.addSubview(tagCasual)
+        view.addSubview(tagAcademic)
+
+        // SEVEN ------------
+           description_label = UILabel(frame: frameDescriptionLabel)
+           description_label.text = "Description"
+           description_label.textAlignment = .center
+
+           description_input = UITextField(frame: frameDescription)
+            description_input.layer.borderWidth = 1
+        description_input.layer.borderColor = UIColor.black.cgColor
+
+        view.addSubview(description_label)
+        view.addSubview(description_input)
+
+
         
           
     }
