@@ -19,7 +19,6 @@
 		2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */; };
 		2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */; };
 		2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F5235D76C0008E2B66 /* Bookmark.swift */; };
-		2B5565F8235D76D4008E2B66 /* BookmarksAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */; };
 		2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */; };
 		2B7F870122F672A800347911 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7F870022F672A800347911 /* SignUp.swift */; };
 		2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */; };
@@ -123,7 +122,6 @@
 		2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveMap.swift; sourceTree = "<group>"; };
 		2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
 		2B5565F5235D76C0008E2B66 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
-		2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksAPI.swift; sourceTree = "<group>"; };
 		2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkCell.swift; sourceTree = "<group>"; };
 		2B7F870022F672A800347911 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedWhiteButton.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 			isa = PBXGroup;
 			children = (
 				2B5565F5235D76C0008E2B66 /* Bookmark.swift */,
-				2B5565F7235D76D4008E2B66 /* BookmarksAPI.swift */,
 				2B5565F9235D8BFD008E2B66 /* BookmarkCell.swift */,
 			);
 			path = Bookmarks;
@@ -671,7 +668,6 @@
 				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
 				2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */,
-				2B5565F8235D76D4008E2B66 /* BookmarksAPI.swift in Sources */,
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,
 				F44CEDC222FD43450077138F /* FilterViewController.swift in Sources */,
 				F49CD100238D089C00C19BFE /* RoundedButton.swift in Sources */,
