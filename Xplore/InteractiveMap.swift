@@ -32,6 +32,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
     
+    var totalShift = 0.0
+    
     //  Used for Interactive Map Screen
     var timer = Timer()
     
@@ -133,6 +135,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
         
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
+        
         
     }
     
@@ -581,12 +584,21 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
             let translation = gestureRecognizer.translation(in: self.view)
             // note: 'view' is optional and need to be unwrapped
-            
+            print(mapView.center.x)
+
             if translation.x < 0 {
                 gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
                 mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
                 gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+                totalShift += Double(translation.x)
             }
+            else if totalShift<0{
+                let new_x = gestureRecognizer.view!.center.x + translation.x
+                gestureRecognizer.view!.center = CGPoint(x: new_x, y: gestureRecognizer.view!.center.y)
+                mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
+                gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
+            
         }
             
         else if gestureRecognizer.state == .ended {
