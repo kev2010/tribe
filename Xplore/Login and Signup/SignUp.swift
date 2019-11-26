@@ -14,6 +14,7 @@ import FirebaseStorage
 
 class SignUp: UIViewController, UITextFieldDelegate {
     //  Outlets for each of the user's inputs into register screen
+    
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
