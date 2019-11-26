@@ -19,10 +19,11 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     
     //  List of users to display on UITableView
     var users:[Friend] = []
+    var filteredusers:[Friend] = []
 
     //  protocol methods for addUser TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return filteredusers.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -34,12 +35,12 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! AddFriendCell
         cell.isUserInteractionEnabled = true
         cell.contentView.isUserInteractionEnabled = false
-        cell.friend = users[indexPath.row]
+        cell.friend = filteredusers[indexPath.row]
         
         
 //        addUser.bringSubviewToFront(cell)
 //        view.bringSubviewToFront(addUser)  //  Necessary?
-        cell.addButton.tag = indexPath.row
+//        cell.addButton.tag = indexPath.row
 //        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
 //        cell.bringSubviewToFront(cell.addButton)
 
@@ -48,19 +49,35 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        addFriend()
+        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
+        let username = currentCell.nameLabel.text
+        addFriend(username: username!)
+        tableView.reloadData()
     }
     
-    @objc func addFriend() {
-        print("hi")
-        print("bye")
+    @objc func addFriend(username: String) {
+        let db = Firestore.firestore()
+        
+        let documentRefString = db.collection("users").document(currentUser!.username)
+        let userRef = db.document(documentRefString.path)
+
+        Firestore.firestore().collection("users").document(username).updateData([
+            "social.friend_req": FieldValue.arrayUnion([userRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        print("Friend Request Sent!")
+        
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        users = []
-        
         //  Check if the text is at least 2 characters
         if searchText.count > 2 {
+            var temp: [Friend] = []
             Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
@@ -68,7 +85,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                     //  Iterate through each user in users documents
                     for document in querySnapshot!.documents {
                         //  Stop displaying after 9 results
-                        if self.users.count > 9 {
+                        if self.filteredusers.count > 9 {
                             break
                         }
                         
@@ -92,15 +109,21 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                             
                             //  Add the user to the users list
                             self.info.notify(queue: DispatchQueue.main) {
-                                self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
-                                self.addUser.reloadData()
+                                temp.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
                             }
                         }
                     }
+                    
+                    self.info.notify(queue: DispatchQueue.main) {
+                        self.filteredusers = temp
+                        self.addUser.reloadData()
+                    }
                 }
             }
+        } else {
+            self.filteredusers = self.users
+            self.addUser.reloadData()
         }
-        self.addUser.reloadData()
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -112,56 +135,53 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         addUserSearch.text = ""
         addUserSearch.resignFirstResponder()
         addUserSearch.endEditing(true)
-        users = []   // Is there a way to not do this?
+        filteredusers = users   // Is there a way to not do this?
         addUser.reloadData()
     }
 
     override func viewDidLoad() {
         addUser.allowsSelection = true
         super.viewDidLoad()
+        
         //  Get User Friend Requests
         for request in currentUser!.friend_req{
             request.getDocument { (document, error) in
                 if let document = document, document.exists {
+                    print("wtf????????")
                     let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
                     var image = UIImage()
                                                
                     //  Retrieve user's profile picture
-                    self.info.enter()
-                   let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
-                   ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
-                       if let error = error {
+                    let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
+                    ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+                        if let error = error {
                            print("Error in retrieving image: \(error.localizedDescription)")
-                       } else {
-                           image = UIImage(data: data!)!
-                       }
-                        self.info.leave()
-                   }
-                   
-                   //  Add the user to the users list
-                    self.info.notify(queue: DispatchQueue.main) {
-                       self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
-                       self.addUser.reloadData()
-                   }
+                        } else {
+                            image = UIImage(data: data!)!
+                            self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
+                            self.filteredusers = self.users
+                            self.addUser.reloadData()
+                        }
+                    }
                 } else {
                     print("User Document does not exist")
                 }
             }
         }
         
-        self.info.notify(queue: DispatchQueue.main) {
-            //  Set up addUser UITableView and addUserSearch UISearchBar
-            self.addUser.dataSource = self
-            self.addUser.delegate = self
-//            self.addUser.allowsSelection = false
-            self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
-            self.addUser.tableFooterView = UIView()
 
-            self.addUserSearch.delegate = self
-            self.addUserSearch.backgroundColor = .white
-            self.addUserSearch.placeholder = "Search"
-            
-        }
+        //  Set up addUser UITableView and addUserSearch UISearchBar
+        print("oh", self.filteredusers)
+        self.addUser.dataSource = self
+        self.addUser.delegate = self
+//            self.addUser.allowsSelection = false
+        self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
+        self.addUser.tableFooterView = UIView()
+
+        self.addUserSearch.delegate = self
+        self.addUserSearch.backgroundColor = .white
+        self.addUserSearch.placeholder = "Search"
+        
 
     }
 

@@ -22,6 +22,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     //  Used for Settings Screen
     var window: UIWindow?
     
+//    var allEventsSearch : [[Event]] = [[]]
+    var annotationsForID : [String: CustomPointAnnotation] = [:]
+    
     //  Used for Home Screen
     var bookmarksTable = UITableView()
     var bookmarks:[Bookmark] = []
@@ -31,6 +34,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var friends:[Friend] = []
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
+    
+    var totalShift = 0.0
     
     //  Used for Interactive Map Screen
     var timer = Timer()
@@ -113,8 +118,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
         
         //  Set Up relevant Bookmarks data
-        BookmarksAPI.getBookmarks() // model
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
+//        BookmarksAPI.getBookmarks() // model
+//        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
         
         //  Load Events onto the map
         loadAndAddEvents()
@@ -133,6 +138,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
         
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
+        
         
     }
     
@@ -157,8 +163,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func loadAndAddEvents(){
-        
-        var allEvents : [Event] = []
+        var allEvents : [(Event, Bool)] = []
+        let bookmarked = currentUser?.eventsUserBookmarked
         
         db.collection("events").getDocuments() { (querySnapshot, err) in
             
@@ -168,26 +174,53 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 print("found one")
                 for document in querySnapshot!.documents {
                     let e = Event(QueryDocumentSnapshot: document)
-                    allEvents.append(e)
-                    print("distance")
-                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
+                    
+                    let documentRefString = self.db.collection("events").document(e.documentID!)
+                    let userRef = self.db.document(documentRefString.path)
+                    let b = bookmarked?.contains(userRef)
+                    allEvents.append((e,b!))
+//                    print("distance")
+//                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
                 }
-                
                 
                 self.addEventsToMap(events: allEvents)
             }
         }
     }
     
-    func addEventsToMap(events:[Event]) {
+    func addEventsToMap(events:[(Event, Bool)]) {
         
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
-        for event in events {
-            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description)
+        for (event, bookmarked) in events {
+            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event)
             point.reuseIdentifier = "customAnnotation\(event.title)"
             point.image = dot(size: 30, num: event.capacity)
+            
+            self.annotationsForID[event.documentID!] = point
+            
             pointAnnotations.append(point)
+            
+            if bookmarked {
+                var username = ""
+                let info = DispatchGroup()
+                info.enter()
+                event.creator_username.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
+                    } else {
+                        print("User Document does not exist")
+                    }
+                    info.leave()
+                }
+                
+                info.notify(queue: DispatchQueue.main) {
+                    self.bookmarks.append(Bookmark(creator: username, event: event, annotation: point))
+                    self.bookmarksTable.reloadData()
+                    
+                    
+                }
+            }
         }
         
         mapView.addAnnotations(pointAnnotations)
@@ -197,13 +230,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func addFriendsToMap(){
         //  Create an annotation for each friend
         var pointAnnotations = [CustomPointAnnotation]()
-        for friend in friends {
-            if friend.user?.privacy != "Private" {
-                let annotation = CustomPointAnnotation(coordinate: friend.user!.currentLocation, title: friend.user?.name, subtitle: "", description: "")
-                annotation.reuseIdentifier = "customAnnotationFriend\(friend.user?.username)"
-    //            annotation.image = friend.picture
-                annotation.image = dot(size: 25, num: 5)
+        for i in 0...friends.count-1 {
+            if friends[i].user?.privacy != "Private" {
+                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User)
+                annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
+                annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 20, height: 20))?.circleMasked
+//                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
+                friends[i].annotation = annotation
             }
         }
         mapView.addAnnotations(pointAnnotations)
@@ -219,6 +253,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
     }
+    
     
     func createLeftMenu() {
         
@@ -512,28 +547,31 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == friendtable {
-            let cell = filteredfriends[indexPath.row]
             self.searchBarCancelButtonClicked(friendsearch)
             self.goMap()
-            guard let location = cell.user?.currentLocation else { return }
-            guard let title = cell.user?.name else { return }
-            
-            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "", description: "ecks dee")
-            self.mapView.selectAnnotation(point, animated: true) {
+            self.mapView.selectAnnotation(filteredfriends[indexPath.row].annotation!, animated: true) {
+                
+                let a : CustomPointAnnotation = self.filteredfriends[indexPath.row].annotation! as! CustomPointAnnotation
+                let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
+                let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
+                let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
+                
+                self.mapView.setVisibleCoordinateBounds(region, animated: true)
+
             }
         } else if tableView == bookmarksTable {
-            let cell = bookmarks[indexPath.section]
             self.goMap()
-            guard let location = cell.event?.location else { return }
-            guard let title = cell.event?.title else { return }
-            guard let capacity = cell.event?.capacity else { return }
-            guard let description = cell.event?.description else { return }
-            
-            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
-//            mapView(self.mapView, imageFor: point)
-//            mapView(self.mapView, didSelect: point)
-            self.mapView.selectAnnotation(point, animated: true) {
+            self.mapView.selectAnnotation(bookmarks[indexPath.section].annotation!, animated: true) {
+                let a : MGLAnnotation = self.bookmarks[indexPath.row].annotation!
+                let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
+                let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
+                let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
+                
+                self.mapView.setVisibleCoordinateBounds(region, animated: true)
             }
+            
+            
+            
             bookmarksTable.reloadData()
         }
     }
@@ -582,12 +620,22 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
             let translation = gestureRecognizer.translation(in: self.view)
             // note: 'view' is optional and need to be unwrapped
-            
+            print(mapView.center.x)
+
             if translation.x < 0 {
                 gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
                 mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
                 gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+                totalShift += Double(translation.x)
             }
+            else if totalShift<0{
+                let new_x = gestureRecognizer.view!.center.x + translation.x
+                gestureRecognizer.view!.center = CGPoint(x: new_x, y: gestureRecognizer.view!.center.y)
+                mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
+                gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
+            
+            
         }
             
         else if gestureRecognizer.state == .ended {
@@ -651,21 +699,25 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-        if let point = annotation as? CustomPointAnnotation {
+        
+        if (annotation as! CustomPointAnnotation).type == .Event {
+            
+            if let point = annotation as? CustomPointAnnotation {
 
-            if topTileShowing {
-                bottom_titleLabel.text = point.title!
-                bottom_subtitleLabel.text  = point.subtitle!
-                bottom_descriptionLabel.text = point.desc!
-            }
-            else {
+                if topTileShowing {
+                    bottom_titleLabel.text = point.title!
+                    bottom_subtitleLabel.text  = point.subtitle!
+                    bottom_descriptionLabel.text = point.desc!
+                }
+                else {
 
-                bottom_titleLabel.text = point.title!
-                bottom_subtitleLabel.text  = point.subtitle!
-                bottom_descriptionLabel.text = point.desc!
+                    bottom_titleLabel.text = point.title!
+                    bottom_subtitleLabel.text  = point.subtitle!
+                    bottom_descriptionLabel.text = point.desc!
 
-                showTopTile(show: true)
-                topTileShowing = true
+                    showTopTile(show: true)
+                    topTileShowing = true
+                }
             }
         }
     }
