@@ -14,6 +14,11 @@ class AddEventViewController: UIViewController {
     
     var status = 0
     
+    
+    @IBOutlet weak var eventTitleUI: UIView!
+    @IBOutlet weak var startEndUI: UIView!
+    @IBOutlet weak var descriptionUI: UIView!
+    
     var title_label = UILabel()
     var start_label = UILabel()
     var end_label = UILabel()
@@ -61,6 +66,10 @@ class AddEventViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleNextView))
         nextArrow.isUserInteractionEnabled = true
         nextArrow.addGestureRecognizer(tap)
+        
+//        eventTitleUI.dropShadow()
+//        startEndUI.dropShadow()
+//        descriptionUI.dropShadow()
         
 //        create_all_UI()
         
