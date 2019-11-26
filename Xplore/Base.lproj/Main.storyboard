@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
+
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -589,6 +590,11 @@
                         <viewLayoutGuide key="safeArea" id="Ne6-Zy-VHX"/>
                     </view>
                     <connections>
+                        <outlet property="description_input" destination="oUH-nV-2xX" id="Yrc-x7-FSk"/>
+                        <outlet property="end_input" destination="Dih-JH-5B4" id="Jsa-6z-XmZ"/>
+                        <outlet property="nextArrow" destination="5fQ-7E-eMo" id="nkp-g9-V8O"/>
+                        <outlet property="start_input" destination="l5W-fE-IDl" id="WiN-sb-x0d"/>
+                        <outlet property="title_input" destination="QHn-Fx-RfR" id="RPp-Pn-bI6"/>
                         <outlet property="descriptionUI" destination="zjy-G8-7c6" id="KFB-SS-9LI"/>
                         <outlet property="eventTitleUI" destination="mPP-4F-5pw" id="8wy-JM-8xq"/>
                         <outlet property="startEndUI" destination="CaU-JL-DMq" id="2El-vt-aeC"/>
@@ -971,10 +977,10 @@
             </objects>
             <point key="canvasLocation" x="682.60869565217399" y="36.830357142857139"/>
         </scene>
-        <!--Add Event View Controller-->
+        <!--Add Event Page Two View Controller-->
         <scene sceneID="c6X-9o-Pbs">
             <objects>
-                <viewController id="1MT-uy-Qs1" customClass="AddEventViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1MT-uy-Qs1" customClass="AddEventPageTwoViewController" customModule="Xplore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8Je-lW-gew">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1274,6 +1280,17 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="0ny-fi-Alu"/>
                     </view>
+                    <connections>
+                        <outlet property="academicTag" destination="eWo-xZ-tXb" id="YxA-pv-Xrj"/>
+                        <outlet property="artsTag" destination="jr7-FB-lhn" id="QuS-VE-zaI"/>
+                        <outlet property="athleticTag" destination="KF2-gu-eCi" id="5cU-FQ-2Mf"/>
+                        <outlet property="capacityField" destination="jAm-Ek-5Zi" id="n8Y-QP-Htf"/>
+                        <outlet property="casualTag" destination="g7V-dS-07f" id="Jwv-cO-wYf"/>
+                        <outlet property="professionalTag" destination="cVQ-uK-4CS" id="Yoe-mZ-b1Y"/>
+                        <outlet property="selectAddress" destination="hGz-Ox-UVm" id="aR6-am-p2H"/>
+                        <outlet property="socialTag" destination="Lvb-dJ-wH2" id="Bqh-gO-VFj"/>
+                        <segue destination="pac-iU-66t" kind="presentation" identifier="confirmLocation" id="bou-zj-xBb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LdU-vn-43n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
