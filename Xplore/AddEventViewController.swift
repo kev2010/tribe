@@ -174,6 +174,7 @@ class AddEventViewController: UIViewController {
             //2. Save previous value: location
             all_data["location_coord"] = finalLocationCoord
             all_data["location_description"] = finalLocationDescription
+            all_data["address"] = location_input.text
             
 
             
@@ -275,7 +276,7 @@ class AddEventViewController: UIViewController {
             //2. Save previous value: description
             all_data["description"] = description_input.text
 
-            let new_event : Event = Event(creator_username: currentUser?.username ?? "", title: all_data["title"] as! String, description: all_data["description"] as! String, startDate: all_data["start"] as! Date, endDate: all_data["end"] as! Date, location: finalLocationCoord, capacity: all_data["capacity"] as! Int, visibility: all_data["visibility"] as! String, tags: [all_data["tags"] as! String], attendees: [])
+            let new_event : Event = Event(creator_username: currentUser?.username ?? "", title: all_data["title"] as! String, description: all_data["description"] as! String, startDate: all_data["start"] as! Date, endDate: all_data["end"] as! Date, location: finalLocationCoord, address: all_data["address"] as! String, capacity: all_data["capacity"] as! Int, visibility: all_data["visibility"] as! String, tags: [all_data["tags"] as! String], attendees: [])
             new_event.saveEvent()
             //3. Dismiss view controller
             if let presenter = self.presentingViewController as? InteractiveMap {
