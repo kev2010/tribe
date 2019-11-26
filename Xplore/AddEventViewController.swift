@@ -19,6 +19,7 @@ class AddEventViewController: UIViewController {
     }
     var status = 0
     
+
     var currentlyShowing  = DateShowing.None
     
 //    var title_label = UILabel()
@@ -53,6 +54,20 @@ class AddEventViewController: UIViewController {
     @IBOutlet var end_input: UITextField!
     @IBOutlet var description_input: UITextField!
     
+
+    
+    @IBOutlet weak var eventTitleUI: UIView!
+    @IBOutlet weak var startEndUI: UIView!
+    @IBOutlet weak var descriptionUI: UIView!
+    
+    var title_label = UILabel()
+    var start_label = UILabel()
+    var end_label = UILabel()
+    var location_label = UILabel()
+    var capacity_label = UILabel()
+    var visibility_label = UILabel() // public vs private w/ friends
+    var description_label = UILabel()
+
     
     
     
@@ -80,9 +95,16 @@ class AddEventViewController: UIViewController {
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
         
+
 //        let tap2 = UITapGestureRecognizer(target: self, action: #selector(handleNextView))
 //        nextArrow.isUserInteractionEnabled = true
 //        nextArrow.addGestureRecognizer(tap2)
+
+//        eventTitleUI.dropShadow()
+//        startEndUI.dropShadow()
+//        descriptionUI.dropShadow()
+        
+//        create_all_UI()
         
         start_input.addTarget(self, action: #selector(startTouched), for: .touchDown)
         
