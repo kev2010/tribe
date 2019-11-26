@@ -22,6 +22,7 @@ enum tags {
     case Casual
 }
 
+
 enum AnnotationType {
     case User
     case Event

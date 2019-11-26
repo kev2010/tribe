@@ -43,6 +43,9 @@
 		308555F7145DE8FAA7556AF1 /* Pods_XploreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */; };
 		530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */; };
 		BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE38948E236C92A600DF6CBE /* FBLogin.swift */; };
+		BEB4F412238CE76600548D28 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB4F411238CE76600548D28 /* Filter.swift */; };
+		BEB4F414238CE88700548D28 /* FilterCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB4F413238CE88700548D28 /* FilterCellTableViewCell.swift */; };
+		BEB4F416238CE96D00548D28 /* FilterTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB4F415238CE96D00548D28 /* FilterTable.swift */; };
 		E402270DE27343D3205C478B /* Pods_XploreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */; };
 		F44CED8F22F99F8D0077138F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CED8E22F99F8D0077138F /* User.swift */; };
 		F44CED9922FB3B2C0077138F /* filter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F44CED9322FB3B2C0077138F /* filter.jpg */; };
@@ -148,6 +151,11 @@
 		8A93B7878C29BF6A6816F1CB /* Pods_XploreUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A254FBD73FB5DA5BADDBE36 /* Pods-XploreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreUITests.debug.xcconfig"; path = "Target Support Files/Pods-XploreUITests/Pods-XploreUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE38948E236C92A600DF6CBE /* FBLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBLogin.swift; sourceTree = "<group>"; };
+		BEB4F411238CE76600548D28 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		BEB4F413238CE88700548D28 /* FilterCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCellTableViewCell.swift; sourceTree = "<group>"; };
+		BEB4F415238CE96D00548D28 /* FilterTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTable.swift; sourceTree = "<group>"; };
+		BEB4F418238D1ECC00548D28 /* filter-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "filter-512.png"; path = "/Users/Will/Desktop/Xplore/Xplore/temp UI/filter-512.png"; sourceTree = "<absolute>"; };
+		BEB4F419238D1ECE00548D28 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search.png; path = "/Users/Will/Desktop/Xplore/Xplore/temp UI/search.png"; sourceTree = "<absolute>"; };
 		ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XploreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F8835B12AF5808FA44F0FD /* Pods-XploreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreTests.release.xcconfig"; path = "Target Support Files/Pods-XploreTests/Pods-XploreTests.release.xcconfig"; sourceTree = "<group>"; };
 		F44CED8E22F99F8D0077138F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -252,12 +260,12 @@
 				2BFDBE5C23349A85006143FD /* Settings */,
 				2B5565F4235D766A008E2B66 /* Bookmarks */,
 				2BEAE8C32389E4DA00A32FB0 /* Search Event */,
-				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
+				BEB4F410238CE67000548D28 /* Filter Events */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
+				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
-				F44CEDC122FD43450077138F /* FilterViewController.swift */,
 				F44CEDC522FD45F30077138F /* AddEventViewController.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
@@ -341,6 +349,17 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		BEB4F410238CE67000548D28 /* Filter Events */ = {
+			isa = PBXGroup;
+			children = (
+				BEB4F411238CE76600548D28 /* Filter.swift */,
+				BEB4F413238CE88700548D28 /* FilterCellTableViewCell.swift */,
+				F44CEDC122FD43450077138F /* FilterViewController.swift */,
+				BEB4F415238CE96D00548D28 /* FilterTable.swift */,
+			);
+			path = "Filter Events";
+			sourceTree = "<group>";
+		};
 		F44CED9022FB3B1B0077138F /* temp UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -352,7 +371,9 @@
 				F456763923400D6B00938AA7 /* friends.png */,
 				F45676432341791500938AA7 /* 100_friends.png */,
 				F45676442341791500938AA7 /* 100_home.png */,
+				BEB4F418238D1ECC00548D28 /* filter-512.png */,
 				F45676412341791500938AA7 /* 100_map.png */,
+				BEB4F419238D1ECE00548D28 /* search.png */,
 				F45676422341791500938AA7 /* 100_new_event.png */,
 				F456763C23400D6C00938AA7 /* home.png */,
 				F456763A23400D6B00938AA7 /* map.png */,
@@ -646,6 +667,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEB4F416238CE96D00548D28 /* FilterTable.swift in Sources */,
 				2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */,
 				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
 				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
@@ -656,6 +678,7 @@
 				F4E6BB09237FB54B007F7A1E /* PickAddressViewController.swift in Sources */,
 				2BEAE8C72389E51500A32FB0 /* SearchCell.swift in Sources */,
 				F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */,
+				BEB4F412238CE76600548D28 /* Filter.swift in Sources */,
 				F4B258C522F6E51500E12BF4 /* Event.swift in Sources */,
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
 				BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */,
@@ -669,6 +692,7 @@
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
 				2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */,
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,
+				BEB4F414238CE88700548D28 /* FilterCellTableViewCell.swift in Sources */,
 				F44CEDC222FD43450077138F /* FilterViewController.swift in Sources */,
 				F49CD100238D089C00C19BFE /* RoundedButton.swift in Sources */,
 				F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */,
