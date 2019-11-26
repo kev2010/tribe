@@ -19,7 +19,8 @@ class AddEventViewController: UIViewController {
     }
     var status = 0
     
-
+    @IBOutlet var nextLabel: RoundUIView!
+    
     var currentlyShowing  = DateShowing.None
     
 //    var title_label = UILabel()
@@ -95,6 +96,9 @@ class AddEventViewController: UIViewController {
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
         
+        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.nextPage(_:)))
+        nextLabel.addGestureRecognizer(tap3)
+        nextLabel.isUserInteractionEnabled = true
 
 //        let tap2 = UITapGestureRecognizer(target: self, action: #selector(handleNextView))
 //        nextArrow.isUserInteractionEnabled = true
@@ -155,7 +159,27 @@ class AddEventViewController: UIViewController {
 
     }
     
+    
+    @objc func nextPage(_ sender: UITapGestureRecognizer) {
+        
+//        let transition = CATransition()
+//        transition.duration = 0.5
+//        transition.type = CATransitionType.push
+//        transition.subtype = CATransitionSubtype.fromRight
+//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+//        view.window!.layer.add(transition, forKey: kCATransition)
+//        present(dashboardWorkout, animated: false, completion: nil)
+//
+        self.performSegue(withIdentifier: "nextPage", sender: self)
+    }
+    
+    func hide() {
+        self.dismiss(animated: false, completion: {})
+    }
+    
+    
     @objc func startTouched(textField: UITextField) {
+        start_input.resignFirstResponder()
         print("start touched")
         
         if currentlyShowing == .End {
@@ -171,6 +195,9 @@ class AddEventViewController: UIViewController {
     }
     
     @objc func endTouched(textField: UITextField) {
+        end_input.resignFirstResponder()
+
+        view.endEditing(true)
         
         if currentlyShowing == .Start {
             showStart(show: false)

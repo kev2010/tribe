@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
-
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -590,14 +589,14 @@
                         <viewLayoutGuide key="safeArea" id="Ne6-Zy-VHX"/>
                     </view>
                     <connections>
+                        <outlet property="descriptionUI" destination="zjy-G8-7c6" id="KFB-SS-9LI"/>
                         <outlet property="description_input" destination="oUH-nV-2xX" id="Yrc-x7-FSk"/>
                         <outlet property="end_input" destination="Dih-JH-5B4" id="Jsa-6z-XmZ"/>
-                        <outlet property="nextArrow" destination="5fQ-7E-eMo" id="nkp-g9-V8O"/>
+                        <outlet property="eventTitleUI" destination="mPP-4F-5pw" id="8wy-JM-8xq"/>
+                        <outlet property="nextLabel" destination="IxU-uH-nEH" id="cis-3U-0Qn"/>
+                        <outlet property="startEndUI" destination="CaU-JL-DMq" id="2El-vt-aeC"/>
                         <outlet property="start_input" destination="l5W-fE-IDl" id="WiN-sb-x0d"/>
                         <outlet property="title_input" destination="QHn-Fx-RfR" id="RPp-Pn-bI6"/>
-                        <outlet property="descriptionUI" destination="zjy-G8-7c6" id="KFB-SS-9LI"/>
-                        <outlet property="eventTitleUI" destination="mPP-4F-5pw" id="8wy-JM-8xq"/>
-                        <outlet property="startEndUI" destination="CaU-JL-DMq" id="2El-vt-aeC"/>
                         <segue destination="pac-iU-66t" kind="presentation" identifier="confirmLocation" id="7Sd-FI-abZ"/>
                         <segue destination="1MT-uy-Qs1" kind="presentation" identifier="nextPage" id="kGS-cL-wIa"/>
                     </connections>
@@ -1307,4 +1306,7 @@
         <image name="tribe4" width="120" height="120"/>
         <image name="userIcon" width="512" height="512"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="7Sd-FI-abZ"/>
+    </inferredMetricsTieBreakers>
 </document>
