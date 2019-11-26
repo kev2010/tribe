@@ -13,6 +13,15 @@ let heatmap_smallToBig = ["#EBF0FF", "#BAD2EB", "#8DBEDA", "#5A9ECC", "#347EB9",
 
 var currentUser : User?
 
+enum tags {
+    case Academic
+    case Arts
+    case Athletic
+    case Professional
+    case Social
+    case Casual
+}
+
 extension CATransition {
     
     //New viewController will appear from bottom of screen.

@@ -387,6 +387,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 100, height: 50)
         let filter_button = UIButton(frame: f5)
         filter_button.setTitle("Filter", for: UIControl.State.normal)
+        filter_button.setImage(UIImage(named: "filter-512.png"), for: UIControl.State.normal)
         filter_button.addTarget(self, action: #selector(self.goFilter), for: UIControl.Event.touchDown)
         
         mapView.addSubview(filter_button)
