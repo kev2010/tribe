@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Mapbox
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
@@ -77,6 +78,19 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = self.presentingViewController as! InteractiveMap
+        
+        let item = filteredsections[indexPath.section].items[indexPath.row]
+        let a = vc.annotationsForID[item.event!.documentID!]!
+        vc.mapView.selectAnnotation(a, animated: true) {
+            let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
+            let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
+            let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
+            
+            vc.mapView.setVisibleCoordinateBounds(region, animated: false)
+        }
+        self.dismiss(animated: true)
+        
 //        let cell = filteredsections[indexPath.section].items[indexPath.row]
 //        self.goMap()
 //        guard let location = cell.event?.location else { return }
@@ -132,7 +146,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         
         var date_dic: [String: [Search]] = [:] as! [String : [Search]]
-        //  Grab all events
         self.info.enter()
         Firestore.firestore().collection("events").getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -142,13 +155,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 for document in querySnapshot!.documents {
                     let event = Event(QueryDocumentSnapshot: document)
                     let start = event.startDate
-                    
+
                     let dateFormatter = DateFormatter()
                     // uncomment to enforce the US locale
                     // dateFormatter.locale = Locale(identifier: "en-US")
                     dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d yyyy")
                     let time = dateFormatter.string(from: start)
-                    
+
                     if date_dic[time] != nil {
                         date_dic[time]?.append(Search(event: event))
                     } else {
@@ -159,6 +172,33 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.info.leave()
             }
         }
+
+//
+//                //  Iterate through each event in events documents
+//        let vc = self.presentingViewController as! InteractiveMap
+//            for events in vc.allEventsSearch {
+//                for event in events {
+//                    let start = event.startDate
+//
+//                    let dateFormatter = DateFormatter()
+//                    // uncomment to enforce the US locale
+//                    // dateFormatter.locale = Locale(identifier: "en-US")
+//                    dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d yyyy")
+//                    let time = dateFormatter.string(from: start)
+//
+//                    if date_dic[time] != nil {
+//                        date_dic[time]?.append(Search(event: event, annotation: ))
+//                    } else {
+//                        date_dic[time] = [Search(event: event)]
+//                    }
+//
+//                }
+//            }
+//
+        
+        
+        
+        
         
         self.info.notify(queue: DispatchQueue.main) {
             var temp: [Section] = []
@@ -182,6 +222,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 temp.append(Section(name: date, tag: tag, items: temp_list))
             }
             self.sections = temp.sorted(by: { $0.tag < $1.tag })
+            
             self.filteredsections = self.sections
             
             //  Set up addUser UITableView and addUserSearch UISearchBar
@@ -197,6 +238,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.searchEvent.delegate = self
             self.searchEvent.backgroundColor = .white
             self.searchEvent.placeholder = "Search"
+            
         }
     }
     

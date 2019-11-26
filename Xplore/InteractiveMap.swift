@@ -22,6 +22,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     //  Used for Settings Screen
     var window: UIWindow?
     
+//    var allEventsSearch : [[Event]] = [[]]
+    var annotationsForID : [String: CustomPointAnnotation] = [:]
+    
     //  Used for Home Screen
     var bookmarksTable = UITableView()
     var bookmarks:[Bookmark] = []
@@ -115,8 +118,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
         
         //  Set Up relevant Bookmarks data
-        BookmarksAPI.getBookmarks() // model
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
+//        BookmarksAPI.getBookmarks() // model
+//        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
         
         //  Load Events onto the map
         loadAndAddEvents()
@@ -160,8 +163,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func loadAndAddEvents(){
-        
-        var allEvents : [Event] = []
+        var allEvents : [(Event, Bool)] = []
+        let bookmarked = currentUser?.eventsUserBookmarked
         
         db.collection("events").getDocuments() { (querySnapshot, err) in
             
@@ -171,27 +174,53 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 print("found one")
                 for document in querySnapshot!.documents {
                     let e = Event(QueryDocumentSnapshot: document)
-                    allEvents.append(e)
-                    print("distance")
-                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
+                    
+                    let documentRefString = self.db.collection("events").document(e.documentID!)
+                    let userRef = self.db.document(documentRefString.path)
+                    let b = bookmarked?.contains(userRef)
+                    allEvents.append((e,b!))
+//                    print("distance")
+//                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
                 }
-                
                 
                 self.addEventsToMap(events: allEvents)
             }
         }
     }
     
-    func addEventsToMap(events:[Event]) {
+    func addEventsToMap(events:[(Event, Bool)]) {
         
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
-        for event in events {
+        for (event, bookmarked) in events {
             let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event)
             point.reuseIdentifier = "customAnnotation\(event.title)"
             point.image = dot(size: 30, num: event.capacity)
             
+            self.annotationsForID[event.documentID!] = point
+            
             pointAnnotations.append(point)
+            
+            if bookmarked {
+                var username = ""
+                let info = DispatchGroup()
+                info.enter()
+                event.creator_username.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
+                    } else {
+                        print("User Document does not exist")
+                    }
+                    info.leave()
+                }
+                
+                info.notify(queue: DispatchQueue.main) {
+                    self.bookmarks.append(Bookmark(creator: username, event: event, annotation: point))
+                    self.bookmarksTable.reloadData()
+                    
+                    
+                }
+            }
         }
         
         mapView.addAnnotations(pointAnnotations)
@@ -517,7 +546,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == friendtable {
-            let cell = filteredfriends[indexPath.row]
             self.searchBarCancelButtonClicked(friendsearch)
             self.goMap()
             self.mapView.selectAnnotation(filteredfriends[indexPath.row].annotation!, animated: true) {
@@ -527,23 +555,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
                 let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
                 
-                self.mapView.setVisibleCoordinateBounds(region, animated: false)
+                self.mapView.setVisibleCoordinateBounds(region, animated: true)
 
             }
         } else if tableView == bookmarksTable {
-            let cell = bookmarks[indexPath.section]
             self.goMap()
-            
-            guard let location = cell.event?.location else { return }
-            guard let title = cell.event?.title else { return }
-            guard let capacity = cell.event?.capacity else { return }
-            guard let description = cell.event?.description else { return }
-            
-//            let point = CustomPointAnnotation(coordinate: location, title: title, subtitle: "\(capacity) people", description: description)
-//            mapView(self.mapView, imageFor: point)
-//            mapView(self.mapView, didSelect: point)
             self.mapView.selectAnnotation(bookmarks[indexPath.section].annotation!, animated: true) {
+                let a : MGLAnnotation = self.bookmarks[indexPath.row].annotation!
+                let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
+                let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
+                let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
                 
+                self.mapView.setVisibleCoordinateBounds(region, animated: true)
             }
             
             

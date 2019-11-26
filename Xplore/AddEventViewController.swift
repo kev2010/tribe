@@ -190,7 +190,7 @@ class AddEventViewController: UIViewController {
             new_event.saveEvent()
             //3. Dismiss view controller
             if let presenter = self.presentingViewController as? InteractiveMap {
-                presenter.addEventsToMap(events: [new_event])
+                presenter.addEventsToMap(events: [(new_event, false)])
                 self.dismiss(animated: true, completion: {})
             }
             
