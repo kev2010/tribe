@@ -63,6 +63,7 @@
 		F45676472341791500938AA7 /* 100_friends.png in Resources */ = {isa = PBXBuildFile; fileRef = F45676432341791500938AA7 /* 100_friends.png */; };
 		F45676482341791500938AA7 /* 100_home.png in Resources */ = {isa = PBXBuildFile; fileRef = F45676442341791500938AA7 /* 100_home.png */; };
 		F49CD100238D089C00C19BFE /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CD0FF238D089C00C19BFE /* RoundedButton.swift */; };
+		F4B1DCEB238D7ABD00F938A3 /* AddEventPageTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */; };
 		F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */; };
 		F4B258C122F6DE2D00E12BF4 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */; };
 		F4B258C522F6E51500E12BF4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258C422F6E51500E12BF4 /* Event.swift */; };
@@ -174,6 +175,7 @@
 		F45676432341791500938AA7 /* 100_friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 100_friends.png; sourceTree = "<group>"; };
 		F45676442341791500938AA7 /* 100_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 100_home.png; sourceTree = "<group>"; };
 		F49CD0FF238D089C00C19BFE /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPageTwoViewController.swift; sourceTree = "<group>"; };
 		F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromLeft.swift; sourceTree = "<group>"; };
 		F4B258C022F6DE2D00E12BF4 /* SegueFromRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		F4B258C422F6E51500E12BF4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F44CEDC522FD45F30077138F /* AddEventViewController.swift */,
+				F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
 				2B09A33322F265D000F52209 /* Info.plist */,
@@ -684,6 +687,7 @@
 				BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */,
 				2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
+				F4B1DCEB238D7ABD00F938A3 /* AddEventPageTwoViewController.swift in Sources */,
 				2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
 				2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */,
