@@ -55,11 +55,14 @@ class AddEventViewController: UIViewController {
     @IBOutlet var end_input: UITextField!
     @IBOutlet var description_input: UITextField!
     
-
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var background: RoundUIView!
+    @IBOutlet weak var arrow: UIImageView!
     
-    @IBOutlet weak var eventTitleUI: UIView!
-    @IBOutlet weak var startEndUI: UIView!
-    @IBOutlet weak var descriptionUI: UIView!
+    
+    
+    @IBOutlet weak var botUI: RoundUIView!
+    @IBOutlet weak var topUI: RoundUIView!
     
     var title_label = UILabel()
     var start_label = UILabel()
@@ -92,6 +95,9 @@ class AddEventViewController: UIViewController {
         
         super.viewDidLoad()
         
+//        title_input.attributedPlaceholder = NSAttributedString(string: "Event Title",
+//        attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
@@ -104,7 +110,16 @@ class AddEventViewController: UIViewController {
 //        nextArrow.isUserInteractionEnabled = true
 //        nextArrow.addGestureRecognizer(tap2)
 
-//        eventTitleUI.dropShadow()
+        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
+        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
+//        nextLabel.addGradientLayer(topColor: color1, bottomColor: color2)
+//        separator.addGradientLayer(topColor: color1, bottomColor: color2)
+        separator.backgroundColor = .lightGray
+        background.addGradientLayer(topColor: color1, bottomColor: color2)
+        arrow.setImageColor(color: .lightGray)
+
 //        startEndUI.dropShadow()
 //        descriptionUI.dropShadow()
         
