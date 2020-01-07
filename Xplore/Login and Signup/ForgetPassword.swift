@@ -21,19 +21,17 @@ class ForgetPassword: UIViewController, UITextFieldDelegate {
         self.invalidEmail.alpha = 0
         
         //  Add a background color gradient
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         //        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
-        view.addGradientLayer(topColor: color1, bottomColor: color2)
+//        view.addGradientLayer(topColor: color1, bottomColor: color2)
         // Do any additional setup after loading the view.
         
         //  Adding keyboard functionality
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         emailField.delegate = self
-        
-        passwordlock.setImageColor(color: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1))
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -77,7 +75,7 @@ class ForgetPassword: UIViewController, UITextFieldDelegate {
         guard let email = emailField.text else { return }
         
         if email == "" || !email.contains("@") {
-            self.invalidEmail.alpha = 0.8
+            self.invalidEmail.alpha = 0.6
         } else {
             self.invalidEmail.alpha = 0
             

@@ -54,6 +54,7 @@ class AddEventViewController: UIViewController {
     @IBOutlet var start_input: UITextField!
     @IBOutlet var end_input: UITextField!
     @IBOutlet var description_input: UITextField!
+    @IBOutlet weak var invalid: UILabel!
     
     @IBOutlet weak var separator: UIView!
     @IBOutlet weak var background: RoundUIView!
@@ -72,9 +73,6 @@ class AddEventViewController: UIViewController {
     var visibility_label = UILabel() // public vs private w/ friends
     var description_label = UILabel()
 
-    
-    
-    
     
     let datePicker = UIDatePicker()
     
@@ -105,6 +103,8 @@ class AddEventViewController: UIViewController {
         let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.nextPage(_:)))
         nextLabel.addGestureRecognizer(tap3)
         nextLabel.isUserInteractionEnabled = true
+        
+        invalid.alpha = 0
 
 //        let tap2 = UITapGestureRecognizer(target: self, action: #selector(handleNextView))
 //        nextArrow.isUserInteractionEnabled = true
@@ -188,7 +188,23 @@ class AddEventViewController: UIViewController {
 //        view.window!.layer.add(transition, forKey: kCATransition)
 //        present(dashboardWorkout, animated: false, completion: nil)
 //
-        self.performSegue(withIdentifier: "nextPage", sender: self)
+        guard let title = title_input.text else { return }
+        guard let start = start_input.text else { return }
+        guard let end = end_input.text else { return }
+        guard let description = description_input.text else { return }
+        
+        if title.count == 0 || start.count == 0 || end.count == 0 || description.count == 0 {
+            invalid.alpha = 0.8
+            
+        } else {
+            invalid.alpha = 0
+            all_data["title"] = title
+            all_data["start"] = start
+            all_data["end"] = end
+            all_data["description"] = description
+            self.performSegue(withIdentifier: "nextPage", sender: self)
+        }
+        
     }
     
     func hide() {
