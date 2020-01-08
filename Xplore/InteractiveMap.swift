@@ -700,8 +700,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         
-        if (annotation as! CustomPointAnnotation).type == .Event {
-            
+        if let a = annotation as? CustomPointAnnotation{
+            if  a.type == .Event {
             if let point = annotation as? CustomPointAnnotation {
 
                 if topTileShowing {
@@ -721,7 +721,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
     }
-    
+        
+    }
+        
+
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         if topTileShowing {
             showTopTile(show: false)

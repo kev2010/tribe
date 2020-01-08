@@ -19,11 +19,11 @@ class LoginButton: UIButton {
         //  add gradient to button
         self.layer.cornerRadius = CGFloat(15.0)  //  Not working?
         self.clipsToBounds = true
-        let color1 = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        let color2 = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+//        let color1 = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+//        let color2 = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
         //        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
-        self.addGradientLayer(topColor: color1, bottomColor: color2)
+//        self.addGradientLayer(topColor: color1, bottomColor: color2)
     }
     
 }

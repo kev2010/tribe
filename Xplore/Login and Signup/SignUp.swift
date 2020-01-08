@@ -122,7 +122,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
         
         //  Check if any field is empty and email has "@"
         if name == "" || email == "" || username == "" || !email.contains("@") {
-            self.missingFields.alpha = 0.8
+            self.missingFields.alpha = 0.6
             valid = false
         } else {
             self.missingFields.alpha = 0
@@ -130,14 +130,14 @@ class SignUp: UIViewController, UITextFieldDelegate {
     
         //  Check if username has valid syntax and doesn't already exist
         if username.count < 3 {
-            self.usernameShort.alpha = 0.8
+            self.usernameShort.alpha = 0.6
             valid = false
         } else {
             self.usernameShort.alpha = 0
             
             let characterSet:CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789_.-")
             if !username.trimmingCharacters(in: characterSet).isEmpty {
-                self.usernameInvalid.alpha = 0.8
+                self.usernameInvalid.alpha = 0.6
                 valid = false
             } else {
                 self.usernameInvalid.alpha = 0
@@ -146,7 +146,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
                 check.enter()
                 docRef.getDocument { (document, error) in
                     if let document = document, document.exists {
-                        self.usernameTaken.alpha = 0.8
+                        self.usernameTaken.alpha = 0.6
                         valid = false
                     } else {
                         self.usernameTaken.alpha = 0
@@ -158,7 +158,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
     
         //  Check if password is at least 6 characters
         if pass.count < 6 {
-            self.shortPassword.alpha = 0.8
+            self.shortPassword.alpha = 0.6
             valid = false
         } else {
             self.shortPassword.alpha = 0
@@ -212,7 +212,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
                     } else {
                         //  If there is an error with creating user with given email, then display email taken error
                         print("huh")
-                        self.emailTaken.alpha = 0.8
+                        self.emailTaken.alpha = 0.6
                     }
                 }
             }

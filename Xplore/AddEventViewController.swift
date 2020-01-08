@@ -54,12 +54,16 @@ class AddEventViewController: UIViewController {
     @IBOutlet var start_input: UITextField!
     @IBOutlet var end_input: UITextField!
     @IBOutlet var description_input: UITextField!
+    @IBOutlet weak var invalid: UILabel!
     
-
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var background: RoundUIView!
+    @IBOutlet weak var arrow: UIImageView!
     
-    @IBOutlet weak var eventTitleUI: UIView!
-    @IBOutlet weak var startEndUI: UIView!
-    @IBOutlet weak var descriptionUI: UIView!
+    
+    
+    @IBOutlet weak var botUI: RoundUIView!
+    @IBOutlet weak var topUI: RoundUIView!
     
     var title_label = UILabel()
     var start_label = UILabel()
@@ -69,9 +73,6 @@ class AddEventViewController: UIViewController {
     var visibility_label = UILabel() // public vs private w/ friends
     var description_label = UILabel()
 
-    
-    
-    
     
     let datePicker = UIDatePicker()
     
@@ -92,6 +93,9 @@ class AddEventViewController: UIViewController {
         
         super.viewDidLoad()
         
+//        title_input.attributedPlaceholder = NSAttributedString(string: "Event Title",
+//        attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
@@ -99,12 +103,23 @@ class AddEventViewController: UIViewController {
         let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.nextPage(_:)))
         nextLabel.addGestureRecognizer(tap3)
         nextLabel.isUserInteractionEnabled = true
+        
+        invalid.alpha = 0
 
 //        let tap2 = UITapGestureRecognizer(target: self, action: #selector(handleNextView))
 //        nextArrow.isUserInteractionEnabled = true
 //        nextArrow.addGestureRecognizer(tap2)
 
-//        eventTitleUI.dropShadow()
+        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
+        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
+//        nextLabel.addGradientLayer(topColor: color1, bottomColor: color2)
+//        separator.addGradientLayer(topColor: color1, bottomColor: color2)
+        separator.backgroundColor = .lightGray
+        background.addGradientLayer(topColor: color1, bottomColor: color2)
+        arrow.setImageColor(color: .lightGray)
+
 //        startEndUI.dropShadow()
 //        descriptionUI.dropShadow()
         
@@ -173,7 +188,23 @@ class AddEventViewController: UIViewController {
 //        view.window!.layer.add(transition, forKey: kCATransition)
 //        present(dashboardWorkout, animated: false, completion: nil)
 //
-        self.performSegue(withIdentifier: "nextPage", sender: self)
+        guard let title = title_input.text else { return }
+        guard let start = start_input.text else { return }
+        guard let end = end_input.text else { return }
+        guard let description = description_input.text else { return }
+        
+        if title.count == 0 || start.count == 0 || end.count == 0 || description.count == 0 {
+            invalid.alpha = 0.8
+            
+        } else {
+            invalid.alpha = 0
+            all_data["title"] = title
+            all_data["start"] = start
+            all_data["end"] = end
+            all_data["description"] = description
+            self.performSegue(withIdentifier: "nextPage", sender: self)
+        }
+        
     }
     
     func hide() {

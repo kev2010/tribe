@@ -26,11 +26,11 @@ class Menu: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let loginButton = FBLoginButton(permissions: [ .publicProfile ])
-        loginButton.center.x = view.center.x
-        loginButton.center.y = view.center.y+200
-
-        view.addSubview(loginButton)
+//        let loginButton = FBLoginButton(permissions: [ .publicProfile ])
+//        loginButton.center.x = view.center.x
+//        loginButton.center.y = view.center.y+200
+//
+//        view.addSubview(loginButton)
         //  Initially hide error login text
         self.invalidLogin.alpha = 0
         
@@ -40,11 +40,11 @@ class Menu: UIViewController, UITextFieldDelegate {
 //        let color2 = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
 //        let color2 = UIColor(red: 0/255, green: 255/255, blue: 255/255, alpha: 1)
 //        let color1 = UIColor(red: 0/255, green: 255/255, blue: 179/255, alpha: 1)
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-//
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+////
+////        view.addGradientLayer(topColor: color1, bottomColor: color2)
 //        view.addGradientLayer(topColor: color1, bottomColor: color2)
-        view.addGradientLayer(topColor: color1, bottomColor: color2)
         
         // UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         
@@ -102,14 +102,14 @@ class Menu: UIViewController, UITextFieldDelegate {
                         self.performSegue(withIdentifier: "toMain", sender: self)
                     } else {
                     
-                    self.invalidLogin.alpha = 0.8
+                    self.invalidLogin.alpha = 0.6
                     print("Error logging in")
                     }
                 }
                 
                 
             } else {
-                self.invalidLogin.alpha = 0.8
+                self.invalidLogin.alpha = 0.6
                 print("Error logging in: \(error!.localizedDescription)")
             }
         }
