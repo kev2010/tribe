@@ -1,5 +1,5 @@
-# Xplore
-Xplore is an interactive map-based mobile application that connects users to nearby user-hosted events
+# tribe
+tribe is an interactive map-based mobile application that connects users to nearby user-hosted events
 
 ## Requirements
 There are three third-party packages that we are using to run the code: CocoaPods, Firebase, and MapBox.
