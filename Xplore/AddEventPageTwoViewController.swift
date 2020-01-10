@@ -15,22 +15,29 @@ class AddEventPageTwoViewController: UIViewController {
     @IBOutlet var academicTag: RoundUIView!
     @IBOutlet var artsTag: RoundUIView!
     @IBOutlet var professionalTag: RoundUIView!
-    
     @IBOutlet var athleticTag: RoundUIView!
-    
     @IBOutlet var socialTag: RoundUIView!
     @IBOutlet var casualTag: RoundUIView!
     
-    @IBOutlet var selectAddress: RoundUIView!
+    
+    @IBOutlet weak var academicLabel: UILabel!
+    @IBOutlet weak var artsLabel: UILabel!
+    @IBOutlet weak var athleticLabel: UILabel!
+    @IBOutlet weak var casualLabel: UILabel!
+    @IBOutlet weak var professionalLabel: UILabel!
+    @IBOutlet weak var socialLabel: UILabel!
+    
+    
+//    @IBOutlet var selectAddress: RoundUIView!
     
     
     @IBOutlet weak var background: RoundUIView!
     @IBOutlet weak var topUI: RoundUIView!
-    @IBOutlet weak var botUI: RoundUIView!
-    @IBOutlet weak var addressline: UIView!
+//    @IBOutlet weak var botUI: RoundUIView!
+//    @IBOutlet weak var addressline: UIView!
     
     
-    @IBOutlet var saveLabel: RoundUIView!
+//    @IBOutlet var saveLabel: RoundUIView!
     
     @IBOutlet var capacityField: UITextField!
     
@@ -44,13 +51,13 @@ class AddEventPageTwoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
-        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
-        background.addGradientLayer(topColor: color1, bottomColor: color2)
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
+//        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
+//        background.addGradientLayer(topColor: color1, bottomColor: color2)
 //        addressline.addGradientLayer(topColor: color1, bottomColor: color2)
         
-        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
-        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+//        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+//        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
 
 
         
@@ -72,62 +79,75 @@ class AddEventPageTwoViewController: UIViewController {
         let tap7 = UITapGestureRecognizer(target: self, action: #selector(self.socialTap))
         socialTag.addGestureRecognizer(tap7)
         
-        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.saveTap))
-        saveLabel.addGestureRecognizer(tap3)
+//         let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.saveTap))
+//         saveLabel.addGestureRecognizer(tap3)
         
 
         
-        let pickAddress = UITapGestureRecognizer(target: self, action: #selector(self.addressTap))
-        selectAddress.addGestureRecognizer(pickAddress)
+//        let pickAddress = UITapGestureRecognizer(target: self, action: #selector(self.addressTap))
+//        selectAddress.addGestureRecognizer(pickAddress)
         
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func backTap(_ sender: UIButton) {
+        self.dismiss(animated: true)
+    }
     
-    @objc func saveTap(_ sender: UITapGestureRecognizer) {
+    
+    @IBAction func saveTap(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
         
+                // Create Address String
 
-               
-                    
-        
-                    // Create Address String
-        
-                    var newLocation = CLLocationCoordinate2D()
-                    // Geocode Address String
-        
-                    let geocoder = CLGeocoder()
+        var newLocation = CLLocationCoordinate2D()
+        // Geocode Address String
+
+        let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(self.address_send) { (placemarks, error) in
-                        if let error = error {
-                            print("Unable to Forward Geocode Address (\(error))")
-        
-                        } else {
-                            var location: CLLocation?
-        
-                            if let placemarks = placemarks, placemarks.count > 0 {
-                                location = placemarks.first?.location
-                            }
-        
-                            if let location = location {
-                                let coordinate = location.coordinate
-                                newLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
-                            } else {
-                                print("No matching locations found")
-                            }
-                        }
-                    }
+            if let error = error {
+                print("Unable to Forward Geocode Address (\(error))")
+
+            } else {
+                var location: CLLocation?
+
+                if let placemarks = placemarks, placemarks.count > 0 {
+                    location = placemarks.first?.location
+                }
+
+                if let location = location {
+                    let coordinate = location.coordinate
+                    newLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+
+                } else {
+                    print("No matching locations found")
+                }
+            }
+        }
         
 
         let newEvent = Event(creator_username: currentUser!.username, title: prev_data["title"] as! String, description: prev_data["description"] as! String, startDate: prev_data["start"] as! Date, endDate: prev_data["end"] as! Date, location: newLocation, address: "tbi", capacity: -1, visibility: "tbi", tags: self.tags, attendees: [currentUser!.username])
         
                     
         
-                    newEvent.saveEvent()
+        newEvent.saveEvent()
         
-                    //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
-                }
-                
-
+        //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
+      
+        //  Exit SaveEvent
+        self.dismiss(animated: true, completion: {})
+        (self.presentingViewController as! AddEventViewController).close()
+    }
+    
+   
     @objc func addressTap(_ sender: UITapGestureRecognizer) {
         
         self.performSegue(withIdentifier: "confirmLocation", sender: self)
@@ -136,13 +156,17 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func academicTap(_ sender: UITapGestureRecognizer) {
         
-        if academicTag.backgroundColor == UIColor.white {
-            academicTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+
+        // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
+        if academicTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            academicTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            academicLabel.textColor = .white
             self.tags.append("Academic")
         }
             
         else {
-            self.academicTag.backgroundColor = UIColor.white
+            academicTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            academicLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Academic") {
                 self.tags.remove(at: index)
             }
@@ -152,29 +176,36 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func artsTap(_ sender: UITapGestureRecognizer) {
         
-        if artsTag.backgroundColor == UIColor.white {
-            artsTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+
+        // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
+        if artsTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            artsTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            artsLabel.textColor = .white
             self.tags.append("Arts")
         }
             
         else {
-            self.artsTag.backgroundColor = UIColor.white
+            artsTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            artsLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Arts") {
                 self.tags.remove(at: index)
             }
+
         }
 
     }
     
     @objc func athleticTap(_ sender: UITapGestureRecognizer) {
         
-        if athleticTag.backgroundColor == UIColor.white {
-            athleticTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+        if athleticTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            athleticTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            athleticLabel.textColor = .white
             self.tags.append("Athletic")
         }
             
         else {
-            athleticTag.backgroundColor = UIColor.white
+            athleticTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            athleticLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Athletic") {
                 self.tags.remove(at: index)
             }
@@ -184,13 +215,15 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func casualTap(_ sender: UITapGestureRecognizer) {
         
-        if casualTag.backgroundColor == UIColor.white {
-            casualTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+        if casualTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            casualTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            casualLabel.textColor = .white
             self.tags.append("Casual")
         }
             
         else {
-            casualTag.backgroundColor = UIColor.white
+            casualTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            casualLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Casual") {
                 self.tags.remove(at: index)
             }
@@ -200,13 +233,15 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func professionalTap(_ sender: UITapGestureRecognizer) {
         
-        if professionalTag.backgroundColor == UIColor.white {
-            professionalTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+        if professionalTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            professionalTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            professionalLabel.textColor = .white
             self.tags.append("Professional")
         }
             
         else {
-            professionalTag.backgroundColor = UIColor.white
+            professionalTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            professionalLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Professional") {
                 self.tags.remove(at: index)
             }
@@ -216,13 +251,15 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func socialTap(_ sender: UITapGestureRecognizer) {
         
-        if socialTag.backgroundColor == UIColor.white {
-            socialTag.backgroundColor = UIColor(red: 0, green: 182/255, blue: 1.0, alpha: 0.6)
+        if socialTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+            socialTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
+            socialLabel.textColor = .white
             self.tags.append("Social")
         }
             
         else {
-            socialTag.backgroundColor = UIColor.white
+            socialTag.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+            socialLabel.textColor = .lightGray
             if let index = self.tags.firstIndex(of: "Social") {
                 self.tags.remove(at: index)
             }

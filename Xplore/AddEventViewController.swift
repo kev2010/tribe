@@ -19,7 +19,8 @@ class AddEventViewController: UIViewController {
     }
     var status = 0
     
-    @IBOutlet var nextLabel: RoundUIView!
+//    @IBOutlet var nextLabel: RoundUIView!
+    
     
     var currentlyShowing  = DateShowing.None
     
@@ -53,17 +54,31 @@ class AddEventViewController: UIViewController {
     @IBOutlet var title_input: UITextField!
     @IBOutlet var start_input: UITextField!
     @IBOutlet var end_input: UITextField!
-    @IBOutlet var description_input: UITextField!
+//    @IBOutlet var description_input: UITextField!
     @IBOutlet weak var invalid: UILabel!
     
-    @IBOutlet weak var separator: UIView!
+//    @IBOutlet weak var separator: UIView!
     @IBOutlet weak var background: RoundUIView!
-    @IBOutlet weak var arrow: UIImageView!
+//    @IBOutlet weak var arrow: UIImageView!
+    
+    @IBAction func nextTapped(_ sender: UIButton) {
+        UIButton.animate(withDuration: 0.3,
+                         animations: {
+                            sender.transform = CGAffineTransform(scaleX: 0.97, y: 0.955)
+        },
+                         completion: { finish in
+                            UIButton.animate(withDuration: 0.2, animations: {
+                                sender.transform = CGAffineTransform.identity
+                            })
+        })
+        
+        self.invalid.alpha = 0
+        performSegue(withIdentifier: "nextPage", sender: self)
+    }
     
     
-    
-    @IBOutlet weak var botUI: RoundUIView!
-    @IBOutlet weak var topUI: RoundUIView!
+//    @IBOutlet weak var botUI: RoundUIView!
+//    @IBOutlet weak var topUI: RoundUIView!
     
     var title_label = UILabel()
     var start_label = UILabel()
@@ -98,9 +113,9 @@ class AddEventViewController: UIViewController {
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
         
-        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.nextPage(_:)))
-        nextLabel.addGestureRecognizer(tap3)
-        nextLabel.isUserInteractionEnabled = true
+//        let tap3 = UITapGestureRecognizer(target: self, action: #selector(self.nextPage(_:)))
+//        nextLabel.addGestureRecognizer(tap3)
+//        nextLabel.isUserInteractionEnabled = true
         
         invalid.alpha = 0
 
@@ -108,15 +123,15 @@ class AddEventViewController: UIViewController {
 //        nextArrow.isUserInteractionEnabled = true
 //        nextArrow.addGestureRecognizer(tap2)
 
-        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
-        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
-        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
+//        topUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+//        botUI.dropShadow(color: .gray, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
+//        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
 //        nextLabel.addGradientLayer(topColor: color1, bottomColor: color2)
 //        separator.addGradientLayer(topColor: color1, bottomColor: color2)
-        separator.backgroundColor = .lightGray
-        background.addGradientLayer(topColor: color1, bottomColor: color2)
-        arrow.setImageColor(color: .lightGray)
+//        separator.backgroundColor = .lightGray
+//        background.addGradientLayer(topColor: color1, bottomColor: color2)
+//        arrow.setImageColor(color: .lightGray)
 
 //        startEndUI.dropShadow()
 //        descriptionUI.dropShadow()
@@ -191,10 +206,10 @@ class AddEventViewController: UIViewController {
         guard let title = title_input.text else { return }
         guard let start = start_input.text else { return }
         guard let end = end_input.text else { return }
-        guard let description = description_input.text else { return }
+//        guard let description = description_input.text else { return }
         
         if title.count == 0 || start.count == 0 || end.count == 0 || description.count == 0 {
-            invalid.alpha = 0.8
+            invalid.alpha = 0.6
             
         } else {
             invalid.alpha = 0
