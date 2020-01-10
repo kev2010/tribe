@@ -947,15 +947,16 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func showBigTile(show:Bool) {
         
         if show {
-            showTopTile(show: false, hide: true)
-            
-            UIView.animate(withDuration: 0.2) {
-                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height/6)
-            }
-        } else {
-            UIView.animate(withDuration: 0.2) {
-                self.bigTile.frame.origin = CGPoint(x: 20, y: -self.view.frame.height)
-            }
+//            showTopTile(show: false, hide: true)
+//
+//            UIView.animate(withDuration: 0.2) {
+//                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height/6)
+//            }
+//        } else {
+//            UIView.animate(withDuration: 0.2) {
+//                self.bigTile.frame.origin = CGPoint(x: 20, y: -self.view.frame.height)
+//            }
+            self.performSegue(withIdentifier: "toBigTile", sender: self)
         }
         
     }

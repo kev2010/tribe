@@ -95,6 +95,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func academicTap(_ sender: UITapGestureRecognizer) {
         
+        // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
         if academicTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
             academicTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             academicLabel.textColor = .white
@@ -109,6 +110,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func artsTap(_ sender: UITapGestureRecognizer) {
         
+        // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
         if artsTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
             artsTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             artsLabel.textColor = .white
