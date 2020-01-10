@@ -199,8 +199,8 @@ class AddEventViewController: UIViewController {
         } else {
             invalid.alpha = 0
             all_data["title"] = title
-            all_data["start"] = start
-            all_data["end"] = end
+            all_data["start"] = start_date.date
+            all_data["end"] = end_date.date
             all_data["description"] = description
             self.performSegue(withIdentifier: "nextPage", sender: self)
         }
