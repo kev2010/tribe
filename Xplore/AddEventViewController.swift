@@ -106,7 +106,7 @@ class AddEventViewController: UIViewController {
     override func viewDidLoad() {
 //        showDatePicker()
         
-        description_input.text = "\n \n"
+//        description_input.text = "\n \n"
         super.viewDidLoad()
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
