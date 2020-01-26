@@ -158,7 +158,7 @@ class AddEventPageTwoViewController: UIViewController {
         
 
         // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
-        if academicTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if academicTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             academicTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             academicLabel.textColor = .white
             self.tags.append("Academic")

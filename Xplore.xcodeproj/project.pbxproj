@@ -73,6 +73,8 @@
 		F4B258CF22F6F83900E12BF4 /* third_party_vector_style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */; };
 		F4B258D722F884BA00E12BF4 /* map_example.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4B258D622F884BA00E12BF4 /* map_example.jpg */; };
 		F4C4026223746C7400B60DD8 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C4026123746C7400B60DD8 /* next.png */; };
+		F4D13F4C23D290FB00B4EAD4 /* BigTileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D13F4B23D290FB00B4EAD4 /* BigTileViewController.swift */; };
+		F4D13F4E23DD192100B4EAD4 /* ShowLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D13F4D23DD192100B4EAD4 /* ShowLocationViewController.swift */; };
 		F4E6BB09237FB54B007F7A1E /* PickAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -185,6 +187,8 @@
 		F4B258CE22F6F83800E12BF4 /* third_party_vector_style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = third_party_vector_style.json; sourceTree = "<group>"; };
 		F4B258D622F884BA00E12BF4 /* map_example.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = map_example.jpg; sourceTree = "<group>"; };
 		F4C4026123746C7400B60DD8 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		F4D13F4B23D290FB00B4EAD4 /* BigTileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigTileViewController.swift; sourceTree = "<group>"; };
+		F4D13F4D23DD192100B4EAD4 /* ShowLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLocationViewController.swift; sourceTree = "<group>"; };
 		F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickAddressViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -264,10 +268,12 @@
 				2BEAE8C32389E4DA00A32FB0 /* Search Event */,
 				BEB4F410238CE67000548D28 /* Filter Events */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
+				F4D13F4D23DD192100B4EAD4 /* ShowLocationViewController.swift */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
 				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
+				F4D13F4B23D290FB00B4EAD4 /* BigTileViewController.swift */,
 				F44CEDC522FD45F30077138F /* AddEventViewController.swift */,
 				F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
@@ -674,6 +680,7 @@
 				2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */,
 				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
 				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
+				F4D13F4E23DD192100B4EAD4 /* ShowLocationViewController.swift in Sources */,
 				2B907CA3234575DA0021EF98 /* ToS.swift in Sources */,
 				2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */,
 				F4B258CD22F6ED4A00E12BF4 /* CustomPointAnnotation.swift in Sources */,
@@ -691,6 +698,7 @@
 				2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */,
 				2B7F870322F68FEA00347911 /* RoundedWhiteButton.swift in Sources */,
 				2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */,
+				F4D13F4C23D290FB00B4EAD4 /* BigTileViewController.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
 				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
