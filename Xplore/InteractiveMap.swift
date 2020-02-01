@@ -135,7 +135,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Create a timer that refreshes location every 10 seconds
         timer.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(saveUserLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(refreshData), userInfo: nil, repeats: true)
         
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
         
@@ -304,7 +304,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
-        ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+        ppRef.getData(maxSize: 1 * 512 * 512) { data, error in    // Might need to change size?
             if let error = error {
                 print("Error in retrieving image: \(error.localizedDescription)")
             } else {
@@ -355,6 +355,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
         leftMenuView.addSubview(bookmarksTable)
         bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/3)  //  Need to change frame later
+        bookmarksTable.separatorStyle = .none
         bookmarksTable.tableFooterView = UIView()
         bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
@@ -390,12 +391,12 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f2 = CGRect(x: self.view.frame.width/2-140, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_main = UIButton(frame: f2)
         bottomMenu_main.addTarget(self, action: #selector(self.goMain), for: UIControl.Event.touchDown)
-        bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
+        bottomMenu_main.setImage(UIImage(named: "homeoff"), for: UIControl.State.normal)
         
         let f3 = CGRect(x: self.view.frame.width/2-35, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_map = UIButton(frame: f3)
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
-        bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
+        bottomMenu_map.setImage(UIImage(named: "addon"), for: UIControl.State.normal)
         
 //        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
 //        self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
@@ -408,7 +409,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f4 = CGRect(x: self.view.frame.width/2+70, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
-        bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
+        bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
 
         
         self.view.addSubview(bottomMenu_main)
@@ -430,7 +431,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f6 = CGRect(x: 19, y: 50, width: 100, height: 50)
         let search_button = UIButton(frame: f6)
         search_button.setTitle("Search", for: UIControl.State.normal)
-        search_button.titleLabel?.textColor = .black
+        search_button.setTitleColor(.black, for: UIControl.State.normal)
         search_button.addTarget(self, action: #selector(self.goSearch), for: UIControl.Event.touchDown)
         
         mapView.addSubview(search_button)
@@ -444,24 +445,25 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UIView(frame: f)
 //        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-        rightFriendsView.backgroundColor = color2
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        rightFriendsView.backgroundColor = .white
         
         //  Add Friends screen title
         let friendsHeader = UILabel()
-        friendsHeader.text = "Friends"
-        friendsHeader.frame = CGRect(x: 19, y: 60, width: rightFriendsView.frame.width, height: 49)
-        friendsHeader.font = UIFont(name: "GeezaPro-Bold", size: 36)
-        friendsHeader.textColor = .white
+        friendsHeader.text = "FRIENDS"
+        friendsHeader.frame = CGRect(x: 0, y: rightFriendsView.frame.height/14, width: rightFriendsView.frame.width, height: 49)
+        friendsHeader.textAlignment = .center
+        friendsHeader.font = UIFont(name: "Futura-Bold", size: 24)
+        friendsHeader.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
         rightFriendsView.addSubview(friendsHeader)
         
         //  Add add friend button
         let add = UIButton()
-        add.frame = CGRect(x: rightFriendsView.frame.width-60, y: 55, width: 49, height: 49)
+        add.frame = CGRect(x: 4*rightFriendsView.frame.width/5, y: rightFriendsView.frame.height/14, width: rightFriendsView.frame.width/4, height: 49)
         add.addTarget(self, action: #selector(self.addFriend), for: UIControl.Event.touchDown)
         add.setTitle("+", for: UIControl.State.normal)
-        add.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 42)
-        add.titleLabel?.textAlignment = .center
+        add.setTitleColor(UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1), for: UIControl.State.normal)
+        add.titleLabel!.font = UIFont(name: "Futura-Bold", size: 42)
         rightFriendsView.addSubview(add)
         
         //  Set up friend uitable
@@ -470,6 +472,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendtable.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
         rightFriendsView.addSubview(friendtable)
         friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height)
+        friendtable.separatorStyle = .none
         friendtable.tableFooterView = UIView()
         
         //  Set up search bar
@@ -477,6 +480,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendsearch.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5-friendsearch.frame.height-55, width: rightFriendsView.frame.width, height: 56)
         friendsearch.backgroundColor = .white
         friendsearch.placeholder = "Search"
+        friendsearch.searchBarStyle = .minimal
+        // SearchBar text
+        let textFieldInsideUISearchBar = friendsearch.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
+
+        // SearchBar placeholder
+        let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
         rightFriendsView.addSubview(friendsearch)
         
         self.view.addSubview(rightFriendsView)
@@ -782,7 +793,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         currentLocation = location.coordinate
     }
     
-    @objc func saveUserLocation() {
+    @objc func refreshData() {
+        //  Refresh Location Data
         if !(currentLocation.latitude == previousLocation.latitude && currentLocation.longitude == previousLocation.longitude){
             
             previousLocation = currentLocation
@@ -794,6 +806,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 
             }
         }
+        
+        //  Refresh Table Data
+        self.friendtable.reloadData()
+        self.bookmarksTable.reloadData()
     }
     
     // MARK: - Navigation
@@ -812,9 +828,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
             
-            self.bottomMenu_map.setImage(UIImage(named: "map.png"), for: UIControl.State.normal)
-            self.bottomMenu_main.setImage(UIImage(named: "100_home.png"), for: UIControl.State.normal)
-            self.bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
+            self.bottomMenu_map.setImage(UIImage(named: "mapoff"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "homeon"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
 
         }
     }
@@ -853,9 +869,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
         }) { (true) in
             
-            self.bottomMenu_map.setImage(UIImage(named: "100_new_event.png"), for: UIControl.State.normal)
-            self.bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
-            self.bottomMenu_friends.setImage(UIImage(named: "friends.png"), for: UIControl.State.normal)
+            self.bottomMenu_map.setImage(UIImage(named: "addon"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "homeoff"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
 
             
             
@@ -880,9 +896,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
             
-            self.bottomMenu_map.setImage(UIImage(named: "map.png"), for: UIControl.State.normal)
-            self.bottomMenu_main.setImage(UIImage(named: "home.png"), for: UIControl.State.normal)
-            self.bottomMenu_friends.setImage(UIImage(named: "100_friends.png"), for: UIControl.State.normal)
+            self.bottomMenu_map.setImage(UIImage(named: "mapoff"), for: UIControl.State.normal)
+            self.bottomMenu_main.setImage(UIImage(named: "homeoff"), for: UIControl.State.normal)
+            self.bottomMenu_friends.setImage(UIImage(named: "friendson"), for: UIControl.State.normal)
 
         }
         
