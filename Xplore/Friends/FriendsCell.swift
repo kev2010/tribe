@@ -79,7 +79,7 @@ class FriendsCell: UITableViewCell {
         
         //  Add constraints to profile image
         profileImageView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
+        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant:70).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant:70).isActive = true
         

@@ -215,7 +215,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 }
                 
                 info.notify(queue: DispatchQueue.main) {
-                    self.bookmarks.append(Bookmark(creator: username, event: event, annotation: point))
+                    self.bookmarks.append(Bookmark(event: event, annotation: point))
                     self.bookmarksTable.reloadData()
                     
                     
@@ -268,16 +268,24 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        let f = CGRect(x: -self.view.frame.width, y: self.view.frame.height/2, width: 400, height: 400)
         leftMenuView = UIView(frame: f)
 //        leftMenuView.backgroundColor = .black
-        leftMenuView.backgroundColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
         
         //  Create the top background
-        let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
-        topbackground.layer.cornerRadius = topbackground.bounds.height/2
-        topbackground.clipsToBounds = true
-        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-        topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
-        leftMenuView.addSubview(topbackground)
+//        let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
+//        topbackground.layer.cornerRadius = topbackground.bounds.height/2
+//        topbackground.clipsToBounds = true
+//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//        topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
+//        leftMenuView.addSubview(topbackground)
+        
+        //  Add Profile Title
+        let profileHeader = UILabel()
+        profileHeader.text = "PROFILE"
+        profileHeader.frame = CGRect(x: 0, y: leftMenuView.frame.height/14, width: leftMenuView.frame.width, height: 49)
+        profileHeader.textAlignment = .center
+        profileHeader.font = UIFont(name: "Futura-Bold", size: 24)
+        profileHeader.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        leftMenuView.addSubview(profileHeader)
         
 //        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
 //        let topbackground = CAShapeLayer()
@@ -286,21 +294,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Add settings button
         let settings_button = UIButton(type: UIButton.ButtonType.custom)
-        settings_button.frame = CGRect(x: 19, y: 45, width: 36, height: 36)
+        settings_button.frame = CGRect(x: 19, y: 45, width: 48, height: 48)
         settings_button.setImage(UIImage(named: "settings"), for: .normal)
         settings_button.addTarget(self, action: #selector(self.goSettings), for: UIControl.Event.touchDown)
         leftMenuView.addSubview(settings_button)
-        
-        //  Add "Bookmarked Events" title
-        let bookmark_label = UILabel(frame: CGRect(x: 118, y: 343, width: 206, height: 23))
-        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-        bookmark_label.text = "Bookmarked Events"
-        bookmark_label.textAlignment = .center
-        bookmark_label.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
-        bookmark_label.font = UIFont(name: "TrebuchetMS-Bold", size: 22)
-        bookmark_pic.image = UIImage(named: "bookmark")
-        leftMenuView.addSubview(bookmark_label)
-        leftMenuView.addSubview(bookmark_pic)
         
         //  Retrieve profile picture from Firebase Storage
         let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(Auth.auth().currentUser!.uid)")
@@ -313,7 +310,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
         //  Add specifics to picture
-        profile.frame = CGRect(x: 133, y: 82, width: 148, height: 148)
+        profile.frame = CGRect(x: 133, y: 140, width: 148, height: 148)
         profile.layer.cornerRadius = profile.bounds.height/2
         profile.clipsToBounds = true
         //  Add ability to change profile pic
@@ -326,40 +323,72 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         imagePicker.delegate = self
         leftMenuView.addSubview(profile)
         
-        //  Add status - Need to add to database?
-        let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
-        let status = CAShapeLayer()
-        status.path = statuspath.cgPath
-        status.fillColor = UIColor.green.cgColor
-        leftMenuView.layer.addSublayer(status)
+//        //  Add status - Need to add to database?
+//        let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
+//        let status = CAShapeLayer()
+//        status.path = statuspath.cgPath
+//        status.fillColor = UIColor.green.cgColor
+//        leftMenuView.layer.addSublayer(status)
         
         //  Add Name under profile picture
-        let namelabel = UILabel(frame: CGRect(x: 0, y: 237, width: 414, height: 23))
+        let namelabel = UILabel(frame: CGRect(x: 0, y: 298, width: 414, height: 23))
         namelabel.text = currentUser!.username
         namelabel.textAlignment = .center
-        namelabel.textColor = UIColor.white
-        namelabel.font = UIFont(name: "TrebuchetMS-Bold", size: 20)
+        namelabel.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        namelabel.font = UIFont(name: "Futura-Bold", size: 18)
         leftMenuView.addSubview(namelabel)
         
         //  Add Username under Name
-        let usernamelabel = UILabel(frame: CGRect(x: 0, y: 263, width: 414, height: 14))
+        let usernamelabel = UILabel(frame: CGRect(x: 0, y: 318, width: 414, height: 23))
         usernamelabel.text = Auth.auth().currentUser!.displayName
         usernamelabel.textAlignment = .center
-        usernamelabel.textColor = UIColor.white
-        usernamelabel.font = UIFont(name: "TrebuchetMS", size: 14)
+        usernamelabel.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        usernamelabel.font = UIFont(name: "Futura-Bold", size: 14)
         leftMenuView.addSubview(usernamelabel)
         
+        //  Add "Bookmarks" title
+//        let bookmark_label = UIButton(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
+        let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
+//        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+        bookmark_label.text = "Bookmarks"
+        bookmark_label.textAlignment = .center
+        bookmark_label.textColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
+//        bookmark_label.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
+        bookmark_label.font = UIFont(name: "Futura-Bold", size: 18)
+//        bookmark_pic.image = UIImage(named: "bookmark")
+        leftMenuView.addSubview(bookmark_label)
+//        leftMenuView.addSubview(bookmark_pic)
+        
+        //  Add "Activity" title
+        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
+//        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+        activity_label.text = "Activity"
+        activity_label.textAlignment = .center
+        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
+//        bookmark_pic.image = UIImage(named: "bookmark")
+        leftMenuView.addSubview(activity_label)
+//        leftMenuView.addSubview(bookmark_pic)
+        
+        //  Add horizontal separators
+        let bookmark_sep = UIView()
+        bookmark_sep.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
+        bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width/2, height: 3)
+        leftMenuView.addSubview(bookmark_sep)
+        
+        let activity_sep = UIView()
+        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
+        leftMenuView.addSubview(activity_sep)
+
         //  Add bookmarked events UITableView
         bookmarksTable.dataSource = self
         bookmarksTable.delegate = self
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
         leftMenuView.addSubview(bookmarksTable)
-        bookmarksTable.frame = CGRect(x: 45, y: 400, width: leftMenuView.frame.width-90, height: leftMenuView.frame.height/3)  //  Need to change frame later
+        bookmarksTable.frame = CGRect(x: 55, y: 400, width: leftMenuView.frame.width-110, height: leftMenuView.frame.height/3)  //  Need to change frame later\
         bookmarksTable.separatorStyle = .none
         bookmarksTable.tableFooterView = UIView()
-        bookmarksTable.backgroundColor = UIColor(displayP3Red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
-        
-        
         //  Sort by start date? - Might want to customize sorting in the future
         
         
@@ -457,13 +486,19 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendsHeader.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
         rightFriendsView.addSubview(friendsHeader)
         
+//        //  Add horizontal separator
+//        let separator = UIView()
+//        separator.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+//        separator.frame = CGRect(x: 0, y: rightFriendsView.frame.height/8, width: rightFriendsView.frame.width, height: 4)
+//        rightFriendsView.addSubview(separator)
+        
         //  Add add friend button
         let add = UIButton()
         add.frame = CGRect(x: 4*rightFriendsView.frame.width/5, y: rightFriendsView.frame.height/14, width: rightFriendsView.frame.width/4, height: 49)
         add.addTarget(self, action: #selector(self.addFriend), for: UIControl.Event.touchDown)
         add.setTitle("+", for: UIControl.State.normal)
         add.setTitleColor(UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1), for: UIControl.State.normal)
-        add.titleLabel!.font = UIFont(name: "Futura-Bold", size: 42)
+        add.titleLabel!.font = UIFont(name: "Futura-Bold", size: 36)
         rightFriendsView.addSubview(add)
         
         //  Set up friend uitable
@@ -512,7 +547,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView == bookmarksTable {
-            return 5
+            return 10
         }
         return 0
     }
@@ -522,7 +557,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if tableView == friendtable {
             return 100
         } else if tableView == bookmarksTable {
-            return 75
+            return 85
         }
         return 10
     }
@@ -546,9 +581,27 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         } else if tableView == bookmarksTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkCell
             cell.bookmark = bookmarks[indexPath.section]
+            
+            let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
+            let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
+            cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
+//            cell.clipsToBounds = true
+//            cell.layer.cornerRadius = 15
+//            let shadowPath2 = UIBezierPath(rect: cell.bounds)
+//            cell.layer.masksToBounds = false
+//            cell.layer.shadowColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1).cgColor
+//            cell.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
+//            cell.layer.shadowOpacity = 1
+//            cell.layer.shadowPath = shadowPath2.cgPath
+            
+//            cell.backgroundColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1)
+//            let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
+//            let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
+//            cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
+            cell.clipsToBounds = true
             cell.layer.cornerRadius = 25
             cell.layer.masksToBounds = true
-            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+//            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
             bookmarksTable.bringSubviewToFront(cell)
             view.bringSubviewToFront(bookmarksTable)
             return cell
