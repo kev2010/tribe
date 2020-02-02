@@ -51,9 +51,8 @@ class FriendsCell: UITableViewCell {
     //  Name of friend
     let nameLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.init(name: "Futura-Bold", size: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .black
-        label.alpha = 0.8
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -61,9 +60,11 @@ class FriendsCell: UITableViewCell {
     //  Name of event friend is attending (if any)
     let currentEventLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Futura-Bold", size: 14)
-        label.textColor =  UIColor.init(red: 204/255, green: 204/255, blue: 204/255, alpha: 1)
-//        label.clipsToBounds = true
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor =  .white
+        label.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -79,7 +80,7 @@ class FriendsCell: UITableViewCell {
         
         //  Add constraints to profile image
         profileImageView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20).isActive = true
+        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant:70).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant:70).isActive = true
         
@@ -87,7 +88,7 @@ class FriendsCell: UITableViewCell {
         containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:10).isActive = true
         containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant:45).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant:40).isActive = true
         
         //  name label auto layout constraints
         nameLabel.topAnchor.constraint(equalTo:self.containerView.topAnchor).isActive = true
@@ -95,7 +96,7 @@ class FriendsCell: UITableViewCell {
         nameLabel.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor).isActive = true
         
         //  current event label auto layout constraints
-        currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor, constant: 0).isActive = true
+        currentEventLabel.topAnchor.constraint(equalTo:self.nameLabel.bottomAnchor).isActive = true
         currentEventLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
      }
     

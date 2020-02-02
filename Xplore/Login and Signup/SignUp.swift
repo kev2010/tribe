@@ -178,9 +178,9 @@ class SignUp: UIViewController, UITextFieldDelegate {
                         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
                         
                         // Upload default profile image to Firebase Storage
-                        let profile = self.createDefaultImage(drawText: name[0])
+                        let profile = UIImage(named: "profileIcon")
                         check.enter()
-                        self.uploadProfileImage(profile){ url in
+                        self.uploadProfileImage(profile!){ url in
                             if url != nil {
                                 //  Update photoURL onto Firebase Authentication
                                 changeRequest?.displayName = username
@@ -241,35 +241,7 @@ class SignUp: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
-    func createDefaultImage(drawText text: String) -> UIImage {
-        //  Define text attribute values and initialize image
-        let textColor = UIColor.white
-        let textFont = UIFont(name: "Futura-Bold", size: 48)!
-        let textFontAttributes = [
-            NSAttributedString.Key.font: textFont,
-            NSAttributedString.Key.foregroundColor: textColor,
-            ] as [NSAttributedString.Key : Any]
-        let image = UIColor.init(red: 0, green: 255/255, blue: 194/255, alpha: 1).image(CGSize(width: 128, height: 128))
         
-        //  Draw in image
-        let scale = UIScreen.main.scale
-        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
-        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
-        
-        //  Draw in text
-        let size = (text as NSString).size(withAttributes: textFontAttributes)
-        let text_x = (image.size.width - size.width)/2
-        let text_y = (image.size.height - size.height)/2
-        let rect = CGRect(origin: CGPoint(x: text_x, y: text_y), size: image.size)
-        text.draw(in: rect, withAttributes: textFontAttributes)
-
-        //  Create UIImage
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return newImage!
-    }
 
     /*
     // MARK: - Navigation
@@ -281,14 +253,4 @@ class SignUp: UIViewController, UITextFieldDelegate {
     }
     */
 
-}
-
-extension UIColor {
-    //  Creates an Image with one solid color
-    func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
-        return UIGraphicsImageRenderer(size: size).image { rendererContext in
-            self.setFill()
-            rendererContext.fill(CGRect(origin: .zero, size: size))
-        }
-    }
 }

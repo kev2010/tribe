@@ -73,12 +73,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
+        view.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         
         print("Section is \(section)")
         
         let title = UILabel()
-        title.font = UIFont(name: "Futura-Bold", size: 16)
+        title.font = UIFont.boldSystemFont(ofSize: 16)
         title.textColor = .white
         title.text = SettingsSection(rawValue: section)?.description
         view.addSubview(title)
@@ -96,9 +96,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
         guard let section = SettingsSection(rawValue: indexPath.section) else { return UITableViewCell() }
-        cell.textLabel?.font = UIFont(name: "Futura-Bold", size: 16)
-        cell.textLabel?.alpha = 0.5
-        
+
         switch section {
         case .Social:
             let social = SocialOptions(rawValue: indexPath.row)
@@ -106,7 +104,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             
             if social?.description == "Log Out" {
                 cell.textLabel?.textColor = .red
-                cell.textLabel?.alpha = 0.7
             }
             
         case .Communications:
