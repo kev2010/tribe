@@ -1384,7 +1384,7 @@ go to this very interesting event</string>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4K5-6h-Kq7">
                                         <rect key="frame" x="86" y="755" width="241" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button" image="joinAsset 7@4x"/>
+                                        <state key="normal" title="Button" image="bookmarkAsset 10"/>
                                         <connections>
                                             <action selector="join:" destination="yBK-B5-1ZL" eventType="touchUpInside" id="lW2-Ox-ala"/>
                                         </connections>
