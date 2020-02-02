@@ -13,8 +13,7 @@ import Mapbox
 struct Bookmark {
 //    let picture: UIImage?
 //    let title: String?
-//    let creator: String?
-//    let description: String?
+    let creator: String?
 //    let date: Date?
     let event: Event?
     var annotation : MGLAnnotation?
