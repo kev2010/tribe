@@ -25,12 +25,12 @@ class AddFriendCell: UITableViewCell {
     }
     
     //  Container for Name label and Current Event
-    let containerView:UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = true // this will make sure its children do not go out of the boundary
-        return view
-    }()
+//    let containerView:UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.clipsToBounds = true // this will make sure its children do not go out of the boundary
+//        return view
+//    }()
     
     //  Profile picture for each friend
     let profileImageView:UIImageView = {
@@ -45,8 +45,9 @@ class AddFriendCell: UITableViewCell {
     //  Name of friend
     let nameLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.init(name: "Futura-Bold", size: 18)
         label.textColor = .black
+        label.alpha = 0.8
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,9 +75,9 @@ class AddFriendCell: UITableViewCell {
         
         //  Add all the views to Friends TableView
         self.contentView.addSubview(profileImageView)
-        containerView.addSubview(nameLabel)
-        self.contentView.addSubview(containerView)
-//        self.contentView.addSubview(addButton)
+//        containerView.addSubview(nameLabel)
+//        self.contentView.addSubview(containerView)
+        self.contentView.addSubview(nameLabel)
         
         //  Add constraints to profile image
         profileImageView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
@@ -85,15 +86,15 @@ class AddFriendCell: UITableViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant:70).isActive = true
         
         //  containerview auto layout constraints
-        containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:10).isActive = true
-        containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant:40).isActive = true
+//        containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+//        containerView.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:10).isActive = true
+//        containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
+//        containerView.heightAnchor.constraint(equalToConstant:40).isActive = true
         
         //  name label auto layout constraints
-        nameLabel.topAnchor.constraint(equalTo:self.containerView.topAnchor).isActive = true
-        nameLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
-        nameLabel.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:  10).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
         
         //  current event label auto layout constraints
 //        addButton.widthAnchor.constraint(equalToConstant:26).isActive = true

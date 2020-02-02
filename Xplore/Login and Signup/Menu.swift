@@ -97,7 +97,7 @@ class Menu: UIViewController, UITextFieldDelegate {
                 print("test")
                 docRef.getDocument { (document, error) in
                     if let d = document {
-                        
+                        self.invalidLogin.alpha = 0
                         currentUser = User(DocumentSnapshot: d)
                         self.performSegue(withIdentifier: "toMain", sender: self)
                     } else {
@@ -198,9 +198,13 @@ extension UIView {
      - Parameter bottomColor: The bottom **UIColor**.
      */
     
-    func addGradientLayer(topColor:UIColor, bottomColor:UIColor, start:CGPoint = CGPoint(x: 1, y: 0), end:CGPoint = CGPoint(x: 0, y: 1)) {
+    func addGradientLayer(topColor:UIColor, bottomColor:UIColor, start:CGPoint = CGPoint(x: 1, y: 0), end:CGPoint = CGPoint(x: 0, y: 1), bounds:CGRect = CGRect()) {
         let gradient = CAGradientLayer()
-        gradient.frame = self.bounds
+        if bounds.isEmpty {
+            gradient.frame = self.bounds
+        } else {
+            gradient.frame = bounds
+        }
         gradient.colors = [
             topColor.cgColor,
             bottomColor.cgColor
