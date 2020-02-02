@@ -21,8 +21,10 @@ class Privacy: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
         cell.textLabel?.text = privacy[indexPath.row]
+        cell.textLabel?.font = UIFont(name: "Futura-Bold", size: 16)
+        cell.textLabel?.alpha = 0.5
         if toBold[indexPath.row] {
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+            cell.textLabel?.alpha = 1
         }
         return cell
     }
@@ -33,12 +35,12 @@ class Privacy: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
         
         print("Section is \(section)")
         
         let title = UILabel()
-        title.font = UIFont.boldSystemFont(ofSize: 16)
+        title.font = UIFont(name: "Futura-Bold", size: 16)
         title.textColor = .white
         title.text = "Who can see your location?"
         view.addSubview(title)
