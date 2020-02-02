@@ -22,6 +22,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     //  Used for Settings Screen
     var window: UIWindow?
     
+    var displayed_events : [String:Event] = [:]
+    var current_annotation : Event?
+    
 //    var allEventsSearch : [[Event]] = [[]]
     var annotationsForID : [String: CustomPointAnnotation] = [:]
     
@@ -80,37 +83,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
-    func addRandomEvents() ->  [Event]{
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm"
-        var start = formatter.date(from: "2019/08/06 21:00")
-        var end = formatter.date(from: "2019/08/06 23:00")
-
-        
-        let event_1 : Event = Event(creator_username: "new", title: "Phi Sig Party", description: "Come to Phi Sig for cages, Mo's dancing and a wild party that won't get shut down at 11pm", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.779834, longitude: -122.39941), address: "Phi Sigma Kappa", capacity: 50, visibility: "PUBLIC", tags: ["party", "cages"], attendees: ["kevin"])
-        
-        start = formatter.date(from: "2019/08/08 20:00")
-        end = formatter.date(from: "2019/08/08 23:00")
-        
-        let event_2 : Event = Event(creator_username: "new", title: "Kevin's room", description: "Poker night, texas holdem. Come and get destroyed by the king of poker himself.", startDate: start!, endDate: end!, location: CLLocationCoordinate2D(latitude: 37.791834, longitude: -122.41017), address: "Maseeh Hall", capacity: 15, visibility: "FRIENDS", tags: ["poker", "games"], attendees: ["kevin"])
-        
-        let allEvents = [event_1, event_2]
-        
-        for event in allEvents {
-            event.saveEvent()
-        }
-        
-        return allEvents
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //  Create the home, map, and friends screens
         self.createThreeViewUI()
-        print("ay lmao")
         
         //  Set Up relevant Friends data for Interactive Map and Friends Screen
         FriendsAPI.getFriends() // model
@@ -131,7 +108,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         manager.startUpdatingLocation()
         
         loadBottomTile()
-        loadBigTile()
         
         //  Create a timer that refreshes location every 10 seconds
         timer.invalidate()
@@ -193,7 +169,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for (event, bookmarked) in events {
-            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event)
+            displayed_events[event.documentID!] = event
+            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
             point.reuseIdentifier = "customAnnotation\(event.title)"
             point.image = dot(size: 30, num: event.capacity)
             
@@ -232,7 +209,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         var pointAnnotations = [CustomPointAnnotation]()
         for i in 0...friends.count-1 {
             if friends[i].user?.privacy != "Private" {
-                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User)
+                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID)
                 annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
                 annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 20, height: 20))?.circleMasked
 //                annotation.image = dot(size: 25, num: 5)
@@ -767,7 +744,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if let a = annotation as? CustomPointAnnotation{
             if  a.type == .Event {
             if let point = annotation as? CustomPointAnnotation {
-
+                current_annotation = displayed_events[point.event_id!]
                 if topTileShowing {
                     bottom_titleLabel.text = point.title!
                     bottom_subtitleLabel.text  = point.subtitle!
@@ -793,9 +770,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if topTileShowing {
             showTopTile(show: false)
             topTileShowing = false
-        }  else {
-            print("here")
-            showBigTile(show: false)
         }
     }
     
@@ -804,7 +778,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         OperationQueue.main.addOperation
             {() -> Void in
-                
+                //TODO
                 //  do some UI stuff
                 
                 
@@ -1013,21 +987,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
-    func showBigTile(show:Bool) {
-        
-        if show {
-//            showTopTile(show: false, hide: true)
-//
-//            UIView.animate(withDuration: 0.2) {
-//                self.bigTile.frame.origin = CGPoint(x: 20, y: self.view.frame.height/6)
-//            }
-//        } else {
-//            UIView.animate(withDuration: 0.2) {
-//                self.bigTile.frame.origin = CGPoint(x: 20, y: -self.view.frame.height)
-//            }
+    func showBigTile() {
             self.performSegue(withIdentifier: "toBigTile", sender: self)
-        }
-        
     }
     
     func getHeatMapColor(numPeople: Int) -> String{
@@ -1096,90 +1057,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
-    func loadBigTile() {
-        let f = CGRect(x: 20, y: -(2*self.view.frame.height/3), width: self.view.frame.width-40, height: 2*self.view.frame.height/3)
-        bigTile = UIView(frame: f)
-        bigTile.backgroundColor = UIColor.white
-        bigTile.layer.cornerRadius = 10
-        
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bigTileTap(sender:)))
-        
-        // 2. add the gesture recognizer to a view
-        bigTile.addGestureRecognizer(tapGesture)
-        
-        
-        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 30)
-        big_titleLabel = UILabel(frame: f2)
-        big_titleLabel.text = ""
-        big_titleLabel.textColor =  UIColor.black
-        big_titleLabel.textAlignment = .center
-        
-        let f2_2 = CGRect(x: bigTile.frame.width-30, y: 15, width: 15, height: 15)
-        big_exitButton = UIButton(frame: f2_2)
-        big_exitButton.setTitle("X", for: UIControl.State.normal)
-        big_exitButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
-        big_exitButton.addTarget(self, action: #selector(dismissBigTile), for: .touchUpInside)
-        
-        
-        let f3 = CGRect(x: 10, y: 50, width: f.width-10, height: 30)
-        big_subtitleLabel = UILabel(frame:f3)
-        big_subtitleLabel.text  = ""
-        big_subtitleLabel.textColor =  UIColor.black
-        
-        let f4 = CGRect(x: 10, y: 90, width: f.width-10, height: 50)
-        big_descriptionLabel = UILabel(frame:f4)
-        big_descriptionLabel.text = ""
-        big_descriptionLabel.textColor =  UIColor.black
-        big_descriptionLabel.numberOfLines = 5
-        big_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
-        
-        let f4_2 = CGRect(x: 10, y: 150, width: f.width-10, height: 50)
-        big_entranceLabel = UILabel(frame:f4_2)
-        big_entranceLabel.text = ""
-        big_entranceLabel.textColor =  UIColor.black
-        big_entranceLabel.numberOfLines = 3
-        
-        let f5 = CGRect(x: 30, y: bigTile.frame.height - 70, width: 50, height: 50)
-        let left_box = UIView(frame: f5)
-        left_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
-        left_box.layer.cornerRadius = 10
-        
-        let f6 = CGRect(x: (bigTile.frame.width/2)-25, y: bigTile.frame.height - 70, width: 50, height: 50)
-        let middle_box = UIView(frame: f6)
-        middle_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
-        middle_box.layer.cornerRadius = 10
-        
-        let f7 = CGRect(x: bigTile.frame.width-80, y: bigTile.frame.height - 70, width: 50, height: 50)
-        let right_box = UIView(frame: f7)
-        right_box.backgroundColor = hexStringToUIColor(hex: "#F66745")
-        right_box.layer.cornerRadius = 10
-        
-        let w = bigTile.frame.width - 50
-        let f8 = CGRect(x: 25, y: 250, width: w, height: 2*w/3)
-        let image_map = UIImageView(frame: f8)
-        image_map.image = UIImage(named: "map_example.jpg")
-        image_map.layer.cornerRadius = 10
-        
-        bigTile.addSubview(left_box)
-        bigTile.addSubview(middle_box)
-        bigTile.addSubview(right_box)
-        bigTile.addSubview(image_map)
-        
-        bigTile.addSubview(big_titleLabel)
-        bigTile.addSubview(big_exitButton)
-        bigTile.addSubview(big_subtitleLabel)
-        bigTile.addSubview(big_descriptionLabel)
-        bigTile.addSubview(big_entranceLabel)
-        
-        self.mapView.addSubview(bigTile)
-        
-    }
-    
-    @objc func dismissBigTile(sender: UIButton!) {
-        showBigTile(show: false)
-    }
-    
     @objc func bottomTileTap(sender: UITapGestureRecognizer) {
         
         big_titleLabel.text = bottom_titleLabel.text
@@ -1187,7 +1064,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         big_descriptionLabel.text = bottom_descriptionLabel.text
         big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
         
-        showBigTile(show: true)
+        showBigTile()
     }
     
     @objc func bigTileTap(sender: UITapGestureRecognizer) {
@@ -1324,4 +1201,21 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
             }
         }
     }
+    
+    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "toBigTile" {
+            let vc = segue.destination as! BigTileViewController
+            vc.event = current_annotation
+        }
+        
+        
+    }
+    
+    
 }
