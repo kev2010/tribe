@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseStorage
 
 class BigTileViewController: UIViewController {
     
@@ -41,18 +43,31 @@ class BigTileViewController: UIViewController {
     @IBOutlet var tags_social: UILabel!
     
     @IBOutlet var addressView: RoundUIView!
-    
-    @IBAction func join(_ sender: Any) {
-        //TODO
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+
     @IBAction func back(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func plus(_ sender: Any) {
-        //TODO - what is this meant to do? create an event?
+    let db = Firestore.firestore()
+
+    
+    @IBAction func addBookmark(_ sender: Any) {
+        currentUser?.eventsUserBookmarked.append(self.db.collection("events").document(event!.documentID!))
+        
+        if let e = event {
+            let point = CustomPointAnnotation(coordinate: e.location, title: e.title, subtitle: "\(e.capacity) people", description: e.description, annotationType: AnnotationType.Event, event_id: e.documentID)
+                       point.reuseIdentifier = "customAnnotation\(e.title)"
+            point.image = InteractiveMap.dot(size: 30, num: e.capacity)
+            
+            bookmarks.append(Bookmark(event: event, annotation: point))
+            bookmarksTable.reloadData()
+            
+            currentUser?.updateUser()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+
     }
     
     override func viewDidLoad() {
@@ -114,15 +129,14 @@ class BigTileViewController: UIViewController {
         self.performSegue(withIdentifier: "showLocation", sender: nil)
     }
     
-    @IBAction func addBookmark(_ sender: Any) {
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("PREPARING")
         if segue.identifier == "showLocation" {
             let dest = segue.destination as! ShowLocationViewController
             dest.location = event!.location
         }
+        
+        
        
     }
     

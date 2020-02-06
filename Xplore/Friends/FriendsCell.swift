@@ -44,7 +44,6 @@ class FriendsCell: UITableViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
         img.layer.cornerRadius = 35
         img.clipsToBounds = true
-        print("uh oh!!!!")
        return img
     }()
     

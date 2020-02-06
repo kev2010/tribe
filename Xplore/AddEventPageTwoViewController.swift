@@ -142,6 +142,7 @@ class AddEventPageTwoViewController: UIViewController {
         
         //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
       
+        (self.presentingViewController?.presentingViewController as! InteractiveMap).testing()
         //  Exit SaveEvent
         self.dismiss(animated: true, completion: {})
         (self.presentingViewController as! AddEventViewController).close()
@@ -178,7 +179,7 @@ class AddEventPageTwoViewController: UIViewController {
         
 
         // Note the first click doens't do anything for some reason? the clicks afterwards work perfectly
-        if artsTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if artsTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             artsTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             artsLabel.textColor = .white
             self.tags.append("Arts")
@@ -197,7 +198,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func athleticTap(_ sender: UITapGestureRecognizer) {
         
-        if athleticTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if athleticTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             athleticTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             athleticLabel.textColor = .white
             self.tags.append("Athletic")
@@ -215,7 +216,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func casualTap(_ sender: UITapGestureRecognizer) {
         
-        if casualTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if casualTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             casualTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             casualLabel.textColor = .white
             self.tags.append("Casual")
@@ -233,7 +234,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func professionalTap(_ sender: UITapGestureRecognizer) {
         
-        if professionalTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if professionalTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             professionalTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             professionalLabel.textColor = .white
             self.tags.append("Professional")
@@ -251,7 +252,7 @@ class AddEventPageTwoViewController: UIViewController {
     
     @objc func socialTap(_ sender: UITapGestureRecognizer) {
         
-        if socialTag.backgroundColor == UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1) {
+        if socialTag.backgroundColor != UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1) {
             socialTag.backgroundColor = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
             socialLabel.textColor = .white
             self.tags.append("Social")
