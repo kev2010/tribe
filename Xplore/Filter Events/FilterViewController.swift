@@ -14,23 +14,23 @@ class FilterViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func filAcademic(_ sender: Any) {
-    }
-    
-    @IBAction func filArts(_ sender: Any) {
-    }
-    
-    @IBAction func filAthletics(_ sender: Any) {
-    }
-    
-    @IBAction func filProfessional(_ sender: Any) {
-    }
-    
-    @IBAction func filSocial(_ sender: Any) {
-    }
-    
-    @IBAction func filCasual(_ sender: Any) {
-    }
+//    @IBAction func filAcademic(_ sender: Any) {
+//    }
+//
+//    @IBAction func filArts(_ sender: Any) {
+//    }
+//
+//    @IBAction func filAthletics(_ sender: Any) {
+//    }
+//
+//    @IBAction func filProfessional(_ sender: Any) {
+//    }
+//    
+//    @IBAction func filSocial(_ sender: Any) {
+//    }
+//
+//    @IBAction func filCasual(_ sender: Any) {
+//    }
 //    @IBOutlet weak var filterTable: UITableView!
     
     let info = DispatchGroup()

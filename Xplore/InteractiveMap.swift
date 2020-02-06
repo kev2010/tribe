@@ -110,7 +110,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         loadBottomTile()
         
         //  Create a timer that refreshes location every 10 seconds
-        timer.invalidate()
+//        timer.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(refreshData), userInfo: nil, repeats: true)
         
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
