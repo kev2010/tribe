@@ -11,6 +11,11 @@ import Mapbox
 import Firebase
 import FirebaseStorage
 
+var bookmarks:[Bookmark] = []
+var bookmarksTable = UITableView()
+var friendtable = UITableView()
+
+
 class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
@@ -29,11 +34,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var annotationsForID : [String: CustomPointAnnotation] = [:]
     
     //  Used for Home Screen
-    var bookmarksTable = UITableView()
-    var bookmarks:[Bookmark] = []
     
     //  Used for Friends Screen
-    var friendtable = UITableView()
     var friends:[Friend] = []
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
@@ -78,7 +80,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     var currentScreen = screen.Map
-    
+
     @IBAction func toHome(_ sender: UIButton) {
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
@@ -138,6 +140,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    func testing(){
+        print("123456789")
+    }
+    
     func loadAndAddEvents(){
         var allEvents : [(Event, Bool)] = []
         let bookmarked = currentUser?.eventsUserBookmarked
@@ -155,8 +161,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                     let userRef = self.db.document(documentRefString.path)
                     let b = bookmarked?.contains(userRef)
                     allEvents.append((e,b!))
-//                    print("distance")
-//                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
+                    //                    print("distance")
+                    //                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
                 }
                 
                 self.addEventsToMap(events: allEvents)
@@ -172,7 +178,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             displayed_events[event.documentID!] = event
             let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
             point.reuseIdentifier = "customAnnotation\(event.title)"
-            point.image = dot(size: 30, num: event.capacity)
+            point.image = InteractiveMap.dot(size: 30, num: event.capacity)
             
             self.annotationsForID[event.documentID!] = point
             
@@ -192,8 +198,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 }
                 
                 info.notify(queue: DispatchQueue.main) {
-                    self.bookmarks.append(Bookmark(event: event, annotation: point))
-                    self.bookmarksTable.reloadData()
+                    bookmarks.append(Bookmark(event: event, annotation: point))
+                    bookmarksTable.reloadData()
                     
                     
                 }
@@ -603,7 +609,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         } else if tableView == bookmarksTable {
             self.goMap()
             self.mapView.selectAnnotation(bookmarks[indexPath.section].annotation!, animated: true) {
-                let a : MGLAnnotation = self.bookmarks[indexPath.row].annotation!
+                let a : MGLAnnotation = bookmarks[indexPath.row].annotation!
                 let botleft = CLLocationCoordinate2D(latitude: a.coordinate.latitude - 0.01, longitude: a.coordinate.longitude - 0.01)
                 let topright = CLLocationCoordinate2D(latitude: a.coordinate.latitude + 0.01, longitude: a.coordinate.longitude + 0.01)
                 let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
@@ -835,8 +841,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         //  Refresh Table Data
-        self.friendtable.reloadData()
-        self.bookmarksTable.reloadData()
+        friendtable.reloadData()
+        bookmarksTable.reloadData()
     }
     
     // MARK: - Navigation
@@ -991,7 +997,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.performSegue(withIdentifier: "toBigTile", sender: self)
     }
     
-    func getHeatMapColor(numPeople: Int) -> String{
+    static func getHeatMapColor(numPeople: Int) -> String{
         
         switch numPeople {
         case 0:
@@ -1071,7 +1077,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    func hexStringToUIColor (hex:String) -> UIColor {
+    static func hexStringToUIColor (hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
         if (cString.hasPrefix("#")) {
@@ -1093,7 +1099,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         )
     }
     
-    func dot(size: Int, num:Int) -> UIImage {
+    static func dot(size: Int, num:Int) -> UIImage {
         let floatSize = CGFloat(size)
         let rect = CGRect(x: 0, y: 0, width: floatSize, height: floatSize)
         let strokeWidth: CGFloat = 1

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rb0-dy-jcy">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1512,7 +1512,7 @@ go to this very interesting event</string>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="bookmarkAsset 10"/>
                                         <connections>
-                                            <action selector="join:" destination="yBK-B5-1ZL" eventType="touchUpInside" id="lW2-Ox-ala"/>
+                                            <action selector="addBookmark:" destination="yBK-B5-1ZL" eventType="touchUpInside" id="C75-Mc-kdJ"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="People" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Th7-ap-PfW">
@@ -1549,20 +1549,6 @@ go to this very interesting event</string>
                                     <action selector="backTap:" destination="1MT-uy-Qs1" eventType="touchUpInside" id="stH-Sj-YLE"/>
                                     <action selector="goBack:" destination="9xQ-b7-r4J" eventType="touchUpInside" id="WCi-34-S3D"/>
                                     <action selector="goBack:" destination="3nF-ex-pMV" eventType="touchUpInside" id="gHj-Yu-bJR"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BVe-2v-8KU">
-                                <rect key="frame" x="359" y="16" width="35" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="36"/>
-                                <state key="normal" title="+">
-                                    <color key="titleColor" red="0.19215686269999999" green="1" blue="0.74117647060000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="backTap:" destination="1MT-uy-Qs1" eventType="touchUpInside" id="Hwk-UZ-b2a"/>
-                                    <action selector="goBack:" destination="3nF-ex-pMV" eventType="touchUpInside" id="5v6-zu-cnf"/>
-                                    <action selector="goBack:" destination="9xQ-b7-r4J" eventType="touchUpInside" id="JHh-F9-Tua"/>
-                                    <action selector="plus:" destination="yBK-B5-1ZL" eventType="touchUpInside" id="qCd-yA-t7q"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aIV-63-2PR" customClass="RoundUIView" customModule="Xplore" customModuleProvider="target">
