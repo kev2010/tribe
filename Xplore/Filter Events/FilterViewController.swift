@@ -14,24 +14,81 @@ class FilterViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-//    @IBAction func filAcademic(_ sender: Any) {
-//    }
-//
-//    @IBAction func filArts(_ sender: Any) {
-//    }
-//
-//    @IBAction func filAthletics(_ sender: Any) {
-//    }
-//
-//    @IBAction func filProfessional(_ sender: Any) {
-//    }
-//    
-//    @IBAction func filSocial(_ sender: Any) {
-//    }
-//
-//    @IBAction func filCasual(_ sender: Any) {
-//    }
-//    @IBOutlet weak var filterTable: UITableView!
+    @IBOutlet weak var academic: UIButton!
+    @IBOutlet weak var arts: UIButton!
+    @IBOutlet weak var athletic: UIButton!
+    @IBOutlet weak var casual: UIButton!
+    @IBOutlet weak var professional: UIButton!
+    @IBOutlet weak var social: UIButton!
+    
+    var filterInfo = [1, 1, 1, 1, 1, 1]
+
+    @IBAction func filAcademic(_ sender: Any) {
+        if (academic.backgroundColor != UIColor.gray) {
+            academic.backgroundColor = UIColor.gray;
+            filterInfo[0] = 0;
+        }
+        else {
+            academic.backgroundColor = UIColor.systemBlue;
+            filterInfo[0] = 1;
+        }
+    }
+    
+    @IBAction func filArts(_ sender: Any) {
+        if (arts.backgroundColor != UIColor.gray) {
+            arts.backgroundColor = UIColor.gray;
+            filterInfo[1] = 0;
+        }
+        else {
+            arts.backgroundColor = UIColor.systemBlue;
+            filterInfo[1] = 1;
+        }
+    }
+    
+    @IBAction func filAthletic(_ sender: Any) {
+        if (athletic.backgroundColor != UIColor.gray) {
+            athletic.backgroundColor = UIColor.gray;
+            filterInfo[2] = 0;
+        }
+        else {
+            athletic.backgroundColor = UIColor.systemBlue;
+            filterInfo[2] = 1;
+        }
+    }
+    
+    @IBAction func filCasual(_ sender: Any) {
+        if (casual.backgroundColor != UIColor.gray) {
+            casual.backgroundColor = UIColor.gray;
+            filterInfo[3] = 0;
+        }
+        else {
+            casual.backgroundColor = UIColor.systemBlue;
+            filterInfo[3] = 1;
+        }
+    }
+    
+    @IBAction func filProfessional(_ sender: Any) {
+        if (professional.backgroundColor != UIColor.gray) {
+            professional.backgroundColor = UIColor.gray;
+            filterInfo[4] = 0;
+        }
+        else {
+            professional.backgroundColor = UIColor.systemBlue;
+            filterInfo[4] = 1;
+        }
+    }
+    
+    @IBAction func filSocial(_ sender: Any) {
+        if (social.backgroundColor != UIColor.gray) {
+            social.backgroundColor = UIColor.gray;
+            filterInfo[5] = 0;
+        }
+        else {
+            social.backgroundColor = UIColor.systemBlue;
+            filterInfo[5] = 1;
+        }
+    }
+    
     
     let info = DispatchGroup()
     
