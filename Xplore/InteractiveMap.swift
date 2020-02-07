@@ -15,7 +15,6 @@ var bookmarks:[Bookmark] = []
 var bookmarksTable = UITableView()
 var friendtable = UITableView()
 
-
 class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
     
     let manager = CLLocationManager()
@@ -73,6 +72,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var firstTimeLocation = true
     
+    var filterApp = [1, 1, 1, 1, 1, 1];
+    
     enum screen {
         case Main
         case Map
@@ -87,6 +88,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(filterApp, "HELLO");
         
         //  Create the home, map, and friends screens
         self.createThreeViewUI()
@@ -175,33 +178,40 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for (event, bookmarked) in events {
-            displayed_events[event.documentID!] = event
-            let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
-            point.reuseIdentifier = "customAnnotation\(event.title)"
-            point.image = InteractiveMap.dot(size: 30, num: event.capacity)
-            
-            self.annotationsForID[event.documentID!] = point
-            
-            pointAnnotations.append(point)
-            
-            if bookmarked {
-                var username = ""
-                let info = DispatchGroup()
-                info.enter()
-                event.creator_username.getDocument { (document, error) in
-                    if let document = document, document.exists {
-                        username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
-                    } else {
-                        print("User Document does not exist")
-                    }
-                    info.leave()
-                }
+            let filtered = event.tags.contains("Academic") && filterApp[0]==1 ||
+                            event.tags.contains("Arts") && filterApp[1]==1 ||
+                            event.tags.contains("Athletic") && filterApp[2]==1 ||
+                            event.tags.contains("Casual") && filterApp[3]==1 ||
+                            event.tags.contains("Professional") && filterApp[4]==1 ||
+                            event.tags.contains("Social") && filterApp[5]==1;
+            if (filtered) {
+                print("EVENT!", event.tags)
+                displayed_events[event.documentID!] = event
+                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
+                point.reuseIdentifier = "customAnnotation\(event.title)"
+                point.image = InteractiveMap.dot(size: 30, num: event.capacity)
                 
-                info.notify(queue: DispatchQueue.main) {
-                    bookmarks.append(Bookmark(event: event, annotation: point))
-                    bookmarksTable.reloadData()
+                self.annotationsForID[event.documentID!] = point
+                
+                pointAnnotations.append(point)
+                
+                if bookmarked {
+                    var username = ""
+                    let info = DispatchGroup()
+                    info.enter()
+                    event.creator_username.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
+                        } else {
+                            print("User Document does not exist")
+                        }
+                        info.leave()
+                    }
                     
-                    
+                    info.notify(queue: DispatchQueue.main) {
+                        bookmarks.append(Bookmark(event: event, annotation: point))
+                        bookmarksTable.reloadData()
+                    }
                 }
             }
         }
@@ -806,8 +816,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //  Determine user's current location and save boundaries
         let location = locations[0]
@@ -871,8 +879,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func longPressed(sender: UILongPressGestureRecognizer)
     {
         print("longpressed")
-
-        
     }
     
     func showExtraButtons() {
@@ -881,7 +887,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
         }
         self.performSegue(withIdentifier: "mapToAddEvent", sender: self)
-
     }
     
     @objc func goMap() {
@@ -890,8 +895,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             showExtraButtons()
             return
         }
-        
-        
         
         currentScreen = .Map
         
@@ -911,8 +914,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.view.bringSubviewToFront(self.bottomMenu_main)
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
-            
-            
         }
         
     }
@@ -924,7 +925,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.mapView.frame.origin = CGPoint(x: -self.view.frame.width, y: 0)
             self.rightFriendsView.frame.origin = CGPoint(x: 0, y: 0)
         }) { (true) in
-            
             self.view.bringSubviewToFront(self.bottomMenu_main)
             self.view.bringSubviewToFront(self.bottomMenu_map)
             self.view.bringSubviewToFront(self.bottomMenu_friends)
@@ -932,10 +932,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.bottomMenu_map.setImage(UIImage(named: "mapoff"), for: UIControl.State.normal)
             self.bottomMenu_main.setImage(UIImage(named: "homeoff"), for: UIControl.State.normal)
             self.bottomMenu_friends.setImage(UIImage(named: "friendson"), for: UIControl.State.normal)
-
         }
-        
-        
     }
     
     @objc func changeImage(_ sender: Any) {
@@ -944,6 +941,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goFilter() {
+        print(filterApp, "HELLOOOO");
         self.performSegue(withIdentifier: "mapToFilter", sender: self)
     }
     
@@ -1148,8 +1146,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 
 }
 
-
-
 //  extensions to help with changing profile picture
 extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -1208,7 +1204,6 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
         }
     }
     
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -1219,9 +1214,5 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
             let vc = segue.destination as! BigTileViewController
             vc.event = current_annotation
         }
-        
-        
     }
-    
-    
 }

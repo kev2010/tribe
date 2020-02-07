@@ -132,7 +132,6 @@ class AddEventPageTwoViewController: UIViewController {
                 }
             }
         }
-        
 
         let newEvent = Event(creator_username: currentUser!.username, title: prev_data["title"] as! String, description: prev_data["description"] as! String, startDate: prev_data["start"] as! Date, endDate: prev_data["end"] as! Date, location: newLocation, address: "tbi", capacity: -1, visibility: "tbi", tags: self.tags, attendees: [currentUser!.username])
         
