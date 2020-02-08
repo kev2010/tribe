@@ -84,8 +84,7 @@ class AddEventPageTwoViewController: UIViewController {
         
 
         
-//        let pickAddress = UITapGestureRecognizer(target: self, action: #selector(self.addressTap))
-//        selectAddress.addGestureRecognizer(pickAddress)
+
         
         // Do any additional setup after loading the view.
     }
@@ -140,17 +139,10 @@ class AddEventPageTwoViewController: UIViewController {
         newEvent.saveEvent()
         
         //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
-      
-        (self.presentingViewController?.presentingViewController as! InteractiveMap).testing()
+
         //  Exit SaveEvent
         self.dismiss(animated: true, completion: {})
         (self.presentingViewController as! AddEventViewController).close()
-    }
-    
-   
-    @objc func addressTap(_ sender: UITapGestureRecognizer) {
-        
-        self.performSegue(withIdentifier: "confirmLocation", sender: self)
     }
     
     
@@ -277,6 +269,7 @@ class AddEventPageTwoViewController: UIViewController {
             let vc = segue.destination as! PickAddressViewController
             vc.address = self.address_send
         }
+    
         
         
     }

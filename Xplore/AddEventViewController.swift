@@ -51,6 +51,7 @@ class AddEventViewController: UIViewController {
 //    var tagSocial = RoundedButton()
 //    var tagCasual = RoundedButton()
     
+    @IBOutlet var address_input: UITextField!
     @IBOutlet var title_input: UITextField!
     @IBOutlet var start_input: UITextField!
     @IBOutlet var end_input: UITextField!
@@ -73,7 +74,34 @@ class AddEventViewController: UIViewController {
         })
         
         self.invalid.alpha = 0
-        performSegue(withIdentifier: "nextPage", sender: self)
+        
+        
+         guard let title = title_input.text else { return }
+                guard let start = start_input.text else { return }
+                guard let end = end_input.text else { return }
+        //        guard let description = description_input.text else { return }
+                
+                if title.count == 0 || start.count == 0 || end.count == 0 || description.count == 0 {
+                    invalid.alpha = 0.6
+                    
+                } else {
+                    invalid.alpha = 0
+                    all_data["title"] = title
+                    all_data["start"] = start_date.date
+                    all_data["end"] = end_date.date
+                    all_data["description"] = description
+                    
+                    self.address_send = address_input.text!
+                    
+                    self.performSegue(withIdentifier: "confirmLocation", sender: self)
+                    
+                    self.performSegue(withIdentifier: "nextPage", sender: self)
+
+        }
+        
+    
+        
+        
     }
     
     
@@ -109,6 +137,8 @@ class AddEventViewController: UIViewController {
 //        description_input.text = "\n \n"
         super.viewDidLoad()
 
+
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         self.view.addGestureRecognizer(tap)
         self.view.isUserInteractionEnabled = true
@@ -174,6 +204,8 @@ class AddEventViewController: UIViewController {
 //        handleNextView()
     }
     
+
+    
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if currentlyShowing == .Start {
             start_input.text = "\(start_date.date)"
@@ -193,34 +225,7 @@ class AddEventViewController: UIViewController {
         self.dismiss(animated: false, completion: {})
     }
     
-    @objc func nextPage(_ sender: UITapGestureRecognizer) {
-        
-//        let transition = CATransition()
-//        transition.duration = 0.5
-//        transition.type = CATransitionType.push
-//        transition.subtype = CATransitionSubtype.fromRight
-//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-//        view.window!.layer.add(transition, forKey: kCATransition)
-//        present(dashboardWorkout, animated: false, completion: nil)
 
-        guard let title = title_input.text else { return }
-        guard let start = start_input.text else { return }
-        guard let end = end_input.text else { return }
-//        guard let description = description_input.text else { return }
-        
-        if title.count == 0 || start.count == 0 || end.count == 0 || description.count == 0 {
-            invalid.alpha = 0.6
-            
-        } else {
-            invalid.alpha = 0
-            all_data["title"] = title
-            all_data["start"] = start_date.date
-            all_data["end"] = end_date.date
-            all_data["description"] = description
-            self.performSegue(withIdentifier: "nextPage", sender: self)
-        }
-        
-    }
     
     func hide() {
         self.dismiss(animated: false, completion: {})
@@ -561,12 +566,13 @@ class AddEventViewController: UIViewController {
             vc.prev_data = all_data
         }
         
+        if segue.identifier == "confirmLocation" {
+            let vc = segue.destination as! PickAddressViewController
+            vc.address = self.address_send
+        }
+        
         
     }
-    
-    
-
-
     
     func validate(textView: UITextField) -> Bool {
         guard let text = textView.text,
@@ -579,6 +585,7 @@ class AddEventViewController: UIViewController {
 
         return true
     }
+    
     
 }
 

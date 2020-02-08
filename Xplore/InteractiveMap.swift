@@ -39,6 +39,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
     
+    var event_points = [MGLAnnotation]()
+    var all_events : [(Event, Bool)] = []
+    
     var totalShift = 0.0
     
     //  Used for Interactive Map Screen
@@ -98,11 +101,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         FriendsAPI.getFriends() // model
         filteredfriends = friends
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
-        
-        //  Set Up relevant Bookmarks data
-//        BookmarksAPI.getBookmarks() // model
-//        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadBookmarks"), object: nil)
-        
+
         //  Load Events onto the map
         loadAndAddEvents()
         
@@ -121,6 +120,21 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
         
         
+    }
+    
+    func updateFilters(new_filters:[Int]) {
+        self.filterApp = new_filters
+        mapView.removeAnnotations(event_points)
+        var temp : [(Event, Bool)] = []
+        
+        for elem in all_events {
+            temp.append((elem.0, elem.1))
+            
+        }
+        all_events = []
+        
+        print("and \(temp)")
+        addEventsToMap(events: temp)
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
@@ -142,10 +156,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             bookmarksTable.reloadData()
         }
     }
-    
-    func testing(){
-        print("123456789")
-    }
+
     
     func loadAndAddEvents(){
         var allEvents : [(Event, Bool)] = []
@@ -156,7 +167,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("found one")
                 for document in querySnapshot!.documents {
                     let e = Event(QueryDocumentSnapshot: document)
                     
@@ -174,7 +184,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func addEventsToMap(events:[(Event, Bool)]) {
-        
+        all_events += events
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for (event, bookmarked) in events {
@@ -185,7 +195,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                             event.tags.contains("Professional") && filterApp[4]==1 ||
                             event.tags.contains("Social") && filterApp[5]==1;
             if (filtered) {
-                print("EVENT!", event.tags)
                 displayed_events[event.documentID!] = event
                 let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
                 point.reuseIdentifier = "customAnnotation\(event.title)"
@@ -217,7 +226,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         mapView.addAnnotations(pointAnnotations)
-        
+        event_points = pointAnnotations
     }
     
     func addFriendsToMap(){
@@ -1213,6 +1222,11 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
         if segue.identifier == "toBigTile" {
             let vc = segue.destination as! BigTileViewController
             vc.event = current_annotation
+        }
+        
+        if segue.identifier == "mapToFilter" {
+            let vc = segue.destination as! FilterViewController
+            vc.filterInfo = self.filterApp
         }
     }
 }

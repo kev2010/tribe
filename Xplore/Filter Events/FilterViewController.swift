@@ -9,16 +9,16 @@ import UIKit
 import Firebase
 
 class FilterViewController: UIViewController {
+    
+    let unselected = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+    let selected = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
 
     @IBAction func goBack(_ sender: Any) {
-//        self.dismiss(animated: true, completion: nil)
-        performSegue(withIdentifier: "filterData", sender: self)
+        let vc = self.presentingViewController as! InteractiveMap
+        vc.updateFilters(new_filters: self.filterInfo)
+        self.dismiss(animated: true, completion: nil)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var vc = segue.destination as! InteractiveMap;
-        vc.filterApp = self.filterInfo;
-    }
+
     
     @IBOutlet weak var academic: UIButton!
     @IBOutlet weak var arts: UIButton!
@@ -30,67 +30,67 @@ class FilterViewController: UIViewController {
     var filterInfo = [1, 1, 1, 1, 1, 1]
 
     @IBAction func filAcademic(_ sender: Any) {
-        if (academic.backgroundColor != UIColor.gray) {
-            academic.backgroundColor = UIColor.gray;
+        if (academic.backgroundColor != self.unselected) {
+            academic.backgroundColor = self.unselected;
             filterInfo[0] = 0;
         }
         else {
-            academic.backgroundColor = UIColor.systemBlue;
+            academic.backgroundColor = self.selected;
             filterInfo[0] = 1;
         }
     }
     
     @IBAction func filArts(_ sender: Any) {
-        if (arts.backgroundColor != UIColor.gray) {
-            arts.backgroundColor = UIColor.gray;
+        if (arts.backgroundColor != self.unselected) {
+            arts.backgroundColor = self.unselected;
             filterInfo[1] = 0;
         }
         else {
-            arts.backgroundColor = UIColor.systemBlue;
+            arts.backgroundColor = self.selected;
             filterInfo[1] = 1;
         }
     }
     
     @IBAction func filAthletic(_ sender: Any) {
-        if (athletic.backgroundColor != UIColor.gray) {
-            athletic.backgroundColor = UIColor.gray;
+        if (athletic.backgroundColor != self.unselected) {
+            athletic.backgroundColor = self.unselected;
             filterInfo[2] = 0;
         }
         else {
-            athletic.backgroundColor = UIColor.systemBlue;
+            athletic.backgroundColor = self.selected;
             filterInfo[2] = 1;
         }
     }
     
     @IBAction func filCasual(_ sender: Any) {
-        if (casual.backgroundColor != UIColor.gray) {
-            casual.backgroundColor = UIColor.gray;
+        if (casual.backgroundColor != self.unselected) {
+            casual.backgroundColor = self.unselected;
             filterInfo[3] = 0;
         }
         else {
-            casual.backgroundColor = UIColor.systemBlue;
+            casual.backgroundColor = self.selected;
             filterInfo[3] = 1;
         }
     }
     
     @IBAction func filProfessional(_ sender: Any) {
-        if (professional.backgroundColor != UIColor.gray) {
-            professional.backgroundColor = UIColor.gray;
+        if (professional.backgroundColor != self.unselected) {
+            professional.backgroundColor = self.unselected;
             filterInfo[4] = 0;
         }
         else {
-            professional.backgroundColor = UIColor.systemBlue;
+            professional.backgroundColor = self.selected;
             filterInfo[4] = 1;
         }
     }
     
     @IBAction func filSocial(_ sender: Any) {
-        if (social.backgroundColor != UIColor.gray) {
-            social.backgroundColor = UIColor.gray;
+        if (social.backgroundColor != self.unselected) {
+            social.backgroundColor = self.unselected;
             filterInfo[5] = 0;
         }
         else {
-            social.backgroundColor = UIColor.systemBlue;
+            social.backgroundColor = self.selected;
             filterInfo[5] = 1;
         }
     }
@@ -117,6 +117,20 @@ class FilterViewController: UIViewController {
     var sections = [Section]()
 
     override func viewDidLoad() {
+
+        academic.backgroundColor = selected
+        arts.backgroundColor = selected
+        athletic.backgroundColor = selected
+        casual.backgroundColor = selected
+        professional.backgroundColor = selected
+        social.backgroundColor = selected
+        
+        if filterInfo[0] == 0 {academic.backgroundColor = unselected}
+        if filterInfo[1] == 0 {arts.backgroundColor = unselected}
+        if filterInfo[2] == 0 {athletic.backgroundColor = unselected}
+        if filterInfo[3] == 0 {casual.backgroundColor = unselected}
+        if filterInfo[4] == 0 {professional.backgroundColor = unselected}
+        if filterInfo[5] == 0 {social.backgroundColor = unselected}
         
         var date_dic: [String: [Filter]] = [:] as! [String : [Filter]]
         //  Grab all events
