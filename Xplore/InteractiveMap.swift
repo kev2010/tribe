@@ -91,9 +91,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(filterApp, "HELLO");
-        
+                
         //  Create the home, map, and friends screens
         self.createThreeViewUI()
         
@@ -129,11 +127,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         for elem in all_events {
             temp.append((elem.0, elem.1))
-            
         }
+        
         all_events = []
         
-        print("and \(temp)")
         addEventsToMap(events: temp)
     }
     
@@ -174,8 +171,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                     let userRef = self.db.document(documentRefString.path)
                     let b = bookmarked?.contains(userRef)
                     allEvents.append((e,b!))
-                    //                    print("distance")
-                    //                    print(self.distanceBetweenTwoCoordinates(loc1: self.currentLocation, loc2: e.location))
                 }
                 
                 self.addEventsToMap(events: allEvents)
@@ -429,14 +424,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bottomMenu_map.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
         bottomMenu_map.setImage(UIImage(named: "addon"), for: UIControl.State.normal)
         
-//        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
-//        self.bottomMenu_map.addGestureRecognizer(longPressRecognizer)
-        
-//        bottomMenu_map_new = UIButton(frame:f3)
-//        bottomMenu_map_new.addTarget(self, action: #selector(self.goMap), for: UIControl.Event.touchDown)
-
-
-        
         let f4 = CGRect(x: self.view.frame.width/2+70, y: 5*self.view.frame.height/6, width: 70, height: 70)
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
@@ -680,13 +667,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func handlePanLeft(_ gestureRecognizer: UIPanGestureRecognizer) {
-        print("yay left")
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
             
             
             let translation = gestureRecognizer.translation(in: self.view)
             // note: 'view' is optional and need to be unwrapped
-            print(mapView.center.x)
 
             if translation.x < 0 {
                 gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
@@ -705,7 +690,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
             
         else if gestureRecognizer.state == .ended {
-            print(mapView.center.x, self.view.frame.width)
             if mapView.center.x > self.view.frame.width {
                 goMain()
             }
@@ -730,7 +714,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
             
         else if gestureRecognizer.state == .ended {
-            print(mapView.center.x, self.view.frame.width)
+
             if mapView.center.x > 0 {
                 goMap()
             }
@@ -799,7 +783,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-        print("JUST CHANGED")
         
         OperationQueue.main.addOperation
             {() -> Void in
@@ -884,11 +867,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 
         }
     }
-    
-    @objc func longPressed(sender: UILongPressGestureRecognizer)
-    {
-        print("longpressed")
-    }
+
     
     func showExtraButtons() {
         //do animations to show add event and filter buttons
@@ -899,7 +878,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goMap() {
-        print("to map")
         if currentScreen == .Map {
             showExtraButtons()
             return
@@ -950,7 +928,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goFilter() {
-        print(filterApp, "HELLOOOO");
         self.performSegue(withIdentifier: "mapToFilter", sender: self)
     }
     

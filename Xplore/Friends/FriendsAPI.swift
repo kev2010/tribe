@@ -44,7 +44,7 @@ class FriendsAPI {
                     info.notify(queue: DispatchQueue.main) {
                         if currentEvent.count == 0 {
                             //  Add friend struct to list with no current event
-                            var f : Friend = Friend(picture: image, user: user, currentEvent: "")
+                            let f : Friend = Friend(picture: image, user: user, currentEvent: "")
                             friends.append(f)
                             NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                         } else {
@@ -60,7 +60,7 @@ class FriendsAPI {
                             }
                             //  Add friend struct to list
                             info.notify(queue: DispatchQueue.main) {
-                                var f : Friend = Friend(picture: image, user: user, currentEvent: event)
+                                let f : Friend = Friend(picture: image, user: user, currentEvent: event)
                                 friends.append(f)
                                 NotificationCenter.default.post(name: Notification.Name("didDownloadFriends"), object: friends)
                             }

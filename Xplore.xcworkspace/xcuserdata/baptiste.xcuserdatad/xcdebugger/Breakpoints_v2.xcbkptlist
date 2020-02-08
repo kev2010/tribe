@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "702"
             endingLineNumber = "702"
-            landmarkName = "handlePanLeft(_:)"
+            landmarkName = "handlePanRight(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

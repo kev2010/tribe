@@ -62,6 +62,7 @@
 		F45676462341791500938AA7 /* 100_new_event.png in Resources */ = {isa = PBXBuildFile; fileRef = F45676422341791500938AA7 /* 100_new_event.png */; };
 		F45676472341791500938AA7 /* 100_friends.png in Resources */ = {isa = PBXBuildFile; fileRef = F45676432341791500938AA7 /* 100_friends.png */; };
 		F45676482341791500938AA7 /* 100_home.png in Resources */ = {isa = PBXBuildFile; fileRef = F45676442341791500938AA7 /* 100_home.png */; };
+		F460FF6723EF0F97004C6A68 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F460FF6623EF0F97004C6A68 /* FBSDKCoreKit.framework */; };
 		F49CD100238D089C00C19BFE /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CD0FF238D089C00C19BFE /* RoundedButton.swift */; };
 		F4B1DCEB238D7ABD00F938A3 /* AddEventPageTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */; };
 		F4B258BF22F6BAD800E12BF4 /* SegueFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */; };
@@ -94,19 +95,6 @@
 			remoteInfo = Xplore;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		2B11E03722F3C4F7000A51F0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		07F35D667554FE19FB2CFA63 /* Pods-XploreUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XploreUITests.release.xcconfig"; path = "Target Support Files/Pods-XploreUITests/Pods-XploreUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -176,6 +164,7 @@
 		F45676422341791500938AA7 /* 100_new_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 100_new_event.png; sourceTree = "<group>"; };
 		F45676432341791500938AA7 /* 100_friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 100_friends.png; sourceTree = "<group>"; };
 		F45676442341791500938AA7 /* 100_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 100_home.png; sourceTree = "<group>"; };
+		F460FF6623EF0F97004C6A68 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F49CD0FF238D089C00C19BFE /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPageTwoViewController.swift; sourceTree = "<group>"; };
 		F4B258BE22F6BAD800E12BF4 /* SegueFromLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromLeft.swift; sourceTree = "<group>"; };
@@ -198,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */,
+				F460FF6723EF0F97004C6A68 /* FBSDKCoreKit.framework in Frameworks */,
 				530E0612EF78A6F051044666 /* Pods_Xplore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,6 +295,7 @@
 		2B11E02A22F39668000A51F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F460FF6623EF0F97004C6A68 /* FBSDKCoreKit.framework */,
 				2B11E02B22F39668000A51F0 /* CoreLocation.framework */,
 				6AA38954BC207ECBEF3C30E3 /* Pods_Xplore.framework */,
 				ED603CA0B954E42587E581A0 /* Pods_XploreTests.framework */,
@@ -431,7 +422,6 @@
 				2B09A32022F265CF00F52209 /* Sources */,
 				2B09A32122F265CF00F52209 /* Frameworks */,
 				2B09A32222F265CF00F52209 /* Resources */,
-				2B11E03722F3C4F7000A51F0 /* Embed Frameworks */,
 				C05EEFD7F20EE96DFE20F1F0 /* [CP] Embed Pods Frameworks */,
 				F1292F17DFD6A13CDAFC4327 /* [CP] Copy Pods Resources */,
 			);

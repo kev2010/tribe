@@ -50,7 +50,7 @@ class PickAddressViewController: UIViewController, MGLMapViewDelegate {
                 let placemarks = placemarks,
                 let location = placemarks.first?.location
             else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription )
                 print("ERROR")
                 // handle no location found
                 return
