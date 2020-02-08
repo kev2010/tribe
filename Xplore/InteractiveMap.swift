@@ -191,9 +191,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                             event.tags.contains("Social") && filterApp[5]==1;
             if (filtered) {
                 displayed_events[event.documentID!] = event
-                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID)
+                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked)
                 point.reuseIdentifier = "customAnnotation\(event.title)"
-                point.image = InteractiveMap.dot(size: 30, num: event.capacity)
+                point.image = InteractiveMap.dot(size: 30, num: event.capacity, bm: bookmarked)
                 
                 self.annotationsForID[event.documentID!] = point
                 
@@ -229,9 +229,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         var pointAnnotations = [CustomPointAnnotation]()
         for i in 0...friends.count-1 {
             if friends[i].user?.privacy != "Private" {
-                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID)
+                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false)
                 annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
-                annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 20, height: 20))?.circleMasked
+                annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 10, height: 10))?.circleMasked
 //                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
                 friends[i].annotation = annotation
@@ -570,7 +570,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         } else if tableView == bookmarksTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkCell
             cell.bookmark = bookmarks[indexPath.section]
-            
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.lineBreakMode = .byWordWrapping
             let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
             let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
             cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
@@ -1083,8 +1084,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         )
     }
     
-    static func dot(size: Int, num:Int) -> UIImage {
-        let floatSize = CGFloat(size)
+    static func dot(size: Int, num:Int, bm:Bool) -> UIImage {
+        var floatSize = CGFloat(size)
+        if bm {
+            floatSize *= 1.2
+        }
         let rect = CGRect(x: 0, y: 0, width: floatSize, height: floatSize)
         let strokeWidth: CGFloat = 1
         

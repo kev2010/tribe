@@ -55,9 +55,9 @@ class BigTileViewController: UIViewController {
         currentUser?.eventsUserBookmarked.append(self.db.collection("events").document(event!.documentID!))
         
         if let e = event {
-            let point = CustomPointAnnotation(coordinate: e.location, title: e.title, subtitle: "\(e.capacity) people", description: e.description, annotationType: AnnotationType.Event, event_id: e.documentID)
-                       point.reuseIdentifier = "customAnnotation\(e.title)"
-            point.image = InteractiveMap.dot(size: 30, num: e.capacity)
+            let point = CustomPointAnnotation(coordinate: e.location, title: e.title, subtitle: "\(e.capacity) people", description: e.description, annotationType: AnnotationType.Event, event_id: e.documentID, bm:true)
+            point.reuseIdentifier = "customAnnotation\(e.title)"
+            point.image = InteractiveMap.dot(size: 30, num: e.capacity, bm:true)
             
             bookmarks.append(Bookmark(event: event, annotation: point))
             bookmarksTable.reloadData()

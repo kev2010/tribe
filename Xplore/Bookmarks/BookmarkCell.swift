@@ -27,7 +27,7 @@ class BookmarkCell: UITableViewCell {
 //            }
             
             if let description = bookmarkItem.event?.description {
-                descriptionLabel.text = description
+                descriptionLabel.text = "description\ndesc"
             }
             
         }
@@ -57,6 +57,9 @@ class BookmarkCell: UITableViewCell {
         label.font = UIFont(name: "Futura-Bold", size: 16)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 5
+        label.lineBreakMode = .byWordWrapping
+        
         return label
     }()
     
@@ -73,7 +76,8 @@ class BookmarkCell: UITableViewCell {
 //    }()
     
     let descriptionLabel:UILabel = {
-        let label = UILabel()
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 1000))
         label.font = UIFont(name: "Futura-Bold", size: 12)
         label.textColor =  .white
         label.textAlignment = .left
@@ -81,6 +85,8 @@ class BookmarkCell: UITableViewCell {
 //        label.layer.cornerRadius = 5
 //        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 5
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
