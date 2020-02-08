@@ -16,6 +16,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var searchEvent: UISearchBar!
     
     let info = DispatchGroup()
+    var filterInfo = [1, 1, 1, 1, 1, 1]
     
     struct Section {
         var name: String
@@ -112,6 +113,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             for sec in sections {
                 var items = [Search]()
                 for search in sec.items {
+                    print(search)
                     if search.event?.title.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil {
                         items.append(search)
                     }
@@ -154,18 +156,28 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 //  Iterate through each event in events documents
                 for document in querySnapshot!.documents {
                     let event = Event(QueryDocumentSnapshot: document)
-                    let start = event.startDate
+                    
+                    let filtered = event.tags.contains("Academic") && self.filterInfo[0]==1 ||
+                        event.tags.contains("Arts") && self.filterInfo[1]==1 ||
+                        event.tags.contains("Athletic") && self.filterInfo[2]==1 ||
+                        event.tags.contains("Casual") && self.filterInfo[3]==1 ||
+                        event.tags.contains("Professional") && self.filterInfo[4]==1 ||
+                        event.tags.contains("Social") && self.filterInfo[5]==1;
+                    
+                    if (filtered) {
+                        let start = event.startDate
 
-                    let dateFormatter = DateFormatter()
-                    // uncomment to enforce the US locale
-                    // dateFormatter.locale = Locale(identifier: "en-US")
-                    dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d yyyy")
-                    let time = dateFormatter.string(from: start)
+                        let dateFormatter = DateFormatter()
+                        // uncomment to enforce the US locale
+                        // dateFormatter.locale = Locale(identifier: "en-US")
+                        dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d yyyy")
+                        let time = dateFormatter.string(from: start)
 
-                    if date_dic[time] != nil {
-                        date_dic[time]?.append(Search(event: event))
-                    } else {
-                        date_dic[time] = [Search(event: event)]
+                        if date_dic[time] != nil {
+                            date_dic[time]?.append(Search(event: event))
+                        } else {
+                            date_dic[time] = [Search(event: event)]
+                        }
                     }
 
                 }
@@ -195,11 +207,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //                }
 //            }
 //
-        
-        
-        
-        
-        
         self.info.notify(queue: DispatchQueue.main) {
             var temp: [Section] = []
             for (date, list) in date_dic {
@@ -222,8 +229,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 temp.append(Section(name: date, tag: tag, items: temp_list))
             }
             self.sections = temp.sorted(by: { $0.tag < $1.tag })
-            
             self.filteredsections = self.sections
+            //self.filteredsections = []
             
             //  Set up addUser UITableView and addUserSearch UISearchBar
             self.searchTable.dataSource = self
@@ -273,9 +280,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 print("ERROR, unknown key")
                 assert(false)
         }
-        
     }
-
 }
 
 extension SearchViewController: SearchTableViewHeaderDelegate {
@@ -293,7 +298,6 @@ extension SearchViewController: SearchTableViewHeaderDelegate {
 }
 
 extension String {
-
     var length: Int {
         return count
     }
@@ -317,7 +321,4 @@ extension String {
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
         return String(self[start ..< end])
     }
-
 }
-
-

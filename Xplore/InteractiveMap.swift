@@ -1228,5 +1228,15 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
             let vc = segue.destination as! FilterViewController
             vc.filterInfo = self.filterApp
         }
+        
+        if segue.identifier == "mapToFilter" {
+            let vc = segue.destination as! FilterViewController
+            vc.filterInfo = self.filterApp
+        }
+        
+        if segue.identifier == "mapToSearch" {
+            let vc = segue.destination as! SearchViewController
+            vc.filterInfo = self.filterApp
+        }
     }
 }
