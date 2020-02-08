@@ -9,29 +9,92 @@ import UIKit
 import Firebase
 
 class FilterViewController: UIViewController {
+    
+    let unselected = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+    let selected = UIColor(red: 49/255, green: 1.0, blue: 189/255, alpha: 1)
 
     @IBAction func goBack(_ sender: Any) {
+        let vc = self.presentingViewController as! InteractiveMap
+        vc.updateFilters(new_filters: self.filterInfo)
         self.dismiss(animated: true, completion: nil)
     }
+
     
-//    @IBAction func filAcademic(_ sender: Any) {
-//    }
-//
-//    @IBAction func filArts(_ sender: Any) {
-//    }
-//
-//    @IBAction func filAthletics(_ sender: Any) {
-//    }
-//
-//    @IBAction func filProfessional(_ sender: Any) {
-//    }
-//    
-//    @IBAction func filSocial(_ sender: Any) {
-//    }
-//
-//    @IBAction func filCasual(_ sender: Any) {
-//    }
-//    @IBOutlet weak var filterTable: UITableView!
+    @IBOutlet weak var academic: UIButton!
+    @IBOutlet weak var arts: UIButton!
+    @IBOutlet weak var athletic: UIButton!
+    @IBOutlet weak var casual: UIButton!
+    @IBOutlet weak var professional: UIButton!
+    @IBOutlet weak var social: UIButton!
+    
+    var filterInfo = [1, 1, 1, 1, 1, 1]
+
+    @IBAction func filAcademic(_ sender: Any) {
+        if (academic.backgroundColor != self.unselected) {
+            academic.backgroundColor = self.unselected;
+            filterInfo[0] = 0;
+        }
+        else {
+            academic.backgroundColor = self.selected;
+            filterInfo[0] = 1;
+        }
+    }
+    
+    @IBAction func filArts(_ sender: Any) {
+        if (arts.backgroundColor != self.unselected) {
+            arts.backgroundColor = self.unselected;
+            filterInfo[1] = 0;
+        }
+        else {
+            arts.backgroundColor = self.selected;
+            filterInfo[1] = 1;
+        }
+    }
+    
+    @IBAction func filAthletic(_ sender: Any) {
+        if (athletic.backgroundColor != self.unselected) {
+            athletic.backgroundColor = self.unselected;
+            filterInfo[2] = 0;
+        }
+        else {
+            athletic.backgroundColor = self.selected;
+            filterInfo[2] = 1;
+        }
+    }
+    
+    @IBAction func filCasual(_ sender: Any) {
+        if (casual.backgroundColor != self.unselected) {
+            casual.backgroundColor = self.unselected;
+            filterInfo[3] = 0;
+        }
+        else {
+            casual.backgroundColor = self.selected;
+            filterInfo[3] = 1;
+        }
+    }
+    
+    @IBAction func filProfessional(_ sender: Any) {
+        if (professional.backgroundColor != self.unselected) {
+            professional.backgroundColor = self.unselected;
+            filterInfo[4] = 0;
+        }
+        else {
+            professional.backgroundColor = self.selected;
+            filterInfo[4] = 1;
+        }
+    }
+    
+    @IBAction func filSocial(_ sender: Any) {
+        if (social.backgroundColor != self.unselected) {
+            social.backgroundColor = self.unselected;
+            filterInfo[5] = 0;
+        }
+        else {
+            social.backgroundColor = self.selected;
+            filterInfo[5] = 1;
+        }
+    }
+    
     
     let info = DispatchGroup()
     
@@ -52,73 +115,22 @@ class FilterViewController: UIViewController {
     
     var filteredsections = [Section]()
     var sections = [Section]()
-    
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return filteredsections.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return filteredsections[section].collapsed ? 0 : filteredsections[section].items.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? FilterTable ?? FilterTable(reuseIdentifier: "header")
-//
-//        header.titleLabel.text = filteredsections[section].name
-//        header.arrowLabel.text = ">"
-//        header.setCollapsed(filteredsections[section].collapsed)
-//
-//        header.section = section
-//        header.delegate = self
-//
-//        return header
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 44.0
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        //  Will need to adjust values later
-//        return 75
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath) as! FilterCellTableViewCell
-//        let item = filteredsections[indexPath.section].items[indexPath.row]
-//        cell.event = item // ???
-//
-//
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        //  Check if the text is at least 2 characters
-//        if searchText.count >= 2 {
-//            // Rebuild the sections table - creation strategy, would deletion strategy be better?
-//            filteredsections = []
-//            for sec in sections {
-//                var items = [Filter]()
-//                for search in sec.items {
-//                    if search.event?.title.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil {
-//                        items.append(search)
-//                    }
-//                }
-//                if items.count > 0 {
-//                    filteredsections.append(Section(name: sec.name, items: items))
-//                }
-//            }
-//        } else {
-//            filteredsections = sections
-//        }
-//
-//        self.filterTable.reloadData()
-//    }
 
     override func viewDidLoad() {
+
+        academic.backgroundColor = selected
+        arts.backgroundColor = selected
+        athletic.backgroundColor = selected
+        casual.backgroundColor = selected
+        professional.backgroundColor = selected
+        social.backgroundColor = selected
+        
+        if filterInfo[0] == 0 {academic.backgroundColor = unselected}
+        if filterInfo[1] == 0 {arts.backgroundColor = unselected}
+        if filterInfo[2] == 0 {athletic.backgroundColor = unselected}
+        if filterInfo[3] == 0 {casual.backgroundColor = unselected}
+        if filterInfo[4] == 0 {professional.backgroundColor = unselected}
+        if filterInfo[5] == 0 {social.backgroundColor = unselected}
         
         var date_dic: [String: [Filter]] = [:] as! [String : [Filter]]
         //  Grab all events
@@ -154,25 +166,6 @@ class FilterViewController: UIViewController {
                 self.sections.append(Section(name: date, items: list))
             }
             self.filteredsections = self.sections
-            
-            //  Set up addUser UITableView and addUserSearch UISearchBar
-//            self.filterTable.dataSource = self
-//            self.filterTable.delegate = self
-//            self.filterTable.register(FilterCellTableViewCell.self, forCellReuseIdentifier: "filterCell")
-//            self.filterTable.tableFooterView = UIView()
         }
     }
 }
-
-//extension FilterViewController: FilterTableDelegate {
-//
-//    func toggleSection(_ header: FilterTable, section: Int) {
-//        let collapsed = !filteredsections[section].collapsed
-//
-//        // Toggle collapse
-//        filteredsections[section].collapsed = collapsed
-//        header.setCollapsed(collapsed)
-//        self.filterTable.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
-//    }
-//
-//}

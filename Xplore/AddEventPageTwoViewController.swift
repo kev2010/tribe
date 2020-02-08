@@ -131,7 +131,6 @@ class AddEventPageTwoViewController: UIViewController {
                 }
             }
         }
-        
 
         let newEvent = Event(creator_username: currentUser!.username, title: prev_data["title"] as! String, description: prev_data["description"] as! String, startDate: prev_data["start"] as! Date, endDate: prev_data["end"] as! Date, location: newLocation, address: "tbi", capacity: -1, visibility: "tbi", tags: self.tags, attendees: [currentUser!.username])
         
@@ -140,8 +139,7 @@ class AddEventPageTwoViewController: UIViewController {
         newEvent.saveEvent()
         
         //TODO: change tags label so it's an actual array. and location. actual dates too. and capacity.
-      
-        (self.presentingViewController?.presentingViewController as! InteractiveMap).testing()
+
         //  Exit SaveEvent
         self.dismiss(animated: true, completion: {})
         (self.presentingViewController as! AddEventViewController).close()
@@ -271,6 +269,7 @@ class AddEventPageTwoViewController: UIViewController {
             let vc = segue.destination as! PickAddressViewController
             vc.address = self.address_send
         }
+    
         
         
     }
