@@ -472,6 +472,7 @@
                         <viewLayoutGuide key="safeArea" id="Ne6-Zy-VHX"/>
                     </view>
                     <connections>
+                        <outlet property="address_input" destination="TYi-iZ-53k" id="gXh-Lv-TzA"/>
                         <outlet property="background" destination="Slx-Uk-MdZ" id="LNo-SE-50V"/>
                         <outlet property="end_input" destination="Dih-JH-5B4" id="Jsa-6z-XmZ"/>
                         <outlet property="invalid" destination="v5V-bI-bzr" id="Sp9-t3-CRQ"/>
@@ -498,7 +499,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vUt-AT-zAD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-271" y="1510"/>
+            <point key="canvasLocation" x="-178" y="1591"/>
         </scene>
         <!--Interactive Map-->
         <scene sceneID="tne-QT-ifu">
@@ -1352,7 +1353,6 @@
                         <outlet property="socialLabel" destination="5aZ-8p-7ji" id="Qk9-j1-PLH"/>
                         <outlet property="socialTag" destination="Lvb-dJ-wH2" id="Bqh-gO-VFj"/>
                         <outlet property="topUI" destination="fBQ-X4-p0m" id="baF-xH-IQb"/>
-                        <segue destination="pac-iU-66t" kind="presentation" identifier="confirmLocation" id="bou-zj-xBb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LdU-vn-43n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1761,7 +1761,4 @@ go to this very interesting event</string>
         <image name="nextAsset 5@4x" width="1263" height="248"/>
         <image name="saveAsset 6@4x" width="1263" height="248"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="bou-zj-xBb"/>
-    </inferredMetricsTieBreakers>
 </document>

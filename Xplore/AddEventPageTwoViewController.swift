@@ -84,8 +84,7 @@ class AddEventPageTwoViewController: UIViewController {
         
 
         
-//        let pickAddress = UITapGestureRecognizer(target: self, action: #selector(self.addressTap))
-//        selectAddress.addGestureRecognizer(pickAddress)
+
         
         // Do any additional setup after loading the view.
     }
@@ -146,12 +145,6 @@ class AddEventPageTwoViewController: UIViewController {
         //  Exit SaveEvent
         self.dismiss(animated: true, completion: {})
         (self.presentingViewController as! AddEventViewController).close()
-    }
-    
-   
-    @objc func addressTap(_ sender: UITapGestureRecognizer) {
-        
-        self.performSegue(withIdentifier: "confirmLocation", sender: self)
     }
     
     

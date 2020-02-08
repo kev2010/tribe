@@ -87,7 +87,7 @@ class PickAddressViewController: UIViewController, MGLMapViewDelegate {
                     let pm = placemarks![0] as CLPlacemark
 
                     if let presenter = self.presentingViewController as? AddEventViewController {
-                        presenter.finalLocationDescription = pm.thoroughfare! //TODO
+                        presenter.finalLocationDescription = self.address //TODO
                         presenter.finalLocationCoord = pm.location!.coordinate
                         print("Saving \(pm.location!.coordinate)")
                         self.dismiss(animated: true, completion: {})
