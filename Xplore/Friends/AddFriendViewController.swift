@@ -20,6 +20,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     //  List of users to display on UITableView
     var users:[Friend] = []
     var filteredusers:[Friend] = []
+    
+    var sections = ["Pending Friend Requests"]
 
     //  protocol methods for addUser TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -30,34 +32,54 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         //  Will need to adjust values later
         return 100
     }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        view.tintColor = .white
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        header.textLabel?.text = sections[0]
+        header.textLabel?.font = UIFont.init(name: "Futura-Bold", size: 18)
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! AddFriendCell
         cell.isUserInteractionEnabled = true
-        cell.contentView.isUserInteractionEnabled = false
+        cell.contentView.isUserInteractionEnabled = true
         cell.friend = filteredusers[indexPath.row]
         
         
-//        addUser.bringSubviewToFront(cell)
-//        view.bringSubviewToFront(addUser)  //  Necessary?
-//        cell.addButton.tag = indexPath.row
-//        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
-//        cell.bringSubviewToFront(cell.addButton)
-
+        addUser.bringSubviewToFront(cell)
+        view.bringSubviewToFront(addUser)  //  Necessary?
+        cell.addButton.tag = indexPath.row
+        cell.addButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+        cell.bringSubviewToFront(cell.addButton)
+        
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
-        let username = currentCell.nameLabel.text
-        addFriend(username: username!)
+//        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
+//        let username = currentCell.nameLabel.text
+//        addFriend(username: username!)
         tableView.reloadData()
     }
     
-    @objc func addFriend(username: String) {
+    @objc func addFriend(sender : UIButton) {
+        let username = filteredusers[sender.tag].user!.username
         let db = Firestore.firestore()
-        
         let documentRefString = db.collection("users").document(currentUser!.username)
         let userRef = db.document(documentRefString.path)
 
@@ -77,6 +99,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //  Check if the text is at least 2 characters
         if searchText.count > 2 {
+            sections[0] = "Add User"
             var temp: [Friend] = []
             Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -121,6 +144,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
         } else {
+            sections[0] = "Pending Friend Requests"
             self.filteredusers = self.users
             self.addUser.reloadData()
         }
@@ -140,7 +164,6 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     override func viewDidLoad() {
-        addUser.allowsSelection = true
         super.viewDidLoad()
         
         //  Get User Friend Requests
@@ -181,8 +204,16 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         self.addUserSearch.delegate = self
         self.addUserSearch.backgroundColor = .white
         self.addUserSearch.placeholder = "Search"
-        
+        self.addUserSearch.searchBarStyle = .minimal
+        // SearchBar text
+        let textFieldInsideUISearchBar = self.addUserSearch.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
 
+        // SearchBar placeholder
+        let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
+        
+        
     }
 
 }

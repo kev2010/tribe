@@ -345,7 +345,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Add "Bookmarks" title
 //        let bookmark_label = UIButton(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
-        let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
+        let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width, height: 23))
 //        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
         bookmark_label.text = "Bookmarks"
         bookmark_label.textAlignment = .center
@@ -357,26 +357,26 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        leftMenuView.addSubview(bookmark_pic)
         
         //  Add "Activity" title
-        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
-//        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-        activity_label.text = "Activity"
-        activity_label.textAlignment = .center
-        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
-//        bookmark_pic.image = UIImage(named: "bookmark")
-        leftMenuView.addSubview(activity_label)
-//        leftMenuView.addSubview(bookmark_pic)
+//        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
+////        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+//        activity_label.text = "Activity"
+//        activity_label.textAlignment = .center
+//        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+//        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
+////        bookmark_pic.image = UIImage(named: "bookmark")
+//        leftMenuView.addSubview(activity_label)
+////        leftMenuView.addSubview(bookmark_pic)
         
         //  Add horizontal separators
         let bookmark_sep = UIView()
         bookmark_sep.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
-        bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width/2, height: 3)
+        bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width, height: 3)
         leftMenuView.addSubview(bookmark_sep)
         
-        let activity_sep = UIView()
-        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
-        leftMenuView.addSubview(activity_sep)
+//        let activity_sep = UIView()
+//        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+//        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
+//        leftMenuView.addSubview(activity_sep)
 
         //  Add bookmarked events UITableView
         bookmarksTable.dataSource = self
