@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var searchTable: UITableView!
     @IBOutlet weak var searchEvent: UISearchBar!
+    @IBOutlet weak var noEventsText: UILabel!
     
     let info = DispatchGroup()
     var filterInfo = [1, 1, 1, 1, 1, 1]
@@ -165,6 +166,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         event.tags.contains("Social") && self.filterInfo[5]==1;
                     
                     if (filtered) {
+                        self.noEventsText.isHidden = true;
                         let start = event.startDate
 
                         let dateFormatter = DateFormatter()
