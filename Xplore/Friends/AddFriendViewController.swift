@@ -20,6 +20,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     //  List of users to display on UITableView
     var users:[Friend] = []
     var filteredusers:[Friend] = []
+    
+    var sections = ["Pending Friend Requests"]
 
     //  protocol methods for addUser TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -30,39 +32,63 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         //  Will need to adjust values later
         return 100
     }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        view.tintColor = .white
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
+        header.textLabel?.text = sections[0]
+        header.textLabel?.font = UIFont.init(name: "Futura-Bold", size: 18)
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! AddFriendCell
         cell.isUserInteractionEnabled = true
-        cell.contentView.isUserInteractionEnabled = false
+        cell.contentView.isUserInteractionEnabled = true
         cell.friend = filteredusers[indexPath.row]
         
         
-//        addUser.bringSubviewToFront(cell)
-//        view.bringSubviewToFront(addUser)  //  Necessary?
-//        cell.addButton.tag = indexPath.row
-//        cell.addButton.addTarget(self, action: #selector(self.addFriend), for: .touchUpInside)
-//        cell.bringSubviewToFront(cell.addButton)
-
+        addUser.bringSubviewToFront(cell)
+        view.bringSubviewToFront(addUser)  //  Necessary?
+        cell.addButton.tag = indexPath.row
+        cell.addButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+        cell.bringSubviewToFront(cell.addButton)
+        
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
-        let username = currentCell.nameLabel.text
-        addFriend(username: username!)
-        tableView.reloadData()
+//        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
+//        let username = currentCell.nameLabel.text
+//        addFriend(username: username!)
+        addUser.reloadData()
     }
     
-    @objc func addFriend(username: String) {
-        let db = Firestore.firestore()
+    @objc func addFriend(sender : UIButton) {
+        sender.setImage(UIImage(named: "addedUser"), for: .normal)
+        let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
+        let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
         
-        let documentRefString = db.collection("users").document(currentUser!.username)
+        let db = Firestore.firestore()
+        let documentRefString = db.collection("users").document(userToAdd)
         let userRef = db.document(documentRefString.path)
-
-        Firestore.firestore().collection("users").document(username).updateData([
-            "social.friend_req": FieldValue.arrayUnion([userRef])
+        let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
+        
+        Firestore.firestore().collection("users").document(userToUpdate).updateData([
+            "social.friend_req": changeFriendRequest
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -70,13 +96,28 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                 print("Document successfully updated")
             }
         }
-        print("Friend Request Sent!")
         
+        if sections[0] == "Pending Friend Requests" {
+            Firestore.firestore().collection("users").document(userToUpdate).updateData([
+                "social.friends": FieldValue.arrayUnion([userRef])
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                    print("Friend Added")
+                    FriendsAPI.getFriends()
+                }
+            }
+        }
     }
+    
+    
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //  Check if the text is at least 2 characters
         if searchText.count > 2 {
+            sections[0] = "Add User"
             var temp: [Friend] = []
             Firestore.firestore().collection("users").getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -121,6 +162,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
         } else {
+            sections[0] = "Pending Friend Requests"
             self.filteredusers = self.users
             self.addUser.reloadData()
         }
@@ -138,38 +180,55 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         filteredusers = users   // Is there a way to not do this?
         addUser.reloadData()
     }
-
-    override func viewDidLoad() {
-        addUser.allowsSelection = true
-        super.viewDidLoad()
+    
+    func getFriendRequests() {
+        let db = Firestore.firestore()
+        let documentRefString = db.collection("users").document(currentUser!.username)
+        let userRef = db.document(documentRefString.path)
+        var friendRequests:[DocumentReference] = []
         
-        //  Get User Friend Requests
-        for request in currentUser!.friend_req{
-            request.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    print("wtf????????")
-                    let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
-                    var image = UIImage()
-                                               
-                    //  Retrieve user's profile picture
-                    let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
-                    ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
-                        if let error = error {
-                           print("Error in retrieving image: \(error.localizedDescription)")
-                        } else {
-                            image = UIImage(data: data!)!
-                            self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
-                            self.filteredusers = self.users
-                            self.addUser.reloadData()
-                        }
-                    }
-                } else {
-                    print("User Document does not exist")
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                friendRequests = (document.data()!["social"] as! [String:Any])["friend_req"] as! [DocumentReference]
+                //  Get User Friend Requests
+                for user in friendRequests{
+                    self.displayUserTile(user: user)
                 }
+            } else {
+                print("User Document does not exist")
             }
         }
-        
+    }
+    
+    func displayUserTile(user: DocumentReference) {
+        user.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
+                var image = UIImage()
+                                           
+                //  Retrieve user's profile picture
+                let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
+                ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+                    if let error = error {
+                       print("Error in retrieving image: \(error.localizedDescription)")
+                    } else {
+                        image = UIImage(data: data!)!
+                        self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
+                        self.filteredusers = self.users
+                        self.addUser.reloadData()
+                    }
+                }
+            } else {
+                print("User Document does not exist")
+            }
+        }
+    }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        getFriendRequests()
+        
         //  Set up addUser UITableView and addUserSearch UISearchBar
         print("oh", self.filteredusers)
         self.addUser.dataSource = self
@@ -181,8 +240,16 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         self.addUserSearch.delegate = self
         self.addUserSearch.backgroundColor = .white
         self.addUserSearch.placeholder = "Search"
-        
+        self.addUserSearch.searchBarStyle = .minimal
+        // SearchBar text
+        let textFieldInsideUISearchBar = self.addUserSearch.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
 
+        // SearchBar placeholder
+        let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
+        
+        
     }
 
 }

@@ -9,7 +9,6 @@
 import UIKit
 
 class AddFriendCell: UITableViewCell {
-    
     //  Initializers for friend cell
     var friend:Friend? {
         didSet {
@@ -52,21 +51,20 @@ class AddFriendCell: UITableViewCell {
         return label
     }()
     
-//    let addButton:UIButton = {
-//        let btn = UIButton()
-////        btn.setTitle("+", for: UIControl.State.normal)
-////        btn.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 42)
-////        btn.titleLabel?.textAlignment = .center
-////        btn.titleLabel?.textColor = .black
-//        btn.setImage(UIImage(named: "add"), for: UIControl.State.normal)
-//        btn.translatesAutoresizingMaskIntoConstraints = false
-////        btn.layer.cornerRadius = 13
-////        btn.clipsToBounds = true
-//        print("woahhhh")
-//        return btn
-//    }()
-    
-
+    let addButton:UIButton = {
+        let btn = UIButton()
+//        btn.setTitle("Add!", for: UIControl.State.normal)
+//        btn.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 18)
+//        btn.titleLabel?.textAlignment = .center
+//        btn.titleLabel?.textColor = .black
+        btn.setImage(UIImage(named: "addUser"), for: .normal)
+//        btn.setImage(UIImage(named: "addedUser"), for: .highlighted)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.imageView?.contentMode = .scaleAspectFit
+//        btn.layer.cornerRadius = 13
+//        btn.clipsToBounds = true
+        return btn
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -78,10 +76,11 @@ class AddFriendCell: UITableViewCell {
 //        containerView.addSubview(nameLabel)
 //        self.contentView.addSubview(containerView)
         self.contentView.addSubview(nameLabel)
+        self.contentView.addSubview(addButton)
         
         //  Add constraints to profile image
         profileImageView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
+        profileImageView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant:70).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant:70).isActive = true
         
@@ -97,10 +96,10 @@ class AddFriendCell: UITableViewCell {
         nameLabel.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
         
         //  current event label auto layout constraints
-//        addButton.widthAnchor.constraint(equalToConstant:26).isActive = true
-//        addButton.heightAnchor.constraint(equalToConstant:26).isActive = true
-//        addButton.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20).isActive = true
-//        addButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant:70).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant:70).isActive = true
+        addButton.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20).isActive = true
+        addButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
      }
     
     required init?(coder aDecoder: NSCoder) {

@@ -345,7 +345,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Add "Bookmarks" title
 //        let bookmark_label = UIButton(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
-        let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
+        let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width, height: 23))
 //        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
         bookmark_label.text = "Bookmarks"
         bookmark_label.textAlignment = .center
@@ -357,26 +357,26 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
 //        leftMenuView.addSubview(bookmark_pic)
         
         //  Add "Activity" title
-        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
-//        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-        activity_label.text = "Activity"
-        activity_label.textAlignment = .center
-        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
-//        bookmark_pic.image = UIImage(named: "bookmark")
-        leftMenuView.addSubview(activity_label)
-//        leftMenuView.addSubview(bookmark_pic)
+//        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
+////        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
+//        activity_label.text = "Activity"
+//        activity_label.textAlignment = .center
+//        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+//        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
+////        bookmark_pic.image = UIImage(named: "bookmark")
+//        leftMenuView.addSubview(activity_label)
+////        leftMenuView.addSubview(bookmark_pic)
         
         //  Add horizontal separators
         let bookmark_sep = UIView()
         bookmark_sep.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
-        bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width/2, height: 3)
+        bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width, height: 3)
         leftMenuView.addSubview(bookmark_sep)
         
-        let activity_sep = UIView()
-        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
-        leftMenuView.addSubview(activity_sep)
+//        let activity_sep = UIView()
+//        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+//        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
+//        leftMenuView.addSubview(activity_sep)
 
         //  Add bookmarked events UITableView
         bookmarksTable.dataSource = self
@@ -408,7 +408,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
 //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/ck6n11yek073u1ilaz46m0706")
         mapView.delegate = self
         
         //Add map and button to scroll view
@@ -438,18 +439,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         self.view.bringSubviewToFront(bottomMenu_map)
         self.view.bringSubviewToFront(bottomMenu_friends)
         
-        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 100, height: 50)
+        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 125, height: 125)
         let filter_button = UIButton(frame: f5)
-        filter_button.setTitle("Filter", for: UIControl.State.normal)
-        filter_button.setImage(UIImage(named: "filter-512.png"), for: UIControl.State.normal)
+        filter_button.setImage(UIImage(named: "filter"), for: .normal)
+        filter_button.imageView?.contentMode = .scaleAspectFit
         filter_button.addTarget(self, action: #selector(self.goFilter), for: UIControl.Event.touchDown)
         
         mapView.addSubview(filter_button)
         
-        let f6 = CGRect(x: 19, y: 50, width: 100, height: 50)
+        let f6 = CGRect(x: 19, y: 50, width: 125, height: 125)
         let search_button = UIButton(frame: f6)
-        search_button.setTitle("Search", for: UIControl.State.normal)
-        search_button.setTitleColor(.black, for: UIControl.State.normal)
+        search_button.setImage(UIImage(named: "search"), for: .normal)
+        search_button.imageView?.contentMode = .scaleAspectFit
         search_button.addTarget(self, action: #selector(self.goSearch), for: UIControl.Event.touchDown)
         
         mapView.addSubview(search_button)
