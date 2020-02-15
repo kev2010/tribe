@@ -438,18 +438,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         self.view.bringSubviewToFront(bottomMenu_map)
         self.view.bringSubviewToFront(bottomMenu_friends)
         
-        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 100, height: 50)
+        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 125, height: 125)
         let filter_button = UIButton(frame: f5)
-        filter_button.setTitle("Filter", for: UIControl.State.normal)
-        filter_button.setImage(UIImage(named: "filter-512.png"), for: UIControl.State.normal)
+        filter_button.setImage(UIImage(named: "filter"), for: .normal)
+        filter_button.imageView?.contentMode = .scaleAspectFit
         filter_button.addTarget(self, action: #selector(self.goFilter), for: UIControl.Event.touchDown)
         
         mapView.addSubview(filter_button)
         
-        let f6 = CGRect(x: 19, y: 50, width: 100, height: 50)
+        let f6 = CGRect(x: 19, y: 50, width: 125, height: 125)
         let search_button = UIButton(frame: f6)
-        search_button.setTitle("Search", for: UIControl.State.normal)
-        search_button.setTitleColor(.black, for: UIControl.State.normal)
+        search_button.setImage(UIImage(named: "search"), for: .normal)
+        search_button.imageView?.contentMode = .scaleAspectFit
         search_button.addTarget(self, action: #selector(self.goSearch), for: UIControl.Event.touchDown)
         
         mapView.addSubview(search_button)
