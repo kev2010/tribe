@@ -27,7 +27,7 @@ class BookmarkCell: UITableViewCell {
 //            }
             
             if let description = bookmarkItem.event?.description {
-                descriptionLabel.text = "description\ndesc"
+                descriptionLabel.text = description
             }
             
         }

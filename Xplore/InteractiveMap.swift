@@ -200,22 +200,22 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 pointAnnotations.append(point)
                 
                 if bookmarked {
-                    var username = ""
-                    let info = DispatchGroup()
-                    info.enter()
-                    event.creator_username.getDocument { (document, error) in
-                        if let document = document, document.exists {
-                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
-                        } else {
-                            print("User Document does not exist")
-                        }
-                        info.leave()
-                    }
+//                    var username = ""
+//                    let info = DispatchGroup()
+//                    info.enter()
+//                    event.creator_username.getDocument { (document, error) in
+//                        if let document = document, document.exists {
+//                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
+//                        } else {
+//                            print("User Document does not exist")
+//                        }
+//                        info.leave()
+//                    }
                     
-                    info.notify(queue: DispatchQueue.main) {
+//                    info.notify(queue: DispatchQueue.main) {
                         bookmarks.append(Bookmark(event: event, annotation: point))
                         bookmarksTable.reloadData()
-                    }
+//                    }
                 }
             }
         }
@@ -230,7 +230,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         for i in 0...friends.count-1 {
             if friends[i].user?.privacy != "Private" {
                 let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false)
-                annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
+                annotation.reuseIdentifier = "customAnnotationFriend\(String(describing: friends[i].user?.username))"
                 annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 10, height: 10))?.circleMasked
 //                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
