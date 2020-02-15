@@ -74,17 +74,20 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
 //        let currentCell = tableView.cellForRow(at: indexPath) as! AddFriendCell
 //        let username = currentCell.nameLabel.text
 //        addFriend(username: username!)
-        tableView.reloadData()
+        addUser.reloadData()
     }
     
     @objc func addFriend(sender : UIButton) {
-        let username = filteredusers[sender.tag].user!.username
+        let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
+        let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
+        
         let db = Firestore.firestore()
-        let documentRefString = db.collection("users").document(currentUser!.username)
+        let documentRefString = db.collection("users").document(userToAdd)
         let userRef = db.document(documentRefString.path)
-
-        Firestore.firestore().collection("users").document(username).updateData([
-            "social.friend_req": FieldValue.arrayUnion([userRef])
+        let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
+        
+        Firestore.firestore().collection("users").document(userToUpdate).updateData([
+            "social.friend_req": changeFriendRequest
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -92,9 +95,23 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                 print("Document successfully updated")
             }
         }
-        print("Friend Request Sent!")
         
+        if sections[0] == "Pending Friend Requests" {
+            Firestore.firestore().collection("users").document(userToUpdate).updateData([
+                "social.friends": FieldValue.arrayUnion([userRef])
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                    print("Friend Added")
+                    FriendsAPI.getFriends()
+                }
+            }
+        }
     }
+    
+    
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //  Check if the text is at least 2 characters
@@ -162,37 +179,55 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         filteredusers = users   // Is there a way to not do this?
         addUser.reloadData()
     }
+    
+    func getFriendRequests() {
+        let db = Firestore.firestore()
+        let documentRefString = db.collection("users").document(currentUser!.username)
+        let userRef = db.document(documentRefString.path)
+        var friendRequests:[DocumentReference] = []
+        
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                friendRequests = (document.data()!["social"] as! [String:Any])["friend_req"] as! [DocumentReference]
+                //  Get User Friend Requests
+                for user in friendRequests{
+                    self.displayUserTile(user: user)
+                }
+            } else {
+                print("User Document does not exist")
+            }
+        }
+    }
+    
+    func displayUserTile(user: DocumentReference) {
+        user.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
+                var image = UIImage()
+                                           
+                //  Retrieve user's profile picture
+                let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
+                ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
+                    if let error = error {
+                       print("Error in retrieving image: \(error.localizedDescription)")
+                    } else {
+                        image = UIImage(data: data!)!
+                        self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
+                        self.filteredusers = self.users
+                        self.addUser.reloadData()
+                    }
+                }
+            } else {
+                print("User Document does not exist")
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //  Get User Friend Requests
-        for request in currentUser!.friend_req{
-            request.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    print("wtf????????")
-                    let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
-                    var image = UIImage()
-                                               
-                    //  Retrieve user's profile picture
-                    let ppRef = Storage.storage().reference(withPath: "users_profilepic/\(uid)")
-                    ppRef.getData(maxSize: 1 * 1024 * 1024) { data, error in    // Might need to change size?
-                        if let error = error {
-                           print("Error in retrieving image: \(error.localizedDescription)")
-                        } else {
-                            image = UIImage(data: data!)!
-                            self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
-                            self.filteredusers = self.users
-                            self.addUser.reloadData()
-                        }
-                    }
-                } else {
-                    print("User Document does not exist")
-                }
-            }
-        }
+        getFriendRequests()
         
-
         //  Set up addUser UITableView and addUserSearch UISearchBar
         print("oh", self.filteredusers)
         self.addUser.dataSource = self
