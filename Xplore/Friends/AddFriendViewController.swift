@@ -78,6 +78,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @objc func addFriend(sender : UIButton) {
+        sender.setImage(UIImage(named: "addedUser"), for: .normal)
         let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
         let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
         

@@ -408,7 +408,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
 //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/ck6n11yek073u1ilaz46m0706")
         mapView.delegate = self
         
         //Add map and button to scroll view
