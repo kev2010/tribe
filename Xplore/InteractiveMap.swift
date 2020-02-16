@@ -200,22 +200,22 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 pointAnnotations.append(point)
                 
                 if bookmarked {
-                    var username = ""
-                    let info = DispatchGroup()
-                    info.enter()
-                    event.creator_username.getDocument { (document, error) in
-                        if let document = document, document.exists {
-                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
-                        } else {
-                            print("User Document does not exist")
-                        }
-                        info.leave()
-                    }
+//                    var username = ""
+//                    let info = DispatchGroup()
+//                    info.enter()
+//                    event.creator_username.getDocument { (document, error) in
+//                        if let document = document, document.exists {
+//                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
+//                        } else {
+//                            print("User Document does not exist")
+//                        }
+//                        info.leave()
+//                    }
                     
-                    info.notify(queue: DispatchQueue.main) {
+//                    info.notify(queue: DispatchQueue.main) {
                         bookmarks.append(Bookmark(event: event, annotation: point))
                         bookmarksTable.reloadData()
-                    }
+//                    }
                 }
             }
         }
@@ -230,7 +230,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         for i in 0...friends.count-1 {
             if friends[i].user?.privacy != "Private" {
                 let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false)
-                annotation.reuseIdentifier = "customAnnotationFriend\(friends[i].user?.username)"
+                annotation.reuseIdentifier = "customAnnotationFriend\(String(describing: friends[i].user?.username))"
                 annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 10, height: 10))?.circleMasked
 //                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
@@ -408,7 +408,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
 //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
-        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+        mapView.styleURL = URL(string: "mapbox://styles/kev2018/ck6n11yek073u1ilaz46m0706")
         mapView.delegate = self
         
         //Add map and button to scroll view
@@ -438,18 +439,18 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         self.view.bringSubviewToFront(bottomMenu_map)
         self.view.bringSubviewToFront(bottomMenu_friends)
         
-        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 100, height: 50)
+        let f5 = CGRect(x: 2*self.view.frame.width/3, y: 50, width: 125, height: 125)
         let filter_button = UIButton(frame: f5)
-        filter_button.setTitle("Filter", for: UIControl.State.normal)
-        filter_button.setImage(UIImage(named: "filter-512.png"), for: UIControl.State.normal)
+        filter_button.setImage(UIImage(named: "filter"), for: .normal)
+        filter_button.imageView?.contentMode = .scaleAspectFit
         filter_button.addTarget(self, action: #selector(self.goFilter), for: UIControl.Event.touchDown)
         
         mapView.addSubview(filter_button)
         
-        let f6 = CGRect(x: 19, y: 50, width: 100, height: 50)
+        let f6 = CGRect(x: 19, y: 50, width: 125, height: 125)
         let search_button = UIButton(frame: f6)
-        search_button.setTitle("Search", for: UIControl.State.normal)
-        search_button.setTitleColor(.black, for: UIControl.State.normal)
+        search_button.setImage(UIImage(named: "search"), for: .normal)
+        search_button.imageView?.contentMode = .scaleAspectFit
         search_button.addTarget(self, action: #selector(self.goSearch), for: UIControl.Event.touchDown)
         
         mapView.addSubview(search_button)
