@@ -109,7 +109,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
-        loadBottomTile()
+        loadTopTile()
         
         //  Create a timer that refreshes location every 10 seconds
 //        timer.invalidate()
@@ -1007,14 +1007,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    func loadBottomTile() {
+    func loadTopTile() {
         let f = CGRect(x: 20, y: -130, width: self.view.frame.width-40, height: 130)
         topTile = UIView(frame: f)
-        topTile.backgroundColor = UIColor.white
+        topTile.backgroundColor = UIColor.green
         topTile.layer.cornerRadius = 10
         
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(topTileTap(sender:)))
 
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
@@ -1025,6 +1026,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bottom_titleLabel.text = ""
         bottom_titleLabel.textColor =  UIColor.black
         bottom_titleLabel.textAlignment = .center
+//        bottom_titleLabel.fon
         
         let f3 = CGRect(x: 10, y: 40, width: f.width-10, height: 20)
         bottom_subtitleLabel = UILabel(frame:f3)
@@ -1036,7 +1038,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bottom_descriptionLabel.text = ""
         bottom_descriptionLabel.textColor =  UIColor.black
         bottom_descriptionLabel.numberOfLines = 5
-        bottom_descriptionLabel.font = UIFont.italicSystemFont(ofSize: 16.0)
+     //   bottom_descriptionLabel.font = "Comic Sans"; UIFont.italicSystemFont(ofSize: 16.0)
         
         topTile.addSubview(bottom_titleLabel)
         topTile.addSubview(bottom_subtitleLabel)
@@ -1048,7 +1050,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
-    @objc func bottomTileTap(sender: UITapGestureRecognizer) {
+    @objc func topTileTap(sender: UITapGestureRecognizer) {
         
         big_titleLabel.text = bottom_titleLabel.text
         big_subtitleLabel.text = bottom_subtitleLabel.text
