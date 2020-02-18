@@ -927,7 +927,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         topTile.layer.cornerRadius = 10
         
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(topTileTap(sender:)))
         
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
