@@ -18,13 +18,14 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     let info = DispatchGroup()
     
     //  List of users to display on UITableView
-    var users:[Friend] = []
+    var friendRequests:[Friend] = []
     var filteredusers:[Friend] = []
     
     var sections = ["Pending Friend Requests"]
 
     //  protocol methods for addUser TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("NUMBER OF ROWS \(filteredusers.count)")
         return filteredusers.count
     }
 
@@ -62,10 +63,21 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         
         addUser.bringSubviewToFront(cell)
         view.bringSubviewToFront(addUser)  //  Necessary?
-        cell.addButton.tag = indexPath.row
-        cell.addButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
-        cell.bringSubviewToFront(cell.addButton)
         
+        cell.leftButton.tag = indexPath.row
+        cell.rightButton.tag = indexPath.row
+//        if sections[0] == "Pending Friend Requests" {
+            if addUserSearch.text!.count <= 2 {
+            cell.leftButton.setImage(UIImage(named: "addUser"), for: .normal)
+            cell.leftButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+            cell.rightButton.setImage(UIImage(named: "rejectUser"), for: .normal)
+        } else {
+            cell.leftButton.setImage(UIImage(), for: .normal)
+            cell.rightButton.setImage(UIImage(named: "addUser"), for: .normal)
+            cell.rightButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+        }
+        cell.bringSubviewToFront(cell.leftButton)
+        cell.bringSubviewToFront(cell.rightButton)
 
         return cell
     }
@@ -78,48 +90,50 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @objc func addFriend(sender : UIButton) {
-        sender.setImage(UIImage(named: "addedUser"), for: .normal)
-        let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
-        let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
-        
-        let db = Firestore.firestore()
-        let documentRefString = db.collection("users").document(userToAdd)
-        let userRef = db.document(documentRefString.path)
-        let currentDocumentRefString = db.collection("users").document(userToUpdate)
-        let currentUserRef = db.document(currentDocumentRefString.path)
-        let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
-        
-        Firestore.firestore().collection("users").document(userToUpdate).updateData([
-            "social.friend_req": changeFriendRequest
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
-        
-        if sections[0] == "Pending Friend Requests" {
+        if sender.currentImage == UIImage(named: "addUser") {
+            sender.setImage(UIImage(named: "addedUser"), for: .normal)
+            let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
+            let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
+            
+            let db = Firestore.firestore()
+            let documentRefString = db.collection("users").document(userToAdd)
+            let userRef = db.document(documentRefString.path)
+            let currentDocumentRefString = db.collection("users").document(userToUpdate)
+            let currentUserRef = db.document(currentDocumentRefString.path)
+            let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
+            
             Firestore.firestore().collection("users").document(userToUpdate).updateData([
-                "social.friends": FieldValue.arrayUnion([userRef])
+                "social.friend_req": changeFriendRequest
             ]) { err in
                 if let err = err {
                     print("Error updating document: \(err)")
                 } else {
                     print("Document successfully updated")
-                    print("Friend Added")
-                    FriendsAPI.getFriends()
                 }
             }
             
-            Firestore.firestore().collection("users").document(userToAdd).updateData([
-                "social.friends": FieldValue.arrayUnion([currentUserRef])
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                    print("They can see you now!")
+            if sections[0] == "Pending Friend Requests" {
+                Firestore.firestore().collection("users").document(userToUpdate).updateData([
+                    "social.friends": FieldValue.arrayUnion([userRef])
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                        print("Friend Added")
+                        FriendsAPI.getFriends()
+                    }
+                }
+                
+                Firestore.firestore().collection("users").document(userToAdd).updateData([
+                    "social.friends": FieldValue.arrayUnion([currentUserRef])
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                        print("They can see you now!")
+                    }
                 }
             }
         }
@@ -128,6 +142,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        self.addUser.reloadData()
         //  Check if the text is at least 2 characters
         if searchText.count > 2 {
             sections[0] = "Add User"
@@ -183,16 +198,29 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                     }
                     
                     self.info.notify(queue: DispatchQueue.main) {
-                        self.filteredusers = temp
-                        self.addUser.reloadData()
+                        if self.sections[0] == "Add User" {
+                            self.filteredusers = temp
+                            print("TEMP SIZE \(temp.count)")
+                            self.addUser.reloadData()
+                        }
                     }
                 }
             }
         } else {
-            sections[0] = "Pending Friend Requests"
-            self.filteredusers = self.users
+            self.filteredusers = self.friendRequests
             self.addUser.reloadData()
+            sections[0] = "Pending Friend Requests"
         }
+        
+        if sections[0] == "Pending Friend Requests" {
+            print("ahh")
+            print(filteredusers)
+        } else {
+            print("eek")
+            print(filteredusers)
+        }
+        
+        self.addUser.reloadData()
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -204,7 +232,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         addUserSearch.text = ""
         addUserSearch.resignFirstResponder()
         addUserSearch.endEditing(true)
-        filteredusers = users   // Is there a way to not do this?
+        filteredusers = friendRequests   // Is there a way to not do this?
         addUser.reloadData()
     }
     
@@ -240,8 +268,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                        print("Error in retrieving image: \(error.localizedDescription)")
                     } else {
                         image = UIImage(data: data!)!
-                        self.users.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
-                        self.filteredusers = self.users
+                        self.friendRequests.append(Friend(picture: image, user: User(DocumentSnapshot: document), currentEvent: ""))
+                        self.filteredusers = self.friendRequests
                         self.addUser.reloadData()
                     }
                 }
