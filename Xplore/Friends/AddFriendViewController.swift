@@ -146,6 +146,20 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                         //  Display the user if part of the username matches the searchText
                         let u = (document.data()["user_information"] as! [String:Any])["username"] as! String
                         let uid = (document.data()["user_information"] as! [String:Any])["uid"] as! String
+                        
+                        if u == currentUser?.username {
+                            continue
+                        }
+                        
+                        var currentUserFriends:[String] = []
+                        for friend in (self.presentingViewController as! InteractiveMap).filteredfriends {
+                            currentUserFriends.append(friend.user!.username)
+                        }
+                        
+                        if currentUserFriends.contains(u) {
+                            continue
+                        }
+                        
                         if u.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil {
                             var image = UIImage()
                             

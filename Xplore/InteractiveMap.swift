@@ -781,6 +781,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         //  Refresh Table Data
+        FriendsAPI.getFriends()
         friendtable.reloadData()
         bookmarksTable.reloadData()
     }
