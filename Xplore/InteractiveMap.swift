@@ -29,7 +29,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var displayed_events : [String:Event] = [:]
     var current_annotation : Event?
     
-//    var allEventsSearch : [[Event]] = [[]]
+    //    var allEventsSearch : [[Event]] = [[]]
     var annotationsForID : [String: CustomPointAnnotation] = [:]
     
     //  Used for Home Screen
@@ -84,14 +84,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     var currentScreen = screen.Map
-
+    
     @IBAction func toHome(_ sender: UIButton) {
         self.performSegue(withIdentifier: "toMain", sender: self)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         //  Create the home, map, and friends screens
         self.createThreeViewUI()
         
@@ -99,7 +99,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         FriendsAPI.getFriends() // model
         filteredfriends = friends
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("didDownloadFriends"), object: nil)
-
+        
         //  Load Events onto the map
         loadAndAddEvents()
         
@@ -111,8 +111,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         loadTopTile()
         
-        //  Create a timer that refreshes location every 10 seconds
-//        timer.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(refreshData), userInfo: nil, repeats: true)
         
         //  TODO: Create a timer that refreshes friends and bookmarks every 1 minute
@@ -130,7 +128,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         all_events = []
-        
         addEventsToMap(events: temp)
     }
     
@@ -153,7 +150,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             bookmarksTable.reloadData()
         }
     }
-
+    
     
     func loadAndAddEvents(){
         var allEvents : [(Event, Bool)] = []
@@ -184,11 +181,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         var pointAnnotations = [CustomPointAnnotation]()
         for (event, bookmarked) in events {
             let filtered = event.tags.contains("Academic") && filterApp[0]==1 ||
-                            event.tags.contains("Arts") && filterApp[1]==1 ||
-                            event.tags.contains("Athletic") && filterApp[2]==1 ||
-                            event.tags.contains("Casual") && filterApp[3]==1 ||
-                            event.tags.contains("Professional") && filterApp[4]==1 ||
-                            event.tags.contains("Social") && filterApp[5]==1;
+                event.tags.contains("Arts") && filterApp[1]==1 ||
+                event.tags.contains("Athletic") && filterApp[2]==1 ||
+                event.tags.contains("Casual") && filterApp[3]==1 ||
+                event.tags.contains("Professional") && filterApp[4]==1 ||
+                event.tags.contains("Social") && filterApp[5]==1;
             if (filtered) {
                 displayed_events[event.documentID!] = event
                 let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked)
@@ -200,22 +197,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 pointAnnotations.append(point)
                 
                 if bookmarked {
-//                    var username = ""
-//                    let info = DispatchGroup()
-//                    info.enter()
-//                    event.creator_username.getDocument { (document, error) in
-//                        if let document = document, document.exists {
-//                            username = (document.data()!["user_information"] as! [String:Any])["username"] as! String
-//                        } else {
-//                            print("User Document does not exist")
-//                        }
-//                        info.leave()
-//                    }
-                    
-//                    info.notify(queue: DispatchQueue.main) {
-                        bookmarks.append(Bookmark(event: event, annotation: point))
-                        bookmarksTable.reloadData()
-//                    }
+                    bookmarks.append(Bookmark(event: event, annotation: point))
+                    bookmarksTable.reloadData()
                 }
             }
         }
@@ -232,14 +215,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false)
                 annotation.reuseIdentifier = "customAnnotationFriend\(String(describing: friends[i].user?.username))"
                 annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 10, height: 10))?.circleMasked
-//                annotation.image = dot(size: 25, num: 5)
+                //                annotation.image = dot(size: 25, num: 5)
                 pointAnnotations.append(annotation)
                 friends[i].annotation = annotation
             }
         }
         mapView.addAnnotations(pointAnnotations)
     }
-
+    
     
     // MARK: - Create UI
     
@@ -253,27 +236,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     func createLeftMenu() {
-        
-        //  Logout Button - move to settings in future
-//        let f3 = CGRect(x: self.view.frame.width/2-60, y: 5*self.view.frame.height/6, width: 100, height: 50)
-//        let logout_button = UIButton(frame: f3)
-//        logout_button.setTitle("Logout", for: UIControl.State.normal)
-//        logout_button.addTarget(self, action: #selector(self.logout), for: UIControl.Event.touchDown)
-        
+
         //  Create the background
         let f = CGRect(x: -self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        let f = CGRect(x: -self.view.frame.width, y: self.view.frame.height/2, width: 400, height: 400)
+        //        let f = CGRect(x: -self.view.frame.width, y: self.view.frame.height/2, width: 400, height: 400)
         leftMenuView = UIView(frame: f)
-//        leftMenuView.backgroundColor = .black
-        
-        //  Create the top background
-//        let topbackground = UIImageView(frame: CGRect(x: -243, y: -580, width: 900, height: 900))
-//        topbackground.layer.cornerRadius = topbackground.bounds.height/2
-//        topbackground.clipsToBounds = true
-//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
-//        topbackground.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 1, y: 1), end: CGPoint(x: 0, y: 1))
-//        leftMenuView.addSubview(topbackground)
         
         //  Add Profile Title
         let profileHeader = UILabel()
@@ -283,12 +250,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         profileHeader.font = UIFont(name: "Futura-Bold", size: 24)
         profileHeader.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
         leftMenuView.addSubview(profileHeader)
-        
-//        let topcircle = UIBezierPath(arcCenter: CGPoint(x: self.view.frame.width/2, y: -130), radius: CGFloat(450), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
-//        let topbackground = CAShapeLayer()
-//        topbackground.path = topcircle.cgPath
-//        topbackground.fillColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1).cgColor
-        
+
         //  Add settings button
         let settings_button = UIButton(type: UIButton.ButtonType.custom)
         settings_button.frame = CGRect(x: 19, y: 45, width: 48, height: 48)
@@ -320,13 +282,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         imagePicker.delegate = self
         leftMenuView.addSubview(profile)
         
-//        //  Add status - Need to add to database?
-//        let statuspath = UIBezierPath(arcCenter: CGPoint(x: 259.3, y: 208.3), radius: CGFloat(12.5), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi*2), clockwise: true)
-//        let status = CAShapeLayer()
-//        status.path = statuspath.cgPath
-//        status.fillColor = UIColor.green.cgColor
-//        leftMenuView.layer.addSublayer(status)
-        
         //  Add Name under profile picture
         let namelabel = UILabel(frame: CGRect(x: 0, y: 298, width: 414, height: 23))
         namelabel.text = currentUser!.username
@@ -344,28 +299,13 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         leftMenuView.addSubview(usernamelabel)
         
         //  Add "Bookmarks" title
-//        let bookmark_label = UIButton(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width/2, height: 23))
         let bookmark_label = UILabel(frame: CGRect(x: 0, y: 353, width: leftMenuView.frame.width, height: 23))
-//        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
         bookmark_label.text = "Bookmarks"
         bookmark_label.textAlignment = .center
         bookmark_label.textColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
-//        bookmark_label.textColor = UIColor(red: 58/255, green: 68/255, blue: 84/255, alpha: 1)
         bookmark_label.font = UIFont(name: "Futura-Bold", size: 18)
-//        bookmark_pic.image = UIImage(named: "bookmark")
         leftMenuView.addSubview(bookmark_label)
-//        leftMenuView.addSubview(bookmark_pic)
-        
-        //  Add "Activity" title
-//        let activity_label = UILabel(frame: CGRect(x: leftMenuView.frame.width/2, y: 353, width: leftMenuView.frame.width/2, height: 23))
-////        let bookmark_pic = UIImageView(frame: CGRect(x: 90, y: 338, width: 28, height: 31))
-//        activity_label.text = "Activity"
-//        activity_label.textAlignment = .center
-//        activity_label.textColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-//        activity_label.font = UIFont(name: "Futura-Bold", size: 18)
-////        bookmark_pic.image = UIImage(named: "bookmark")
-//        leftMenuView.addSubview(activity_label)
-////        leftMenuView.addSubview(bookmark_pic)
+
         
         //  Add horizontal separators
         let bookmark_sep = UIView()
@@ -373,11 +313,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmark_sep.frame = CGRect(x: 0, y: 378, width: leftMenuView.frame.width, height: 3)
         leftMenuView.addSubview(bookmark_sep)
         
-//        let activity_sep = UIView()
-//        activity_sep.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-//        activity_sep.frame = CGRect(x: leftMenuView.frame.width/2, y: 378, width: leftMenuView.frame.width/2, height: 3)
-//        leftMenuView.addSubview(activity_sep)
-
         //  Add bookmarked events UITableView
         bookmarksTable.dataSource = self
         bookmarksTable.delegate = self
@@ -387,17 +322,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.backgroundColor = .clear
         bookmarksTable.separatorStyle = .none
         bookmarksTable.tableFooterView = UIView()
-        //  Sort by start date? - Might want to customize sorting in the future
-        
-        
-        
-        
-        
-        //(334, 812)
-        //(414, 896)
-        //  Add all the subviews to the left menu
-//        leftMenuView.layer.addSublayer(topbackground)
-        
+        //  TODO: Sort by start date? - Might want to customize sorting in the future
+
         self.view.addSubview(leftMenuView)
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanLeft))
         leftMenuView.addGestureRecognizer(gestureRecognizer)
@@ -408,8 +334,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func createMiddleMap() {
         //Load map view
         mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
-//        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
+        //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytf3psp05u71cqm0l0bacgt")
+        //        mapView.styleURL = URL(string: "mapbox://styles/kev2018/cjytijoug092v1cqz0ogvzb0w")
         mapView.styleURL = URL(string: "mapbox://styles/kev2018/ck6n11yek073u1ilaz46m0706")
         mapView.delegate = self
         
@@ -430,7 +356,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bottomMenu_friends = UIButton(frame: f4)
         bottomMenu_friends.addTarget(self, action: #selector(self.goFriends), for: UIControl.Event.touchDown)
         bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
-
+        
         
         self.view.addSubview(bottomMenu_main)
         self.view.addSubview(bottomMenu_map)
@@ -464,8 +390,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Set up rightFriendsView
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UIView(frame: f)
-//        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
-//        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        //        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 1)
+        //        let color2 = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
         rightFriendsView.backgroundColor = .white
         
         //  Add Friends screen title
@@ -477,11 +403,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendsHeader.textColor = UIColor(red: 102/255, green: 102/255, blue: 102/255, alpha: 1)
         rightFriendsView.addSubview(friendsHeader)
         
-//        //  Add horizontal separator
-//        let separator = UIView()
-//        separator.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
-//        separator.frame = CGRect(x: 0, y: rightFriendsView.frame.height/8, width: rightFriendsView.frame.width, height: 4)
-//        rightFriendsView.addSubview(separator)
+        //        //  Add horizontal separator
+        //        let separator = UIView()
+        //        separator.backgroundColor = UIColor(red: 239/255, green: 238/255, blue: 235/255, alpha: 1)
+        //        separator.frame = CGRect(x: 0, y: rightFriendsView.frame.height/8, width: rightFriendsView.frame.width, height: 4)
+        //        rightFriendsView.addSubview(separator)
         
         //  Add add friend button
         let add = UIButton()
@@ -510,7 +436,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         // SearchBar text
         let textFieldInsideUISearchBar = friendsearch.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
-
+        
         // SearchBar placeholder
         let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
         textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
@@ -577,23 +503,23 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
             let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
             cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
-//            cell.clipsToBounds = true
-//            cell.layer.cornerRadius = 15
-//            let shadowPath2 = UIBezierPath(rect: cell.bounds)
-//            cell.layer.masksToBounds = false
-//            cell.layer.shadowColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1).cgColor
-//            cell.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
-//            cell.layer.shadowOpacity = 1
-//            cell.layer.shadowPath = shadowPath2.cgPath
+            //            cell.clipsToBounds = true
+            //            cell.layer.cornerRadius = 15
+            //            let shadowPath2 = UIBezierPath(rect: cell.bounds)
+            //            cell.layer.masksToBounds = false
+            //            cell.layer.shadowColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1).cgColor
+            //            cell.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
+            //            cell.layer.shadowOpacity = 1
+            //            cell.layer.shadowPath = shadowPath2.cgPath
             
-//            cell.backgroundColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1)
-//            let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
-//            let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
-//            cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
+            //            cell.backgroundColor = UIColor(red: 70/255, green: 181/255, blue: 231/255, alpha: 1)
+            //            let color1 = UIColor(red: 146/255, green: 191/255, blue: 230/255, alpha: 1)
+            //            let color2 = UIColor(red: 49/255, green: 255/255, blue: 255/255, alpha: 1)
+            //            cell.addGradientLayer(topColor: color1, bottomColor: color2, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 1, y: 0))
             cell.clipsToBounds = true
             cell.layer.cornerRadius = 25
             cell.layer.masksToBounds = true
-//            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+            //            cell.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
             bookmarksTable.bringSubviewToFront(cell)
             view.bringSubviewToFront(bookmarksTable)
             return cell
@@ -613,7 +539,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 let region:MGLCoordinateBounds = MGLCoordinateBounds(sw: botleft, ne: topright)
                 
                 self.mapView.setVisibleCoordinateBounds(region, animated: true)
-
+                
             }
         } else if tableView == bookmarksTable {
             self.goMap()
@@ -675,7 +601,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
             let translation = gestureRecognizer.translation(in: self.view)
             // note: 'view' is optional and need to be unwrapped
-
+            
             if translation.x < 0 {
                 gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x + translation.x, y: gestureRecognizer.view!.center.y)
                 mapView.center = CGPoint(x: mapView.center.x + translation.x, y: mapView.center.y)
@@ -717,7 +643,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
             
         else if gestureRecognizer.state == .ended {
-
+            
             if mapView.center.x > 0 {
                 goMap()
             }
@@ -755,29 +681,29 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if let a = annotation as? CustomPointAnnotation{
             if  a.type == .Event {
-            if let point = annotation as? CustomPointAnnotation {
-                current_annotation = displayed_events[point.event_id!]
-                if topTileShowing {
-                    bottom_titleLabel.text = point.title!
-                    bottom_subtitleLabel.text  = point.subtitle!
-                    bottom_descriptionLabel.text = point.desc!
-                }
-                else {
-
-                    bottom_titleLabel.text = point.title!
-                    bottom_subtitleLabel.text  = point.subtitle!
-                    bottom_descriptionLabel.text = point.desc!
-
-                    showTopTile(show: true)
-                    topTileShowing = true
+                if let point = annotation as? CustomPointAnnotation {
+                    current_annotation = displayed_events[point.event_id!]
+                    if topTileShowing {
+                        bottom_titleLabel.text = point.title!
+                        bottom_subtitleLabel.text  = point.subtitle!
+                        bottom_descriptionLabel.text = point.desc!
+                    }
+                    else {
+                        
+                        bottom_titleLabel.text = point.title!
+                        bottom_subtitleLabel.text  = point.subtitle!
+                        bottom_descriptionLabel.text = point.desc!
+                        
+                        showTopTile(show: true)
+                        topTileShowing = true
+                    }
                 }
             }
         }
-    }
         
     }
-        
-
+    
+    
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         if topTileShowing {
             showTopTile(show: false)
@@ -793,15 +719,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 //  do some UI stuff
                 
                 
-//                let zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width
-//                let newAnnotations = self.annotationsWithinRect(rect:mapView.visibleMapRect, zoomScale:zoomScale)
-//
-//                self.updateMapViewAnnotationsWithAnnotations(annotations: newAnnotations)
+                //                let zoomScale = self.mapView.bounds.size.width / self.mapView.visibleMapRect.size.width
+                //                let newAnnotations = self.annotationsWithinRect(rect:mapView.visibleMapRect, zoomScale:zoomScale)
+                //
+                //                self.updateMapViewAnnotationsWithAnnotations(annotations: newAnnotations)
         }
         
-    
+        
     }
-
+    
     func annotationsWithinRect(rect:MGLCoordinateBounds, zoomScale:Double) -> [MGLAnnotation] {
         
         return []
@@ -820,7 +746,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //  Display the user's region onto screen
         if (firstTimeLocation) {
-        mapView.setVisibleCoordinateBounds(region, animated: false)
+            mapView.setVisibleCoordinateBounds(region, animated: false)
             firstTimeLocation = false
         }
         mapView.showsUserLocation = true
@@ -837,8 +763,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
             if currentUser != nil {
                 
-            currentUser!.currentLocation = currentLocation
-            currentUser!.updateUser()
+                currentUser!.currentLocation = currentLocation
+                currentUser!.updateUser()
                 
             }
         }
@@ -849,9 +775,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     // MARK: - Navigation
-
+    
     @objc func goMain() {
-                
+        
         currentScreen = .Main
         
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
@@ -867,10 +793,10 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.bottomMenu_map.setImage(UIImage(named: "mapoff"), for: UIControl.State.normal)
             self.bottomMenu_main.setImage(UIImage(named: "homeon"), for: UIControl.State.normal)
             self.bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
-
+            
         }
     }
-
+    
     
     func showExtraButtons() {
         //do animations to show add event and filter buttons
@@ -898,7 +824,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             self.bottomMenu_map.setImage(UIImage(named: "addon"), for: UIControl.State.normal)
             self.bottomMenu_main.setImage(UIImage(named: "homeoff"), for: UIControl.State.normal)
             self.bottomMenu_friends.setImage(UIImage(named: "friendsoff"), for: UIControl.State.normal)
-
+            
             
             
             self.view.bringSubviewToFront(self.bottomMenu_main)
@@ -939,10 +865,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @objc func goSettings() {
-        
-        //window = UIWindow()
-        //window?.makeKeyAndVisible()
-        //window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
         self.performSegue(withIdentifier: "mapToSettings", sender: self)
     }
     
@@ -953,17 +875,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // MARK: - Helper
     
-    func showTopTile(show:Bool, hide:Bool = false) {
-        
-        //        if hide {
-        ////            self.bottomTile.alpha = 0.0
-        //
-        //            UIView.animate(withDuration: 0.2) {
-        //                self.topTile.frame.origin = CGPoint(x: 20, y: -130)
-        //            }
-        //            topTileShowing = false
-        //            return
-        //        }
+    func showTopTile(show:Bool) {
         if show {
             self.topTile.alpha = 1.0
             UIView.animate(withDuration: 0.2) {
@@ -976,12 +888,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             topTileShowing = false
         }
-        
     }
     
     
     func showBigTile() {
-            self.performSegue(withIdentifier: "toBigTile", sender: self)
+        self.performSegue(withIdentifier: "toBigTile", sender: self)
     }
     
     static func getHeatMapColor(numPeople: Int) -> String{
@@ -1004,7 +915,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             
         default:
             return heatmap_smallToBig[6]
-
+            
         }
         
     }
@@ -1016,9 +927,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         topTile.layer.cornerRadius = 10
         
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(topTileTap(sender:)))
-
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
         
@@ -1048,7 +958,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         self.mapView.addSubview(topTile)
         
-        
     }
     
     
@@ -1058,14 +967,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         big_subtitleLabel.text = bottom_subtitleLabel.text
         big_descriptionLabel.text = bottom_descriptionLabel.text
         big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
-        
         showBigTile()
     }
-    
-    @objc func bigTileTap(sender: UITapGestureRecognizer) {
-        
-    }
-    
+
     static func hexStringToUIColor (hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
@@ -1122,8 +1026,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let lon1 = loc1.longitude * .pi / 180
         let lon2 = loc2.longitude * .pi / 180
-
-
+        
+        
         let deltaLat = lat1-lat2
         let deltaLon = lon1-lon2
         
@@ -1137,16 +1041,16 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         return Int(d)
     }
-
+    
 }
 
 //  extensions to help with changing profile picture
 extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.profile.image = pickedImage
@@ -1199,7 +1103,7 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
     }
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
