@@ -417,12 +417,14 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         add.titleLabel!.font = UIFont(name: "Futura-Bold", size: 36)
         rightFriendsView.addSubview(add)
         
+        
         //  Set up friend uitable
         friendtable.dataSource = self
         friendtable.delegate = self
         friendtable.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
         rightFriendsView.addSubview(friendtable)
         friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height)
+        
         friendtable.separatorStyle = .none
         friendtable.tableFooterView = UIView()
         
@@ -926,7 +928,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         topTile.layer.cornerRadius = 10
         
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bottomTileTap(sender:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(topTileTap(sender:)))
         
         // 2. add the gesture recognizer to a view
         topTile.addGestureRecognizer(tapGesture)
@@ -1110,6 +1112,7 @@ extension InteractiveMap: UIImagePickerControllerDelegate, UINavigationControlle
         if segue.identifier == "toBigTile" {
             let vc = segue.destination as! BigTileViewController
             vc.event = current_annotation
+            
         }
         
         if segue.identifier == "mapToFilter" {

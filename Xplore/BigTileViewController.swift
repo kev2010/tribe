@@ -48,30 +48,49 @@ class BigTileViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    var already_bookmarked = false
+    
     let db = Firestore.firestore()
 
     
     @IBAction func addBookmark(_ sender: Any) {
-        currentUser?.eventsUserBookmarked.append(self.db.collection("events").document(event!.documentID!))
         
-        if let e = event {
-            let point = CustomPointAnnotation(coordinate: e.location, title: e.title, subtitle: "\(e.capacity) people", description: e.description, annotationType: AnnotationType.Event, event_id: e.documentID, bm:true)
-            point.reuseIdentifier = "customAnnotation\(e.title)"
-            point.image = InteractiveMap.dot(size: 30, num: e.capacity, bm:true)
-            
-            bookmarks.append(Bookmark(event: event, annotation: point))
-            bookmarksTable.reloadData()
-            
-            currentUser?.updateUser()
-            
-            self.dismiss(animated: true, completion: nil)
+        if already_bookmarked {
+            currentUser!.eventsUserBookmarked = currentUser!.eventsUserBookmarked.filter { $0.documentID != self.event?.documentID }
         }
+        else {
+            currentUser?.eventsUserBookmarked.append(self.db.collection("events").document(event!.documentID!))
+            
+            if let e = event {
+                let point = CustomPointAnnotation(coordinate: e.location, title: e.title, subtitle: "\(e.capacity) people", description: e.description, annotationType: AnnotationType.Event, event_id: e.documentID, bm:true)
+                point.reuseIdentifier = "customAnnotation\(e.title)"
+                point.image = InteractiveMap.dot(size: 30, num: e.capacity, bm:true)
+                
+                bookmarks.append(Bookmark(event: event, annotation: point))
+                bookmarksTable.reloadData()
+                
+                currentUser?.updateUser()
+                
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+
         
 
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for bm in bookmarks {
+            if bm.event!.documentID! == self.event!.documentID! {
+                already_bookmarked = true
+                print("bookmarked")
+                (self.view.viewWithTag(9)! as! UIButton).setTitle("Remove Bookmark", for: .normal)
+            }
+        }
+        
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showMap))
         self.addressView.addGestureRecognizer(tap)

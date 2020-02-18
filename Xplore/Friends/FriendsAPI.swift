@@ -80,8 +80,6 @@ class FriendsAPI {
                         }
                         
                     }
-                    print("bap")
-
                 }
             } else {
                 print("User Document does not exist")
