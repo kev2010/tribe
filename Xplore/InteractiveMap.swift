@@ -52,7 +52,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var topTile = UIView()
     var top_title_label = UILabel()
     var top_subtitle_label = UILabel()
-    var top_description_label = UILabel()
+    var top_subtitle_label_2 = UILabel()
+
     
     //  Big tile variablees - global
     var bigTile = UIView()
@@ -188,7 +189,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 event.tags.contains("Social") && filterApp[5]==1;
             if (filtered) {
                 displayed_events[event.documentID!] = event
-                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked)
+                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked, event: event)
                 point.reuseIdentifier = "customAnnotation\(event.title)"
                 point.image = InteractiveMap.dot(size: 30, num: event.capacity, bm: bookmarked)
                 
@@ -212,7 +213,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         var pointAnnotations = [CustomPointAnnotation]()
         for i in 0...friends.count-1 {
             if friends[i].user?.privacy != "Private" {
-                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false)
+                let annotation = CustomPointAnnotation(coordinate: friends[i].user!.currentLocation, title: friends[i].user?.name, subtitle: "", description: "", annotationType: AnnotationType.User, event_id: friends[i].user!.documentID, bm:false, event: nil)
                 annotation.reuseIdentifier = "customAnnotationFriend\(String(describing: friends[i].user?.username))"
                 annotation.image = friends[i].picture!.scaleImage(toSize: CGSize(width: 10, height: 10))?.circleMasked
                 //                annotation.image = dot(size: 25, num: 5)
@@ -686,15 +687,24 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                     current_annotation = displayed_events[point.event_id!]
                     if topTileShowing {
                         top_title_label.text = point.title!
-                        top_subtitle_label.text  = point.subtitle!
-                        top_description_label.text = point.desc!
+                        let format = DateFormatter()
+                        format.dateFormat = "MM/dd/yyyy HH:mm"
+                        let formattedDate1 = format.string(from: a.event!.startDate)
+                        let formattedDate2 = format.string(from: a.event!.endDate)
+                        
+                        top_subtitle_label.text  = "FROM \(formattedDate1)"
+                        top_subtitle_label_2.text = "TO \(formattedDate2)"
                     }
                     else {
                         
                         top_title_label.text = point.title!
-                        top_subtitle_label.text  = point.subtitle!
-                        top_description_label.text = point.desc!
+                        let format = DateFormatter()
+                        format.dateFormat = "MM/dd/yyyy HH:mm"
+                        let formattedDate1 = format.string(from: a.event!.startDate)
+                        let formattedDate2 = format.string(from: a.event!.endDate)
                         
+                        top_subtitle_label.text  = "FROM \(formattedDate1)"
+                        top_subtitle_label_2.text = "TO \(formattedDate2)"
                         showTopTile(show: true)
                         topTileShowing = true
                     }
@@ -934,27 +944,38 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         topTile.addGestureRecognizer(tapGesture)
         
         
-        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 20)
+        let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 30)
         top_title_label = UILabel(frame: f2)
         top_title_label.text = ""
-        top_title_label.textColor =  UIColor.black
+        top_title_label.font = UIFont(name: "Futura-Bold", size: 25)
+        top_title_label.textColor =  UIColor.white
         top_title_label.textAlignment = .center
         
-        let f3 = CGRect(x: 10, y: 40, width: f.width-10, height: 20)
+        let f3 = CGRect(x: 10, y: 60, width: f.width-10, height: 20)
         top_subtitle_label = UILabel(frame:f3)
         top_subtitle_label.text  = ""
-        top_subtitle_label.textColor =  UIColor.black
+        top_subtitle_label.font = UIFont(name: "Futura-Bold", size: 20)
+        top_subtitle_label.textColor =  UIColor.white
+        top_subtitle_label.textAlignment = .center
         
-        let f4 = CGRect(x: 10, y: 80, width: f.width-10, height: 40)
-        top_description_label = UILabel(frame:f4)
-        top_description_label.text = ""
-        top_description_label.textColor =  UIColor.black
-        top_description_label.numberOfLines = 5
+        let f4 = CGRect(x: 10, y: 90, width: f.width-10, height: 20)
+        top_subtitle_label_2 = UILabel(frame:f4)
+        top_subtitle_label_2.text  = ""
+        top_subtitle_label_2.font = UIFont(name: "Futura-Bold", size: 20)
+        top_subtitle_label_2.textColor =  UIColor.white
+        top_subtitle_label_2.textAlignment = .center
+        
+//        let f4 = CGRect(x: 10, y: 80, width: f.width-10, height: 40)
+//        top_description_label = UILabel(frame:f4)
+//        top_description_label.text = ""
+//        top_description_label.textColor =  UIColor.black
+//        top_description_label.numberOfLines = 5
      //   bottom_descriptionLabel.font = "Comic Sans"; UIFont.italicSystemFont(ofSize: 16.0)
         
         topTile.addSubview(top_title_label)
         topTile.addSubview(top_subtitle_label)
-        topTile.addSubview(top_description_label)
+        topTile.addSubview(top_subtitle_label_2)
+//        topTile.addSubview(top_description_label)
         
         self.mapView.addSubview(topTile)
         
@@ -962,11 +983,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     @objc func topTileTap(sender: UITapGestureRecognizer) {
-        
-        big_titleLabel.text = top_title_label.text
-        big_subtitleLabel.text = top_subtitle_label.text
-        big_descriptionLabel.text = top_description_label.text
-        big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
         showBigTile()
     }
 

@@ -16,6 +16,7 @@ class CustomPointAnnotation: NSObject, MGLAnnotation {
     var subtitle: String?
     var desc: String?
     var event_id : String?
+    var event : Event?
     var bm : Bool?
     
     // Custom properties that we will use to customize the annotation's image.
@@ -24,7 +25,7 @@ class CustomPointAnnotation: NSObject, MGLAnnotation {
     
     var type : AnnotationType
     
-    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, description: String?, annotationType:AnnotationType, event_id:String?, bm:Bool?) {
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?, description: String?, annotationType:AnnotationType, event_id:String?, bm:Bool?, event:Event?) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
@@ -32,5 +33,6 @@ class CustomPointAnnotation: NSObject, MGLAnnotation {
         self.type = annotationType
         self.event_id = event_id
         self.bm = bm
+        self.event = event
     }
 }
