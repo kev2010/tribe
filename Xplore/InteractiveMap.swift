@@ -50,9 +50,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     //  Bottom tile variables - global
     var topTileShowing = false
     var topTile = UIView()
-    var bottom_titleLabel = UILabel()
-    var bottom_subtitleLabel = UILabel()
-    var bottom_descriptionLabel = UILabel()
+    var top_title_label = UILabel()
+    var top_subtitle_label = UILabel()
+    var top_description_label = UILabel()
     
     //  Big tile variablees - global
     var bigTile = UIView()
@@ -685,15 +685,15 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 if let point = annotation as? CustomPointAnnotation {
                     current_annotation = displayed_events[point.event_id!]
                     if topTileShowing {
-                        bottom_titleLabel.text = point.title!
-                        bottom_subtitleLabel.text  = point.subtitle!
-                        bottom_descriptionLabel.text = point.desc!
+                        top_title_label.text = point.title!
+                        top_subtitle_label.text  = point.subtitle!
+                        top_description_label.text = point.desc!
                     }
                     else {
                         
-                        bottom_titleLabel.text = point.title!
-                        bottom_subtitleLabel.text  = point.subtitle!
-                        bottom_descriptionLabel.text = point.desc!
+                        top_title_label.text = point.title!
+                        top_subtitle_label.text  = point.subtitle!
+                        top_description_label.text = point.desc!
                         
                         showTopTile(show: true)
                         topTileShowing = true
@@ -924,7 +924,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     func loadTopTile() {
         let f = CGRect(x: 20, y: -130, width: self.view.frame.width-40, height: 130)
         topTile = UIView(frame: f)
-        topTile.backgroundColor = UIColor.green
+        topTile.backgroundColor = UIColor(red:0, green:1, blue:0.761, alpha:1)
         topTile.layer.cornerRadius = 10
         
         
@@ -935,27 +935,26 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         let f2 = CGRect(x: 10, y: 10, width: f.width-10, height: 20)
-        bottom_titleLabel = UILabel(frame: f2)
-        bottom_titleLabel.text = ""
-        bottom_titleLabel.textColor =  UIColor.black
-        bottom_titleLabel.textAlignment = .center
-//        bottom_titleLabel.fon
+        top_title_label = UILabel(frame: f2)
+        top_title_label.text = ""
+        top_title_label.textColor =  UIColor.black
+        top_title_label.textAlignment = .center
         
         let f3 = CGRect(x: 10, y: 40, width: f.width-10, height: 20)
-        bottom_subtitleLabel = UILabel(frame:f3)
-        bottom_subtitleLabel.text  = ""
-        bottom_subtitleLabel.textColor =  UIColor.black
+        top_subtitle_label = UILabel(frame:f3)
+        top_subtitle_label.text  = ""
+        top_subtitle_label.textColor =  UIColor.black
         
         let f4 = CGRect(x: 10, y: 80, width: f.width-10, height: 40)
-        bottom_descriptionLabel = UILabel(frame:f4)
-        bottom_descriptionLabel.text = ""
-        bottom_descriptionLabel.textColor =  UIColor.black
-        bottom_descriptionLabel.numberOfLines = 5
+        top_description_label = UILabel(frame:f4)
+        top_description_label.text = ""
+        top_description_label.textColor =  UIColor.black
+        top_description_label.numberOfLines = 5
      //   bottom_descriptionLabel.font = "Comic Sans"; UIFont.italicSystemFont(ofSize: 16.0)
         
-        topTile.addSubview(bottom_titleLabel)
-        topTile.addSubview(bottom_subtitleLabel)
-        topTile.addSubview(bottom_descriptionLabel)
+        topTile.addSubview(top_title_label)
+        topTile.addSubview(top_subtitle_label)
+        topTile.addSubview(top_description_label)
         
         self.mapView.addSubview(topTile)
         
@@ -964,9 +963,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @objc func topTileTap(sender: UITapGestureRecognizer) {
         
-        big_titleLabel.text = bottom_titleLabel.text
-        big_subtitleLabel.text = bottom_subtitleLabel.text
-        big_descriptionLabel.text = bottom_descriptionLabel.text
+        big_titleLabel.text = top_title_label.text
+        big_subtitleLabel.text = top_subtitle_label.text
+        big_descriptionLabel.text = top_description_label.text
         big_entranceLabel.text = "Entry details: up the stairs and to the right, flat 4. "
         showBigTile()
     }
