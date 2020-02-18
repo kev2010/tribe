@@ -77,7 +77,7 @@ class BookmarkCell: UITableViewCell {
     
     let descriptionLabel:UILabel = {
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 1000))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         label.font = UIFont(name: "Futura-Bold", size: 12)
         label.textColor =  .white
         label.textAlignment = .left
@@ -98,7 +98,7 @@ class BookmarkCell: UITableViewCell {
         //  Add all the views to Bookmarks TableView
         self.contentView.addSubview(eventImageView)
         containerView.addSubview(titleLabel)
-        containerView.addSubview(descriptionLabel)
+//        containerView.addSubview(descriptionLabel)
         self.contentView.addSubview(containerView)
         
         //  Add constraints to event image
@@ -120,8 +120,8 @@ class BookmarkCell: UITableViewCell {
         titleLabel.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor).isActive = true
         
         //  creator label auto layout constraints
-        descriptionLabel.topAnchor.constraint(equalTo:self.titleLabel.bottomAnchor, constant: 5).isActive = true
-        descriptionLabel.centerXAnchor.constraint(equalTo:self.containerView.centerXAnchor).isActive = true
+//        descriptionLabel.topAnchor.constraint(equalTo:self.titleLabel.bottomAnchor, constant: 5).isActive = true
+//        descriptionLabel.centerXAnchor.constraint(equalTo:self.containerView.centerXAnchor).isActive = true
      }
     
     required init?(coder aDecoder: NSCoder) {

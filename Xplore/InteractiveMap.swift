@@ -318,7 +318,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         bookmarksTable.delegate = self
         bookmarksTable.register(BookmarkCell.self, forCellReuseIdentifier: "bookmarkCell")
         leftMenuView.addSubview(bookmarksTable)
-        bookmarksTable.frame = CGRect(x: 55, y: 400, width: leftMenuView.frame.width-110, height: leftMenuView.frame.height/3)  //  Need to change frame later\
+        bookmarksTable.frame = CGRect(x: 55, y: 380, width: leftMenuView.frame.width-110, height: 2*leftMenuView.frame.height/5+10)  //  Need to change frame later\
+        bookmarksTable.backgroundColor = .clear
         bookmarksTable.separatorStyle = .none
         bookmarksTable.tableFooterView = UIView()
         //  TODO: Sort by start date? - Might want to customize sorting in the future
@@ -423,8 +424,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendtable.delegate = self
         friendtable.register(FriendsCell.self, forCellReuseIdentifier: "friendCell")
         rightFriendsView.addSubview(friendtable)
-        friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height)
-        
+        friendtable.frame = CGRect(x: 0, y: rightFriendsView.frame.height/5, width: rightFriendsView.frame.width, height: rightFriendsView.frame.height*(4/5))
         friendtable.separatorStyle = .none
         friendtable.tableFooterView = UIView()
         
@@ -475,7 +475,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         if tableView == friendtable {
             return 100
         } else if tableView == bookmarksTable {
-            return 85
+            return 80
         }
         return 10
     }
