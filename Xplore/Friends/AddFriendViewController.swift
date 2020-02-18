@@ -85,6 +85,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         let db = Firestore.firestore()
         let documentRefString = db.collection("users").document(userToAdd)
         let userRef = db.document(documentRefString.path)
+        let currentDocumentRefString = db.collection("users").document(userToUpdate)
+        let currentUserRef = db.document(currentDocumentRefString.path)
         let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
         
         Firestore.firestore().collection("users").document(userToUpdate).updateData([
@@ -107,6 +109,17 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                     print("Document successfully updated")
                     print("Friend Added")
                     FriendsAPI.getFriends()
+                }
+            }
+            
+            Firestore.firestore().collection("users").document(userToAdd).updateData([
+                "social.friends": FieldValue.arrayUnion([currentUserRef])
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                    print("They can see you now!")
                 }
             }
         }
