@@ -92,10 +92,9 @@ class AddEventViewController: UIViewController {
                     all_data["description"] = description
                     
                     self.address_send = address_input.text!
-                    
+                                        
                     self.performSegue(withIdentifier: "confirmLocation", sender: self)
                     
-                    self.performSegue(withIdentifier: "nextPage", sender: self)
 
         }
         
@@ -130,6 +129,10 @@ class AddEventViewController: UIViewController {
     
     @IBAction func goBack(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func goNext() {
+        self.performSegue(withIdentifier: "nextPage", sender: self)
     }
     override func viewDidLoad() {
 //        showDatePicker()

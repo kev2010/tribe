@@ -42,6 +42,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     var event_points = [MGLAnnotation]()
     var all_events : [(Event, Bool)] = []
     
+    var current_friends : [CustomPointAnnotation] = []
+    
     var totalShift = 0.0
     
     //  Used for Interactive Map Screen
@@ -135,6 +137,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.object as? [Friend]
         {
+            mapView.removeAnnotations(current_friends)
+            current_friends = []
             //  Update friend variables
             friends = data
             filteredfriends = friends
@@ -221,6 +225,8 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
                 friends[i].annotation = annotation
             }
         }
+        
+        current_friends += pointAnnotations
         mapView.addAnnotations(pointAnnotations)
     }
     
@@ -780,7 +786,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
         
+        print("REFRESHING DATA")
         //  Refresh Table Data
+        
         FriendsAPI.getFriends()
         friendtable.reloadData()
         bookmarksTable.reloadData()

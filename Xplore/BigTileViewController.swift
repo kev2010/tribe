@@ -57,6 +57,9 @@ class BigTileViewController: UIViewController {
         
         if already_bookmarked {
             currentUser!.eventsUserBookmarked = currentUser!.eventsUserBookmarked.filter { $0.documentID != self.event?.documentID }
+            bookmarks = bookmarks.filter {$0.event?.documentID != self.event?.documentID}
+            currentUser?.updateUser()
+            self.dismiss(animated: true, completion: nil)
         }
         else {
             currentUser?.eventsUserBookmarked.append(self.db.collection("events").document(event!.documentID!))
@@ -86,7 +89,10 @@ class BigTileViewController: UIViewController {
             if bm.event!.documentID! == self.event!.documentID! {
                 already_bookmarked = true
                 print("bookmarked")
-                (self.view.viewWithTag(9)! as! UIButton).setTitle("Remove Bookmark", for: .normal)
+                let img = UIImage(named: "rmv_bookmark.png")
+                let btn = (self.view.viewWithTag(9)! as! UIButton)
+                btn.setImage(img, for: .normal)
+                btn.imageView?.contentMode = .scaleAspectFit
             }
         }
         

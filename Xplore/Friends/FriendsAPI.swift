@@ -13,6 +13,7 @@ import FirebaseStorage
 class FriendsAPI {
     
     static func getFriends() {
+        print("GETTING FRIENDS")
         let db = Firestore.firestore()
         let documentRefString = db.collection("users").document(currentUser!.username)
         let userRef = db.document(documentRefString.path)

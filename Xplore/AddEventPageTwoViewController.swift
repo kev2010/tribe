@@ -90,7 +90,9 @@ class AddEventPageTwoViewController: UIViewController {
     }
     
     @IBAction func backTap(_ sender: UIButton) {
-        self.dismiss(animated: true)
+        self.dismiss(animated: true) {
+            (self.presentingViewController as! AddEventViewController).goNext()
+        }
     }
     
     

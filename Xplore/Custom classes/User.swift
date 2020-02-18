@@ -139,7 +139,6 @@ class User {
         self.privacy = user_info["privacy"] as! String
         
         self.friends = social["friends"] as! [DocumentReference]
-        print(self.username)
         self.friend_req = social["friend_req"] as! [DocumentReference]
         self.blocked = social["blocked"] as! [DocumentReference]
         

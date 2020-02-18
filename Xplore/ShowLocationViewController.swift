@@ -26,9 +26,9 @@ class ShowLocationViewController: UIViewController, MGLMapViewDelegate {
         self.mapView.delegate = self
         self.view.addSubview(self.mapView)
         
-//        let f1 = CGRect(x: self.view.frame.width*(1/10), y: 30, width: self.view.frame.width*(8/10), height: 30)
-//        let completed_view = UIView(frame: f1)
-//        completed_view.backgroundColor = UIColor(red:0, green:1, blue:0.761, alpha:1)
+        let f1 = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 63)
+        let completed_view = UIView(frame: f1)
+        completed_view.backgroundColor = UIColor.white
         
         let f2 = CGRect(x: 8, y: 17, width: 70, height: 29)
         let back_button = UIButton(frame: f2)
@@ -36,8 +36,8 @@ class ShowLocationViewController: UIViewController, MGLMapViewDelegate {
         back_button.setTitleColor(UIColor(red:0, green:1, blue:0.761, alpha:1), for: .normal)
         back_button.titleLabel!.font = UIFont(name: "Futura-Bold", size: 17)
         
-        self.view.addSubview(back_button)
-        
+        completed_view.addSubview(back_button)
+        self.view.addSubview(completed_view)
         
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(self.finished))
 //        completed_view.isUserInteractionEnabled = true
