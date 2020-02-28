@@ -13,7 +13,6 @@ import Mapbox
 struct Friend {
     let picture: UIImage?
     let user: User?
-//    let name: String?
     let currentEvent: String?
     var annotation : MGLAnnotation?
 }

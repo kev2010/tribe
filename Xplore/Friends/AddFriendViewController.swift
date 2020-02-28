@@ -92,8 +92,15 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         addUser.reloadData()
     }
     
+    /**
+     When current user clicks the add friend button on a friend request, updates current user's and friended user's friends list with friended user and current user, respectively.
+     
+            @param sender the add friend UIButton
+     */
     @objc func acceptFriendRequest(sender : UIButton) {
+        //  Change the button UI to say "Added!"
         sender.setImage(UIImage(named: "addedUser"), for: .normal)
+        //  Create document references for current user and friend request user
         let presentUser = currentUser!.username
         let incomingUser = filteredusers[sender.tag].user!.username
         
@@ -140,8 +147,15 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    /**
+    When current user sends a friend request, updates friended user's friend request list with current user
+     
+        @param sender the add friend UIButton
+     */
     @objc func sendFriendRequest(sender : UIButton) {
+        //  Change the button UI to say "Added!"
         sender.setImage(UIImage(named: "addedUser"), for: .normal)
+        //  Create document references for current user and friend request user
         let presentUser = currentUser!.username
         let userToFriend = filteredusers[sender.tag].user!.username
         
@@ -162,7 +176,13 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
+    /**
+    When current user clicks the reject friend button on a friend request, removes the friend request from current user's list of a friend requests.
+   
+        @param sender the add friend UIButton
+    */
     @objc func rejectFriendRequest(sender : UIButton) {
+        //  Create document references for current user and rejected user
         let presentUser = currentUser!.username
         let rejectedUser = filteredusers[sender.tag].user!.username
         
@@ -182,8 +202,8 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
 
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        self.addUser.reloadData()
         //  Check if the text is at least 2 characters
         if searchText.count > 2 {
             sections[0] = "Add User"
@@ -203,10 +223,12 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                         let u = (document.data()["user_information"] as! [String:Any])["username"] as! String
                         let uid = (document.data()["user_information"] as! [String:Any])["uid"] as! String
                         
+                        //  Don't display the current user
                         if u == currentUser?.username {
                             continue
                         }
                         
+                        //  Don't display any of the user's friend(s)
                         var currentUserFriends:[String] = []
                         for friend in (self.presentingViewController as! InteractiveMap).filteredfriends {
                             currentUserFriends.append(friend.user!.username)
@@ -241,26 +263,17 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
                     self.info.notify(queue: DispatchQueue.main) {
                         if self.sections[0] == "Add User" {
                             self.filteredusers = temp
-                            print("TEMP SIZE \(temp.count)")
                             self.addUser.reloadData()
                         }
                     }
                 }
             }
         } else {
+            //  If not searching for a user, then list out friend requests
             self.filteredusers = self.friendRequests
             self.addUser.reloadData()
             sections[0] = "Pending Friend Requests"
         }
-        
-        if sections[0] == "Pending Friend Requests" {
-            print("ahh")
-            print(filteredusers)
-        } else {
-            print("eek")
-            print(filteredusers)
-        }
-        
         self.addUser.reloadData()
     }
 
@@ -329,7 +342,6 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         print("oh", self.filteredusers)
         self.addUser.dataSource = self
         self.addUser.delegate = self
-//            self.addUser.allowsSelection = false
         self.addUser.register(AddFriendCell.self, forCellReuseIdentifier: "friendCell")
         self.addUser.tableFooterView = UIView()
 
@@ -337,6 +349,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         self.addUserSearch.backgroundColor = .white
         self.addUserSearch.placeholder = "Search"
         self.addUserSearch.searchBarStyle = .minimal
+        
         // SearchBar text
         let textFieldInsideUISearchBar = self.addUserSearch.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)

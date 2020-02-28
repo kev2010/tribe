@@ -23,14 +23,6 @@ class AddFriendCell: UITableViewCell {
         }
     }
     
-    //  Container for Name label and Current Event
-//    let containerView:UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.clipsToBounds = true // this will make sure its children do not go out of the boundary
-//        return view
-//    }()
-    
     //  Profile picture for each friend
     let profileImageView:UIImageView = {
         let img = UIImageView()
@@ -51,45 +43,30 @@ class AddFriendCell: UITableViewCell {
         return label
     }()
     
+    //  Left button (either to accept a friend request or nothing)
     let leftButton:UIButton = {
         let btn = UIButton()
-//        btn.setTitle("Add!", for: UIControl.State.normal)
-//        btn.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 18)
-//        btn.titleLabel?.textAlignment = .center
-//        btn.titleLabel?.textColor = .black
         btn.setImage(UIImage(named: "addUser"), for: .normal)
-//        btn.setImage(UIImage(named: "addedUser"), for: .highlighted)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.imageView?.contentMode = .scaleAspectFit
-//        btn.layer.cornerRadius = 13
-//        btn.clipsToBounds = true
         return btn
     }()
     
+    //  Right button (either to reject a friend or to send friend request)
+    //  TODO: Code repeated from leftButton, make it DRY
     let rightButton:UIButton = {
         let btn = UIButton()
-//        btn.setTitle("Add!", for: UIControl.State.normal)
-//        btn.titleLabel!.font = UIFont(name: "GeezaPro-Bold", size: 18)
-//        btn.titleLabel?.textAlignment = .center
-//        btn.titleLabel?.textColor = .black
         btn.setImage(UIImage(named: "addUser"), for: .normal)
-//        btn.setImage(UIImage(named: "addedUser"), for: .highlighted)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.imageView?.contentMode = .scaleAspectFit
-//        btn.layer.cornerRadius = 13
-//        btn.clipsToBounds = true
         return btn
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-//        self.contentView.isUserInteractionEnabled = false
-        
         //  Add all the views to Friends TableView
         self.contentView.addSubview(profileImageView)
-//        containerView.addSubview(nameLabel)
-//        self.contentView.addSubview(containerView)
         self.contentView.addSubview(nameLabel)
         self.contentView.addSubview(leftButton)
         self.contentView.addSubview(rightButton)
@@ -100,27 +77,22 @@ class AddFriendCell: UITableViewCell {
         profileImageView.widthAnchor.constraint(equalToConstant:70).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant:70).isActive = true
         
-        //  containerview auto layout constraints
-//        containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-//        containerView.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:10).isActive = true
-//        containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
-//        containerView.heightAnchor.constraint(equalToConstant:40).isActive = true
-        
         //  name label auto layout constraints
         nameLabel.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo:self.profileImageView.trailingAnchor, constant:  10).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10).isActive = true
         
-        rightButton.widthAnchor.constraint(equalToConstant:70).isActive = true
-        rightButton.heightAnchor.constraint(equalToConstant:70).isActive = true
-        rightButton.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20).isActive = true
-        rightButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        
-        //  current event label auto layout constraints
+        //  leftButton auto layout constraints
         leftButton.widthAnchor.constraint(equalToConstant:70).isActive = true
         leftButton.heightAnchor.constraint(equalToConstant:70).isActive = true
         leftButton.trailingAnchor.constraint(equalTo:self.rightButton.trailingAnchor, constant:-90).isActive = true
         leftButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+        
+        //  rightButton auto layout constraints
+        rightButton.widthAnchor.constraint(equalToConstant:70).isActive = true
+        rightButton.heightAnchor.constraint(equalToConstant:70).isActive = true
+        rightButton.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20).isActive = true
+        rightButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
      }
     
     required init?(coder aDecoder: NSCoder) {
