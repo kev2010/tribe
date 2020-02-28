@@ -16,7 +16,7 @@ var bookmarksTable = UITableView()
 var friendtable = UITableView()
 
 class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate{
-    
+    let info = DispatchGroup()
     let manager = CLLocationManager()
     let db = Firestore.firestore()
     
@@ -35,6 +35,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     //  Used for Home Screen
     
     //  Used for Friends Screen
+    var refreshControl = UIRefreshControl()
     var friends:[Friend] = []
     var filteredfriends:[Friend] = []
     var friendsearch = UISearchBar()
@@ -237,8 +238,6 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         self.createLeftMenu()
         self.createMiddleMap()
         self.createRightFriends()
-        
-        
     }
     
     
@@ -394,6 +393,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func createRightFriends() {
+        refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
+        friendtable.addSubview(refreshControl) // not required when using UITableViewController
+        
         //  Set up rightFriendsView
         let f = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         rightFriendsView = UIView(frame: f)
@@ -661,6 +663,11 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    @objc func refresh(sender:AnyObject) {
+        FriendsAPI.getFriends()
+        refreshControl.endRefreshing()
+    }
+    
     // MARK: - MGLMapViewDelegate methods
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
@@ -790,7 +797,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         //  Refresh Table Data
         
 //
-        FriendsAPI.getFriends()
+//        FriendsAPI.getFriends()
         friendtable.reloadData()
         bookmarksTable.reloadData()
     }
