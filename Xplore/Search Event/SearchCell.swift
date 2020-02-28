@@ -31,12 +31,32 @@ class SearchCell: UITableViewCell {
                 if let end = eventItem.event?.endDate {
                     let calendar = Calendar.current
                     
-                    let shour = String(calendar.component(.hour, from: start) % 12)
-                    let smin = (calendar.component(.minute, from: start) == 0) ? "00" : String(calendar.component(.minute, from: start))
+                    var shour = String(calendar.component(.hour, from: start) % 12)
+                    if shour == "0" {
+                        shour = "12"
+                    }
+                    var smin : String
+                    if (calendar.component(.minute, from: start) == 0) {
+                        smin = "00"
+                    } else if (calendar.component(.minute, from: start) < 10) {
+                        smin = "0" + String(calendar.component(.minute, from: start))
+                    } else {
+                        smin = String(calendar.component(.minute, from: start))
+                    }
                     let speriod = (Int(shour)! > 12) ? "PM" : "AM"
                     
-                    let ehour = String(calendar.component(.hour, from: end) % 12)
-                    let emin = (calendar.component(.minute, from: end) == 0) ? "00" : String(calendar.component(.minute, from: end))
+                    var ehour = String(calendar.component(.hour, from: end) % 12)
+                    if ehour == "0" {
+                        ehour = "12"
+                    }
+                    var emin : String
+                    if (calendar.component(.minute, from: end) == 0) {
+                        emin = "00"
+                    } else if (calendar.component(.minute, from: end) < 10) {
+                        emin = "0" + String(calendar.component(.minute, from: end))
+                    } else {
+                        emin = String(calendar.component(.minute, from: end))
+                    }
                     let eperiod = (Int(ehour)! > 12) ? "PM" : "AM"
                     
                     timeLabel.text = shour + ":" + smin + " " + speriod + " - " + ehour + ":" + emin + " " + eperiod
