@@ -537,6 +537,59 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         return UITableViewCell()
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if tableView == friendtable {
+            if editingStyle == .delete {
+                let alertController = UIAlertController(title: "Warning", message: "Are you sure you want to remove this friend?", preferredStyle: .alert)
+
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                    self.removeFriend(friend: self.filteredfriends[indexPath.row])
+                    self.filteredfriends.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                })
+                alertController.addAction(deleteAction)
+
+                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                alertController.addAction(cancelAction)
+
+                present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func removeFriend(friend : Friend) {
+        let presentUser = currentUser!.username
+        let deletedUser = friend.user!.username
+        
+        let db = Firestore.firestore()
+        let presentUserDocumentRefString = db.collection("users").document(presentUser)
+        let presentUserRef = db.document(presentUserDocumentRefString.path)
+        let deletedUserDocumentRefString = db.collection("users").document(deletedUser)
+        let deletedUserRef = db.document(deletedUserDocumentRefString.path)
+        
+        //  Remove deleted user from current user's friends list
+        Firestore.firestore().collection("users").document(presentUser).updateData([
+            "social.friends": FieldValue.arrayRemove([deletedUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        
+        //  Remove current user from deleted user's friends list
+        Firestore.firestore().collection("users").document(deletedUser).updateData([
+            "social.friends": FieldValue.arrayRemove([presentUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == friendtable {
             self.searchBarCancelButtonClicked(friendsearch)
