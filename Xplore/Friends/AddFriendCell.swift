@@ -119,7 +119,7 @@ class AddFriendCell: UITableViewCell {
         //  current event label auto layout constraints
         leftButton.widthAnchor.constraint(equalToConstant:70).isActive = true
         leftButton.heightAnchor.constraint(equalToConstant:70).isActive = true
-        leftButton.trailingAnchor.constraint(equalTo:self.rightButton.trailingAnchor, constant:-80).isActive = true
+        leftButton.trailingAnchor.constraint(equalTo:self.rightButton.trailingAnchor, constant:-90).isActive = true
         leftButton.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
      }
     

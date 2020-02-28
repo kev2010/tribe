@@ -67,14 +67,17 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.leftButton.tag = indexPath.row
         cell.rightButton.tag = indexPath.row
 //        if sections[0] == "Pending Friend Requests" {
-            if addUserSearch.text!.count <= 2 {
+        if addUserSearch.text!.count <= 2 {
             cell.leftButton.setImage(UIImage(named: "addUser"), for: .normal)
-            cell.leftButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+            cell.leftButton.addTarget(self, action: #selector(self.acceptFriendRequest(sender:)), for: .touchUpInside)
             cell.rightButton.setImage(UIImage(named: "rejectUser"), for: .normal)
+            cell.rightButton.addTarget(self, action: #selector(self.rejectFriendRequest(sender:)), for: .touchUpInside)
+            cell.rightButton.imageEdgeInsets = UIEdgeInsets(top: -60, left: -60, bottom: -60, right: -60)
         } else {
             cell.leftButton.setImage(UIImage(), for: .normal)
             cell.rightButton.setImage(UIImage(named: "addUser"), for: .normal)
-            cell.rightButton.addTarget(self, action: #selector(self.addFriend(sender:)), for: .touchUpInside)
+            cell.rightButton.addTarget(self, action: #selector(self.sendFriendRequest(sender:)), for: .touchUpInside)
+            cell.rightButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
         cell.bringSubviewToFront(cell.leftButton)
         cell.bringSubviewToFront(cell.rightButton)
@@ -89,57 +92,95 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
         addUser.reloadData()
     }
     
-    @objc func addFriend(sender : UIButton) {
-        if sender.currentImage == UIImage(named: "addUser") {
-            sender.setImage(UIImage(named: "addedUser"), for: .normal)
-            let userToUpdate = sections[0] == "Add User" ? filteredusers[sender.tag].user!.username : currentUser!.username
-            let userToAdd = sections[0] == "Add User" ? currentUser!.username : filteredusers[sender.tag].user!.username
-            
-            let db = Firestore.firestore()
-            let documentRefString = db.collection("users").document(userToAdd)
-            let userRef = db.document(documentRefString.path)
-            let currentDocumentRefString = db.collection("users").document(userToUpdate)
-            let currentUserRef = db.document(currentDocumentRefString.path)
-            let changeFriendRequest = sections[0] == "Add User" ? FieldValue.arrayUnion([userRef]) : FieldValue.arrayRemove([userRef])
-            
-            Firestore.firestore().collection("users").document(userToUpdate).updateData([
-                "social.friend_req": changeFriendRequest
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
+    @objc func acceptFriendRequest(sender : UIButton) {
+        sender.setImage(UIImage(named: "addedUser"), for: .normal)
+        let presentUser = currentUser!.username
+        let incomingUser = filteredusers[sender.tag].user!.username
+        
+        let db = Firestore.firestore()
+        let documentRefString = db.collection("users").document(incomingUser)
+        let incomingUserRef = db.document(documentRefString.path)
+        let currentDocumentRefString = db.collection("users").document(presentUser)
+        let presentUserRef = db.document(currentDocumentRefString.path)
+        
+        //  Remove friend request from current user's list of friend requests in Firebase
+        Firestore.firestore().collection("users").document(presentUser).updateData([
+            "social.friend_req": FieldValue.arrayRemove([incomingUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
-            
-            if sections[0] == "Pending Friend Requests" {
-                Firestore.firestore().collection("users").document(userToUpdate).updateData([
-                    "social.friends": FieldValue.arrayUnion([userRef])
-                ]) { err in
-                    if let err = err {
-                        print("Error updating document: \(err)")
-                    } else {
-                        print("Document successfully updated")
-                        print("Friend Added")
-                        FriendsAPI.getFriends()
-                    }
-                }
-                
-                Firestore.firestore().collection("users").document(userToAdd).updateData([
-                    "social.friends": FieldValue.arrayUnion([currentUserRef])
-                ]) { err in
-                    if let err = err {
-                        print("Error updating document: \(err)")
-                    } else {
-                        print("Document successfully updated")
-                        print("They can see you now!")
-                    }
-                }
+        }
+        
+        //  Add the friend to current user's list of friends in Firebase
+        Firestore.firestore().collection("users").document(presentUser).updateData([
+            "social.friends": FieldValue.arrayUnion([incomingUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                print("Friend Added")
+                FriendsAPI.getFriends()
+            }
+        }
+        
+        //  Add current user to the new friend's list of friends in Firebase
+        Firestore.firestore().collection("users").document(incomingUser).updateData([
+            "social.friends": FieldValue.arrayUnion([presentUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                print("They can see you now!")
             }
         }
     }
     
+    @objc func sendFriendRequest(sender : UIButton) {
+        sender.setImage(UIImage(named: "addedUser"), for: .normal)
+        let presentUser = currentUser!.username
+        let userToFriend = filteredusers[sender.tag].user!.username
+        
+        let db = Firestore.firestore()
+        let documentRefString = db.collection("users").document(presentUser)
+        let presentUserRef = db.document(documentRefString.path)
+        
+        //  Update friended user's list of friend requests
+        Firestore.firestore().collection("users").document(userToFriend).updateData([
+            "social.friend_req": FieldValue.arrayUnion([presentUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        
+    }
     
+    @objc func rejectFriendRequest(sender : UIButton) {
+        let presentUser = currentUser!.username
+        let rejectedUser = filteredusers[sender.tag].user!.username
+        
+        let db = Firestore.firestore()
+        let rejectedUserDocumentRefString = db.collection("users").document(rejectedUser)
+        let rejectedUserRef = db.document(rejectedUserDocumentRefString.path)
+        
+        //  Remove rejected user from current user's friend request list
+        Firestore.firestore().collection("users").document(presentUser).updateData([
+            "social.friend_req": FieldValue.arrayRemove([rejectedUserRef])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 //        self.addUser.reloadData()

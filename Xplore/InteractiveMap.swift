@@ -789,6 +789,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         print("REFRESHING DATA")
         //  Refresh Table Data
         
+//
         FriendsAPI.getFriends()
         friendtable.reloadData()
         bookmarksTable.reloadData()
