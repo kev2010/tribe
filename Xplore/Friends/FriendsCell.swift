@@ -62,7 +62,6 @@ class FriendsCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont(name: "Futura-Bold", size: 14)
         label.textColor =  UIColor.init(red: 204/255, green: 204/255, blue: 204/255, alpha: 1)
-//        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

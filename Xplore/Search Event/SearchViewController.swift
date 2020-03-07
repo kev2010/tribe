@@ -247,6 +247,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.searchEvent.delegate = self
             self.searchEvent.backgroundColor = .white
             self.searchEvent.placeholder = "Search"
+            self.searchEvent.searchBarStyle = .minimal
+            // SearchBar text
+            let textFieldInsideUISearchBar = self.searchEvent.value(forKey: "searchField") as? UITextField
+            textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
+
+            // SearchBar placeholder
+            let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+            textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
             
         }
     }

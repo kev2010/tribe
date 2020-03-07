@@ -24,7 +24,7 @@ class SearchTableViewHeader: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         
         // Content View
-        contentView.backgroundColor = UIColor(displayP3Red: 0/255, green: 182/255, blue: 255/255, alpha: 1)
+        contentView.backgroundColor = UIColor(red: 0, green: 255/255, blue: 194/255, alpha: 1)
         
         let marginGuide = contentView.layoutMarginsGuide
         
@@ -40,6 +40,7 @@ class SearchTableViewHeader: UITableViewHeaderFooterView {
         // Title label
         contentView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont(name: "Futura-Bold", size: 16)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor).isActive = true

@@ -15,7 +15,6 @@
 		2B09A34822F265D000F52209 /* XploreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B09A34722F265D000F52209 /* XploreUITests.swift */; };
 		2B11E02C22F39668000A51F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B11E02B22F39668000A51F0 /* CoreLocation.framework */; };
 		2B13DB2D22F93DD400E5DD31 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */; };
-		2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5422F3EFCE00B1C90F /* Home.swift */; };
 		2B1E3E5A22F3F1CC00B1C90F /* InteractiveMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */; };
 		2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */; };
 		2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5565F5235D76C0008E2B66 /* Bookmark.swift */; };
@@ -51,7 +50,6 @@
 		F44CED9922FB3B2C0077138F /* filter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F44CED9322FB3B2C0077138F /* filter.jpg */; };
 		F44CED9B22FB3B2C0077138F /* menu.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F44CED9522FB3B2C0077138F /* menu.jpg */; };
 		F44CED9E22FB3B310077138F /* settings.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F44CED9D22FB3B310077138F /* settings.jpg */; };
-		F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CED9F22FB42E40077138F /* FriendsViewController.swift */; };
 		F44CEDC222FD43450077138F /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CEDC122FD43450077138F /* FilterViewController.swift */; };
 		F44CEDC622FD45F30077138F /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CEDC522FD45F30077138F /* AddEventViewController.swift */; };
 		F44CEDC822FD4AB30077138F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CEDC722FD4AB30077138F /* SettingsViewController.swift */; };
@@ -112,7 +110,6 @@
 		2B09A34922F265D000F52209 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B11E02B22F39668000A51F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2B13DB2C22F93DD400E5DD31 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
-		2B1E3E5422F3EFCE00B1C90F /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveMap.swift; sourceTree = "<group>"; };
 		2B5565F0235D736C008E2B66 /* AddFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
 		2B5565F5235D76C0008E2B66 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
@@ -153,7 +150,6 @@
 		F44CED9322FB3B2C0077138F /* filter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = filter.jpg; sourceTree = "<group>"; };
 		F44CED9522FB3B2C0077138F /* menu.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = menu.jpg; sourceTree = "<group>"; };
 		F44CED9D22FB3B310077138F /* settings.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = settings.jpg; sourceTree = "<group>"; };
-		F44CED9F22FB42E40077138F /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		F44CEDC122FD43450077138F /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		F44CEDC522FD45F30077138F /* AddEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
 		F44CEDC722FD4AB30077138F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -257,15 +253,13 @@
 				2B5565F4235D766A008E2B66 /* Bookmarks */,
 				2BEAE8C32389E4DA00A32FB0 /* Search Event */,
 				BEB4F410238CE67000548D28 /* Filter Events */,
+				2B75B77B2409A5E900708908 /* Add Events */,
 				2B09A32B22F265CF00F52209 /* Main.storyboard */,
 				F4D13F4D23DD192100B4EAD4 /* ShowLocationViewController.swift */,
 				2B09A32722F265CF00F52209 /* AppDelegate.swift */,
 				F4E6BB08237FB54B007F7A1E /* PickAddressViewController.swift */,
 				2B1E3E5822F3F1CC00B1C90F /* InteractiveMap.swift */,
-				2B1E3E5422F3EFCE00B1C90F /* Home.swift */,
 				F4D13F4B23D290FB00B4EAD4 /* BigTileViewController.swift */,
-				F44CEDC522FD45F30077138F /* AddEventViewController.swift */,
-				F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */,
 				2B09A32E22F265D000F52209 /* Assets.xcassets */,
 				2B09A33022F265D000F52209 /* LaunchScreen.storyboard */,
 				2B09A33322F265D000F52209 /* Info.plist */,
@@ -313,10 +307,18 @@
 			path = Bookmarks;
 			sourceTree = "<group>";
 		};
+		2B75B77B2409A5E900708908 /* Add Events */ = {
+			isa = PBXGroup;
+			children = (
+				F44CEDC522FD45F30077138F /* AddEventViewController.swift */,
+				F4B1DCEA238D7ABD00F938A3 /* AddEventPageTwoViewController.swift */,
+			);
+			path = "Add Events";
+			sourceTree = "<group>";
+		};
 		2B98A8CF2324238800FA7895 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
-				F44CED9F22FB42E40077138F /* FriendsViewController.swift */,
 				2B907CA4234888170021EF98 /* FriendsCell.swift */,
 				2B98A8D0232423E100FA7895 /* Friend.swift */,
 				2B98A8D2232427F700FA7895 /* FriendsAPI.swift */,
@@ -669,7 +671,6 @@
 				BEB4F416238CE96D00548D28 /* FilterTable.swift in Sources */,
 				2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */,
 				2BFDBE5E233570AE006143FD /* SettingsCell.swift in Sources */,
-				F44CEDA022FB42E40077138F /* FriendsViewController.swift in Sources */,
 				F4D13F4E23DD192100B4EAD4 /* ShowLocationViewController.swift in Sources */,
 				2B907CA3234575DA0021EF98 /* ToS.swift in Sources */,
 				2B5565FA235D8BFD008E2B66 /* BookmarkCell.swift in Sources */,
@@ -690,7 +691,6 @@
 				2B5565F6235D76C0008E2B66 /* Bookmark.swift in Sources */,
 				F4D13F4C23D290FB00B4EAD4 /* BigTileViewController.swift in Sources */,
 				2BE5B57822F567B000B39563 /* Menu.swift in Sources */,
-				2B1E3E5622F3EFCE00B1C90F /* Home.swift in Sources */,
 				F44CED8F22F99F8D0077138F /* User.swift in Sources */,
 				2BA9C75F22FAB38C001A0DB5 /* ForgetPassword.swift in Sources */,
 				F4B258CB22F6EB8A00E12BF4 /* Constants.swift in Sources */,

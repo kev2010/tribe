@@ -11,29 +11,28 @@ import Firebase
 import FirebaseStorage
 
 class FriendsAPI {
-    
+    /**
+     Retrieves current user's list of friends by making a document request from Firebase. Posts a notification called "didDownloadFriends" that sends a list of Friend objects.
+     */
     static func getFriends() {
-        print("GETTING FRIENDS")
         let db = Firestore.firestore()
-        let documentRefString = db.collection("users").document(currentUser!.username)
-        let userRef = db.document(documentRefString.path)
-        var userFriends:[DocumentReference] = []
+        let currentUserDocumentRefString = db.collection("users").document(currentUser!.username)
+        let currentUserRef = db.document(currentUserDocumentRefString.path)
         
-        userRef.getDocument { (document, error) in
+        currentUserRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                userFriends = (document.data()!["social"] as! [String:Any])["friends"] as! [DocumentReference]
-                //  Initialize dispatch group to control threading & friends array
+                let userFriends = (document.data()!["social"] as! [String:Any])["friends"] as! [DocumentReference]
+                //  Initialize dispatch group to control threading
+                //  Initialize friends array that stores user's friends as friend objects
                 let info = DispatchGroup()
                 var friends : [Friend] = []
                 
-                //  Iterate through all of user's friends
                 for friend in userFriends{
                     friend.getDocument { (document, error) in
                         if let document = document, document.exists {
                             //  Retrieve/initialize relevant friend information
                             let user = User(DocumentSnapshot: document)
                             let uid = (document.data()!["user_information"] as! [String:Any])["uid"] as! String
-        //                    let name = (document.data()!["user_information"] as! [String:Any])["name"] as! String
                             let currentEvent = (document.data()!["user_information"] as! [String:Any])["current_event"] as! Array<Any>
                             var image = UIImage()
                             var event = String()
