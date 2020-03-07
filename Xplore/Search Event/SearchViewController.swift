@@ -215,7 +215,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 var year: Int
                 var day: Int
                 
-                if date[10] == "," {
+                if date[10] == "," { //TODO: uhhh what is this
                     year = Int(date.substring(fromIndex: 12))!
                     day = Int(date[9])!
                 } else {

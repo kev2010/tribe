@@ -47,9 +47,19 @@ class AddEventPageTwoViewController: UIViewController {
     
     var address_send = ""
     
+    var address = ""
+    
+    var finalLocationCoord = CLLocationCoordinate2D()
+    var finalLocationDescription = ""
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.performSegue(withIdentifier: "confirmLocation", sender: self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
 //        let color1 = UIColor(displayP3Red: 0/255, green: 230/255, blue: 179/255, alpha: 0.6)
 //        let color2 = UIColor(red: 0/255, green: 182/255, blue: 255/255, alpha: 0.6)
@@ -269,9 +279,11 @@ class AddEventPageTwoViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "confirmLocation" {
             let vc = segue.destination as! PickAddressViewController
-            vc.address = self.address_send
+            vc.address = self.address
         }
     
+                
+
         
         
     }

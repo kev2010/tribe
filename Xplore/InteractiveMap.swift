@@ -185,25 +185,27 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         // Fill an array with point annotations and add it to the map.
         var pointAnnotations = [CustomPointAnnotation]()
         for (event, bookmarked) in events {
-            let filtered = event.tags.contains("Academic") && filterApp[0]==1 ||
-                event.tags.contains("Arts") && filterApp[1]==1 ||
-                event.tags.contains("Athletic") && filterApp[2]==1 ||
-                event.tags.contains("Casual") && filterApp[3]==1 ||
-                event.tags.contains("Professional") && filterApp[4]==1 ||
-                event.tags.contains("Social") && filterApp[5]==1;
-            if (filtered) {
-                displayed_events[event.documentID!] = event
-                let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked, event: event)
-                point.reuseIdentifier = "customAnnotation\(event.title)"
-                point.image = InteractiveMap.dot(size: 30, num: event.capacity, bm: bookmarked)
-                
-                self.annotationsForID[event.documentID!] = point
-                
-                pointAnnotations.append(point)
-                
-                if bookmarked {
-                    bookmarks.append(Bookmark(event: event, annotation: point))
-                    bookmarksTable.reloadData()
+            if event.startDate > Date() || (event.startDate < Date() && event.endDate > Date()) {
+                let filtered = event.tags.contains("Academic") && filterApp[0]==1 ||
+                    event.tags.contains("Arts") && filterApp[1]==1 ||
+                    event.tags.contains("Athletic") && filterApp[2]==1 ||
+                    event.tags.contains("Casual") && filterApp[3]==1 ||
+                    event.tags.contains("Professional") && filterApp[4]==1 ||
+                    event.tags.contains("Social") && filterApp[5]==1;
+                if (filtered) {
+                    displayed_events[event.documentID!] = event
+                    let point = CustomPointAnnotation(coordinate: event.location, title: event.title, subtitle: "\(event.capacity) people", description: event.description, annotationType: AnnotationType.Event, event_id: event.documentID, bm: bookmarked, event: event)
+                    point.reuseIdentifier = "customAnnotation\(event.title)"
+                    point.image = InteractiveMap.dot(size: 30, num: event.capacity, bm: bookmarked)
+                    
+                    self.annotationsForID[event.documentID!] = point
+                    
+                    pointAnnotations.append(point)
+                    
+                    if bookmarked {
+                        bookmarks.append(Bookmark(event: event, annotation: point))
+                        bookmarksTable.reloadData()
+                    }
                 }
             }
         }

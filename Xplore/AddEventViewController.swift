@@ -93,14 +93,10 @@ class AddEventViewController: UIViewController {
                     
                     self.address_send = address_input.text!
                                         
-                    self.performSegue(withIdentifier: "confirmLocation", sender: self)
-                    
+                    goNext()
 
         }
-        
-    
-        
-        
+
     }
     
     
@@ -567,12 +563,9 @@ class AddEventViewController: UIViewController {
         if segue.identifier == "nextPage" {
             let vc = segue.destination as! AddEventPageTwoViewController
             vc.prev_data = all_data
-        }
-        
-        if segue.identifier == "confirmLocation" {
-            let vc = segue.destination as! PickAddressViewController
             vc.address = self.address_send
         }
+
         
         
     }
