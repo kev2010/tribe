@@ -150,7 +150,6 @@ class Menu: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func unwindToLogin(_ sender: UIStoryboardSegue) {
-        print("WAHT THE FUCKL")
     }
     
     

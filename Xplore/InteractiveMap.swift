@@ -49,6 +49,7 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //  Used for Interactive Map Screen
     var timer = Timer()
+    var searchEvent = UISearchBar()
     
     //  Bottom tile variables - global
     var topTileShowing = false
@@ -390,8 +391,38 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         
         mapView.addSubview(search_button)
         
+        self.searchEvent.delegate = self
+        self.searchEvent.frame = CGRect(x: 20, y: 60, width: 375, height: 50)
+        self.searchEvent.placeholder = "Search"
+//        self.searchEvent.searchBarStyle = .minimal
+        self.searchEvent.backgroundColor = .white
+        self.searchEvent.alpha = 1.0
+    
+        (self.searchEvent.value(forKey: "searchField") as! UITextField).alpha = 1.0
+        (self.searchEvent.value(forKey: "searchField") as! UITextField).backgroundColor = .white
+        (self.searchEvent.value(forKey: "searchField") as! UITextField).tintColor = .white
+        // SearchBar text
+        let textFieldInsideUISearchBar = self.searchEvent.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.font = UIFont.init(name: "Futura-Bold", size: 16)
+
+        // SearchBar placeholder
+        let textFieldInsideUISearchBarLabel = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        textFieldInsideUISearchBarLabel?.font = UIFont.init(name: "Futura-Bold", size: 16)
         
+
         
+//        mapView.addSubview(searchEvent)
+        
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if searchBar == searchEvent {
+//            self.present(UINavigationController(rootViewController: SearchViewController()), animated: false, completion: nil)
+            UIView.setAnimationsEnabled(false)
+            self.performSegue(withIdentifier: "mapToSearch", sender: self)
+            UIView.setAnimationsEnabled(true)
+            
+        }
     }
     
     func createRightFriends() {
@@ -633,9 +664,9 @@ class InteractiveMap: UIViewController, UITableViewDataSource, UITableViewDelega
         friendtable.reloadData()
     }
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        friendsearch.showsCancelButton = true
-    }
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//        friendsearch.showsCancelButton = true
+//    }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         friendsearch.showsCancelButton = false

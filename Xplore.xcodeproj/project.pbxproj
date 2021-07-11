@@ -33,6 +33,7 @@
 		2BA9C76122FB6CD5001A0DB5 /* RoundUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */; };
 		2BBA19272367CA2A0045E82C /* AddFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA19262367CA2A0045E82C /* AddFriendCell.swift */; };
 		2BE5B57822F567B000B39563 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE5B57722F567B000B39563 /* Menu.swift */; };
+		2BEA754524134E95005B8B98 /* PushNoAnimationSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA754424134E95005B8B98 /* PushNoAnimationSegue.swift */; };
 		2BEAE8C72389E51500A32FB0 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8C62389E51500A32FB0 /* SearchCell.swift */; };
 		2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8C82389EF5600A32FB0 /* Search.swift */; };
 		2BEAE8CB2389F27900A32FB0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEAE8CA2389F27900A32FB0 /* SearchViewController.swift */; };
@@ -126,6 +127,7 @@
 		2BA9C76022FB6CD5001A0DB5 /* RoundUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundUIView.swift; sourceTree = "<group>"; };
 		2BBA19262367CA2A0045E82C /* AddFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010AddFriendCell.swift"; sourceTree = "<group>"; };
 		2BE5B57722F567B000B39563 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		2BEA754424134E95005B8B98 /* PushNoAnimationSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNoAnimationSegue.swift; sourceTree = "<group>"; };
 		2BEAE8C62389E51500A32FB0 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		2BEAE8C82389EF5600A32FB0 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		2BEAE8CA2389F27900A32FB0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				2B7F870222F68FEA00347911 /* RoundedWhiteButton.swift */,
 				F4B258CC22F6ED4A00E12BF4 /* CustomPointAnnotation.swift */,
 				F49CD0FF238D089C00C19BFE /* RoundedButton.swift */,
+				2BEA754424134E95005B8B98 /* PushNoAnimationSegue.swift */,
 			);
 			path = "Custom classes";
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				2BFDBE6023357CAD006143FD /* SettingsSection.swift in Sources */,
 				BE38948F236C92A600DF6CBE /* FBLogin.swift in Sources */,
 				2B5565F1235D736C008E2B66 /* AddFriendViewController.swift in Sources */,
+				2BEA754524134E95005B8B98 /* PushNoAnimationSegue.swift in Sources */,
 				2B7F870122F672A800347911 /* SignUp.swift in Sources */,
 				F4B1DCEB238D7ABD00F938A3 /* AddEventPageTwoViewController.swift in Sources */,
 				2BEAE8C92389EF5600A32FB0 /* Search.swift in Sources */,
